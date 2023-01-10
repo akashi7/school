@@ -1,5 +1,7 @@
 import React from "react";
 import Logo from "../resources/images/logo.png";
+import Image from "next/image";
+import Link from 'next/link';
 
 const Footer = () => {
   return (
@@ -7,19 +9,19 @@ const Footer = () => {
       <div className="container-default">
         <div className="footerCmp__container container-small">
           <div className="footerCmp__imgContainer">
-            <img src={Logo} alt="nextpay" />
+            <Image src={Logo} alt="school nest pay" />
           </div>
           <div className="footerCmp__copyRight">
             Copyright &copy;
             <b>
-              <a href="https://github.com/mansurissa">SchoolNest Pay</a>
+              <Link href="https://github.com/mansurissa">SchoolNest Pay</Link>
             </b>
             2022
           </div>
           <div className="footerCmp__linksContainer">
-            <a className="footerCmp__links" href="/">
+            <Link className="footerCmp__links" href="/">
               Login
-            </a>
+            </Link>
             <div className="footerCmp__links">Pay Now</div>
             <div className="footerCmp__links">Payment code</div>
           </div>

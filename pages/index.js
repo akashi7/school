@@ -6,182 +6,324 @@
 // <link rel="icon" href="/favicon.ico" />
 // </Head>
 
-import React, { useState } from "react";
-import "../styles/login.module.scss";
+import React, { useState, useEffect } from "react";
+import Image from "next/image";
+import Navbar from "../comps/Navbar";
+import img_1 from "../resources/images/card.jpeg";
+import WHITE_DECORATION from "../resources/decorations/white-decoration.svg";
+import TabCmp from "../comps/TabCmp";
+import { Modal } from "react-responsive-modal";
+import "react-responsive-modal/styles.css";
+import MTN from "../resources/images/mtn.png";
+import AIRTEL from "../resources/images/airtel.png";
+import Footer from "../comps/Footer";
 import Dropdown from "../comps/Dropdown";
-import Logo from "../resources/images/logo.png";
-// import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
-// import { useNavigate } from "react-router-dom";
-import Link from "next/link";
 
-function Login() {
-  const [userName, setUserName] = useState("");
-  const [password, setPassword] = useState("");
+const TABS = [
+  { title: "1. Select Channel" },
+  { title: "2. Payment Code" },
+  { title: "3. Amount & phone" },
+];
+
+const LandingPage = () => {
+  const [showPayNowSection, setShawPayNowSection] = useState(false);
+  const [showSeachPaymentCode, setShowSeachPaymentCode] = useState(false);
+  const [currentStep, setCurrentStep] = useState(0);
   const [selected, setSelected] = useState("");
-  const [toggleState, setToggleState] = useState(0);
+  const [selectedClass, setSelectedClass] = useState("");
+  const [open, setOpen] = useState(false);
 
-  // const navigate = useNavigate();
+  useEffect(() => {
+    console.log("@-selected school---", selected);
+  }, [selected]);
 
-  const notify = () => {
-    return toast.error("Invalid credentials", {
-      position: "top-center",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      theme: "colored",
-    });
+  useEffect(() => {
+    console.log("@-selected class: ", selectedClass);
+  }, [selectedClass]);
+
+  const onOpenModal = () => setOpen(true);
+  const onCloseModal = () => setOpen(false);
+  const stepChangeHandler = (stepNumber) => {
+    setCurrentStep(stepNumber);
   };
-  const loginHandler = () => {
-    console.log("#---userName: ", userName);
-    console.log("#---password ", password);
-    if (toggleState === 0) {
-      notify();
-    } else if (toggleState === 1) {
-      notify();
-    } else {
-      if (userName === "admin" && password === "secret!1") {
-        // navigate("/sh-dash-b0ard");
-        return <Link href="/sh-dash-b0ard"></Link>;
-      } else {
-        notify();
-      }
-    }
+  const onPaymentCodeSearchHandler = () => {
+    setShawPayNowSection(false);
+    setShowSeachPaymentCode(true);
   };
-
-  const toggleTab = (index) => {
-    setToggleState(index);
+  const homeClickHandler = () => {
+    setShawPayNowSection(false);
+    setShowSeachPaymentCode(false);
   };
-
-  const handleParentLogin = () => {
-    setToggleState(0);
-    // SEND OTP
-  };
-
   return (
-    <div className="login">
-      <div className="login__card">
-        <div className="login__cardTopContent">
-          <div className="login__logoContainer">
-            <img src={Logo} alt="school nestpay" />
-          </div>
-          <div className="login__text">
-            <span>Sign In</span> to your Account as
-          </div>
-          <div className="login__accountsTab">
-            <div
-              onClick={handleParentLogin}
-              className={
-                toggleState === 0 ? "login__tab activeTab" : "login__tab"
-              }
-            >
-              Parent
-            </div>
-            <div
-              onClick={() => toggleTab(1)}
-              className={
-                toggleState === 1 ? "login__tab activeTab" : "login__tab"
-              }
-            >
-              Student
-            </div>
-            <div
-              onClick={() => toggleTab(2)}
-              className={
-                toggleState === 2 ? "login__tab activeTab" : "login__tab"
-              }
-            >
-              School
-            </div>
-          </div>
-        </div>
-        {toggleState !== 0 && (
-          <div className="getStartedPage__textField">
-            <label className="getStartedPage__label">Country</label>
-            <Dropdown
-              selected={selected}
-              setSelected={setSelected}
-              options={["Rwanda", "Kenya", "Uganda"]}
-            />
-          </div>
-        )}
-        {toggleState === 0 ? (
-          <div className="getStartedPage__textField">
-            <label className="getStartedPage__label">Phone Number</label>
-            <input
-              className="inputField"
-              type="number"
-              id="parentPhonenumber"
-              name="parentPhonenumber"
-            ></input>
-          </div>
-        ) : toggleState === 1 ? (
-          <div className="getStartedPage__textField">
-            <label className="getStartedPage__label">Student Id</label>
-            <input
-              className="inputField"
-              type="number"
-              id="studentId"
-              name="studentId"
-            ></input>
-          </div>
-        ) : (
-          <>
-            <div className="getStartedPage__textField login__schoolLogin">
-              <label className="getStartedPage__label">Username</label>
-              <input
-                className="inputField"
-                type="number"
-                id="schoolId"
-                name="schoolId"
-                onChange={(e) => setUserName(e.target.value)}
-              ></input>
-            </div>
-            <div className="getStartedPage__textField login__schoolLogin">
-              <label className="getStartedPage__label">Password</label>
-              <input
-                className="inputField"
-                type="password"
-                id="Password"
-                name="password"
-                onChange={(e) => setPassword(e.target.value)}
-              ></input>
-            </div>
-          </>
-        )}
-        {/* {toggleState === 0 ? (
-          <Link
-            className="getStartedPage__formBtn proceedBtn"
-            to="/pr-dash-b0ard"
-          >
-            Sign In
-          </Link>
-        ) : toggleState === 1 ? (
-          <Link
-            className="getStartedPage__formBtn proceedBtn"
-            to="/st-dash-b0ard"
-          >
-            Sign In
-          </Link>
-        ) : (
-          <Link
-            className="getStartedPage__formBtn proceedBtn"
-            to="/sh-dash-b0ard"
-          >
-            Sign In
-          </Link>
-        )} */}
-        <div
-          onClick={loginHandler}
-          className="getStartedPage__formBtn proceedBtn"
-        >
-          Login
-        </div>
-      </div>
-    </div>
-  );
-}
+    <>
+      <div className="landingPage">
+        <Navbar
+          onPaymentCodeSearchHandler={onPaymentCodeSearchHandler}
+          onPaynowHandler={() => setShawPayNowSection(true)}
+          homeClickHandler={homeClickHandler}
+        />
+        <div className="hero-container">
+          <div className="hero-section container-small">
+            {showPayNowSection && (
+              <div className="paynowSection">
+                <div className="paynowSection__header">
+                  {TABS.map((el, index) => (
+                    <div
+                      className={`paynowSection__headerItem ${
+                        currentStep === index ? "paynowSection__activeTab " : ""
+                      } `}
+                    >
+                      {el.title}
+                    </div>
+                  ))}
+                </div>
+                <div className="paynowSection__formContainer">
+                  {currentStep === 0 && (
+                    <>
+                      <div className="paynowSection__title getStartedPage__label">
+                        Select payment method
+                      </div>
+                      <div className="paynowSection__paymentOption">
+                        <div className="paynowSection__mobileOptions">
+                          <div
+                            onClick={() => stepChangeHandler(1)}
+                            className="paynowSection__imgContainer"
+                          >
+                            <Image src={MTN} alt="school nestpay" />
+                          </div>
+                          <div
+                            onClick={() => stepChangeHandler(1)}
+                            className="paynowSection__imgContainer"
+                          >
+                            <Image src={AIRTEL} alt="school nestpay" />
+                          </div>
+                        </div>
+                        {/* <div className="paynowSection__mobileOptions">
+                          <img />
+                        </div> */}
+                      </div>
+                    </>
+                  )}
+                  {currentStep === 1 && (
+                    <div>
+                      <div className="getStartedPage__textField">
+                        <label className="getStartedPage__label">
+                          Enter payment code/Reg No
+                        </label>
+                        <input
+                          className="inputField"
+                          type="text"
+                          id="studentId"
+                          name="studentId"
+                        ></input>
+                      </div>
+                      <div className="btnContainer">
+                        <div
+                          onClick={() => stepChangeHandler(0)}
+                          className="getStartedPage__formBtn backBtn"
+                        >
+                          Back
+                        </div>
+                        <div
+                          onClick={() => stepChangeHandler(2)}
+                          className="getStartedPage__formBtn proceedBtn"
+                        >
+                          Search
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  {currentStep === 2 && (
+                    <div>
+                      <div className="getStartedPage__textField">
+                        <label className="getStartedPage__label">
+                          Enter amount
+                        </label>
+                        <input
+                          className="inputField"
+                          type="text"
+                          id="feesAmount"
+                          name="feesAmount"
+                        ></input>
+                      </div>
+                      <div className="getStartedPage__textField">
+                        <label className="getStartedPage__label">
+                          Enter phone number
+                        </label>
+                        <input
+                          className="inputField"
+                          type="number"
+                          id="phoneNumber"
+                          name="phoneNumber"
+                        ></input>
+                      </div>
+                      <div className="btnContainer">
+                        <div
+                          onClick={() => stepChangeHandler(1)}
+                          className="getStartedPage__formBtn backBtn"
+                        >
+                          Back
+                        </div>
+                        <div
+                          onClick={() => onOpenModal()}
+                          className="getStartedPage__formBtn proceedBtn"
+                        >
+                          Proceed
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+            {!showPayNowSection && showSeachPaymentCode && (
+              <>
+                <div className="paynowSection">
+                  <div className="paynowSection__formContainer">
+                    <label className="getStartedPage__label">
+                      Student payment code search
+                    </label>
+                    <div className="paynowSection__fieldsRow">
+                      <div className="getStartedPage__textField">
+                        <label className="getStartedPage__label">School</label>
+                        {/* <input
+                          className="inputField"
+                          type="text"
+                          id="studentId"
+                          name="studentId"
+                        ></input> */}
+                        <Dropdown
+                          selected={selected}
+                          setSelected={setSelected}
+                          options={["Auca", "Kist", "University of Kigali"]}
+                        />
+                      </div>
+                      <div className="getStartedPage__textField">
+                        <label className="getStartedPage__label">Class</label>
+                        <Dropdown
+                          selected={selectedClass}
+                          setSelected={setSelectedClass}
+                          options={["Senior 1", "Senior 2", "Senior 3"]}
+                        />
+                        {/* <input
+                          className="inputField"
+                          type="text"
+                          id="studentId"
+                          name="studentId"
+                        ></input> */}
+                      </div>
+                    </div>
+                    <div className="getStartedPage__textField">
+                      <label className="getStartedPage__label">
+                        Student name
+                      </label>
+                      <input
+                        className="inputField"
+                        type="text"
+                        id="studentId"
+                        name="studentId"
+                      ></input>
+                    </div>
+                    <div
+                      onClick={() => onOpenModal()}
+                      className="getStartedPage__formBtn proceedBtn"
+                    >
+                      Search
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
 
-export default Login;
+            {!showPayNowSection && !showSeachPaymentCode && (
+              <>
+                <h1 className="title-xl">SchoolFees payments made easier!</h1>
+                <div className="flex">
+                  <div className="left">
+                    <div className="landingPage__imageContiner">
+                      <Image src={img_1} alt="nestpay" />
+                    </div>
+                  </div>
+                  <div className="right">
+                    <p className="desc">
+                      Pay school fees wherever you’re using one of the many
+                      available payment channels on SchoolNest Pay
+                    </p>
+                    <div className="btn-dashed">
+                      <div className="getStarted">Get started</div>
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+          <div className="decoration">
+            <Image src={WHITE_DECORATION} alt="school nestpay" />
+          </div>
+          <div className="stats">
+            <div className="stat">
+              <h2>$0K</h2>
+              <p>Transactions</p>
+            </div>
+            <div className="stat">
+              <h2>3,581</h2>
+              <p>Active Students</p>
+            </div>
+            <div className="stat">
+              <h2>14</h2>
+              <p>Active Schools</p>
+            </div>
+          </div>
+        </div>
+        <div className="why">
+          <p className="title-xl">Why SchoolNest Pay?</p>
+          <div className="container-small">
+            <TabCmp />
+          </div>
+        </div>
+        <Footer />
+
+        <Modal
+          classNames="getStartedPage__Modal"
+          open={open}
+          onClose={onCloseModal}
+          center
+        >
+          <div className="modal__title">Student information</div>
+          <div className="modal__details">
+            <div className="modal__itemRow">
+              <div className="modal__item">
+                <div className="getStartedPage__label">Name:</div>
+                <div className="modal__names modal__value">
+                  BYIRINGIRO Jean Bien Aime
+                </div>
+              </div>
+              <div className="modal__item">
+                <div className="getStartedPage__label">Year:</div>
+                <div className=" modal__value">S6</div>
+              </div>
+            </div>
+            <div className="modal__itemRow">
+              <div className="modal__item">
+                <div className="getStartedPage__label">Amount</div>
+                <div className="modal__names modal__value">150,000 Rwf</div>
+              </div>
+              <div className="modal__item">
+                <div className="getStartedPage__label">School Name:</div>
+                <div className=" modal__value">AUCA</div>
+              </div>
+            </div>
+          </div>
+          <div
+            onClick={onCloseModal}
+            className="getStartedPage__formBtn confirmBtn"
+          >
+            Confirm
+          </div>
+        </Modal>
+      </div>
+    </>
+  );
+};
+
+export default LandingPage;
