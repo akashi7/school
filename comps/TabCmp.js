@@ -1,8 +1,4 @@
 import { useState } from "react";
-// import { faCoffee } from "@fortawesome/free-solid-svg-icons";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
-// import img_1 from "../resources/images/image-2.png";
 import img_1 from "../resources/images/card.jpeg";
 import {
   FaMobileAlt,
@@ -10,6 +6,7 @@ import {
   FaMoneyBillAlt,
   FaPhoneVolume,
 } from "react-icons/fa";
+import Image from "next/image";
 
 function TabCmp() {
   const [toggleState, setToggleState] = useState(1);
@@ -83,7 +80,7 @@ function TabCmp() {
               </div>
               <div className="right">
                 <div className="tabCmp__imageContiner">
-                  <img src={img_1} alt="nestpay" />
+                  <Image src={img_1} alt="school nest pay" />
                 </div>
               </div>
             </div>
@@ -103,7 +100,7 @@ function TabCmp() {
                 </p>
               </div>
               <div className="right">
-                <img src={img_1} alt="nestpay" />
+                <Image src={img_1} alt="school nest pay" />
               </div>
             </div>
           </div>
@@ -125,7 +122,7 @@ function TabCmp() {
                 </p>
               </div>
               <div className="right">
-                <img src={img_1} alt="nestpay" />
+                <Image src={img_1} alt="school nest pay" />
               </div>
             </div>
           </div>
@@ -144,7 +141,7 @@ function TabCmp() {
                 </p>
               </div>
               <div className="right">
-                <img src={img_1} alt="nestpay" />
+                <Image src={img_1} alt="school nest pay" />
               </div>
             </div>
           </div>

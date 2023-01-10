@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import NavItem from "./NavItem";
 import Logo from "../resources/images/logo.png";
 import { FiXCircle } from "react-icons/fi";
+import Image from "next/image";
 
 const MENU_LIST_RIGHT = [
-  // { text: "Login", href: "/login" },
   { text: "Home", href: "/", btn: false },
   { text: "Payment code", href: "/", btn: false },
   { text: "Contact us", href: "/", btn: false },
@@ -24,7 +24,7 @@ const Navbar = ({
     <header className="navbar-cmp">
       <nav className="container-default">
         <a href={"/"}>
-          <img src={Logo} alt="nestpay" />
+          <Image src={Logo} alt="school nest pay" />
         </a>
         <div
           onClick={() => setNavActive(!navActive)}
