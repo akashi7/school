@@ -11,11 +11,12 @@ const CustomButton = ({
 	onClick,
 	children,
 	htmlType,
+	className,
 }) => {
 	const PrimaryButton = () => {
 		return (
 			<Button
-				className="bg-primary font-medium text-white text-[16px] px-8 h-[48px] rounded-[4px] hover:text-white hover:bg-primary_hover border-none hover:border-none"
+				className={`${className} bg-primary font-medium text-white text-[16px] px-8 h-[48px] rounded-[4px] hover:text-white hover:bg-primary_hover border-none hover:border-none`}
 				disabled={disabled}
 				icon={icon}
 				size={size}
@@ -33,7 +34,7 @@ const CustomButton = ({
 		return (
 			<Button
 				style={{ background: "rgba(0, 176, 175, 0.1)" }}
-				className="text-white font-medium text-[12px] px-5 h-[38px] text-edit_blue rounded-[4px] font-semibold hover:text-edit_blue hover:bg-primary_hover border-none hover:border-none"
+				className={`${className} text-white font-medium text-[12px] px-5 h-[38px] text-edit_blue rounded-[4px] font-semibold hover:text-edit_blue hover:bg-primary_hover border-none hover:border-none`}
 				disabled={disabled}
 				icon={icon}
 				size={size}
@@ -51,7 +52,7 @@ const CustomButton = ({
 		return (
 			<Button
 				style={{ background: "rgba(235, 96, 36, 0.1)" }}
-				className="text-white font-medium text-[12px] px-5 h-[38px] text-delete_red rounded-[4px] font-semibold hover:text-delete_red hover:bg-delete_red border-none hover:border-none"
+				className={`${className} text-white font-medium text-[12px] px-5 h-[38px] text-delete_red rounded-[4px] font-semibold hover:text-delete_red hover:bg-delete_red border-none hover:border-none`}
 				disabled={disabled}
 				icon={icon}
 				size={size}
@@ -68,7 +69,7 @@ const CustomButton = ({
 	const DangerButton = () => {
 		return (
 			<Button
-				className="text-white font-bold text-[12px] px-5 h-[38px] w-[100px] rounded-[4px] font-semibold bg-red border-none hover:border-none"
+				className={`${className} text-white font-bold text-[12px] px-5 h-[38px] w-[100px] rounded-[4px] font-semibold bg-red border-none hover:border-none`}
 				disabled={disabled}
 				icon={icon}
 				size={size}
@@ -85,7 +86,7 @@ const CustomButton = ({
 	const ViewButton = () => {
 		return (
 			<Button
-				className="bg-grey font-medium text-dark font-semibold text-[12px] px-5 h-[38px] rounded-[4px] hover:text-dark hover:bg-grey border-none hover:border-none"
+				className={`${className} bg-grey font-medium text-dark font-semibold text-[12px] px-5 h-[38px] rounded-[4px] hover:text-dark hover:bg-grey border-none hover:border-none`}
 				disabled={disabled}
 				icon={icon}
 				size={size}
@@ -135,6 +136,7 @@ CustomButton.propTypes = {
 	onClick: PropTypes.func,
 	children: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
 	htmlType: PropTypes.string,
+	className: PropTypes.string,
 };
 
 export default CustomButton;

@@ -20,3 +20,10 @@ export const menus = [
 		ext: ".svg",
 	},
 ];
+
+export const login_options = {
+	parent: "PARENT",
+	school: "SCHOOL",
+	admin: "ADMIN",
+	student: "STUDENT",
+};

@@ -10,11 +10,13 @@ const CustomImage = ({
 	preview,
 	placeholder,
 	className,
+	style,
 	onClick,
 }) => {
 	return (
 		<Image
 			onClick={onClick}
+			style={style}
 			src={src}
 			alt={alt || ""}
 			width={width}
@@ -35,6 +37,7 @@ CustomImage.propTypes = {
 	placeholder: PropTypes.string,
 	className: PropTypes.string,
 	onClick: PropTypes.func,
+	style: PropTypes.any,
 };
 
 export default CustomImage;

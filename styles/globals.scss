@@ -1443,3 +1443,42 @@ input[type="number"] {
 		width: 200px;
 	}
 }
+
+.ant-select-selector {
+	display: flex !important;
+	align-items: center !important;
+	border-radius: 4px !important;
+	border: none !important;
+	background-color: transparent !important;
+	font-size: 12px !important;
+	color: #757575 !important;
+}
+
+.ant-table {
+	background-color: transparent !important;
+}
+
+.ant-table-thead > tr > th {
+	background-color: #f8f8f8 !important;
+	border-bottom: none !important;
+	color: #757575 !important;
+}
+
+.ant-table-thead > tr > th::before {
+	display: none !important;
+}
+
+.ant-table-tbody > tr > td {
+	border: none !important;
+	background-color: white !important;
+}
+
+.ant-table-tbody > tr.shadow {
+	-webkit-box-shadow: 0px 7px 2px -5px rgba(235, 235, 235, 1);
+	-moz-box-shadow: 0px 7px 2px -5px rgba(235, 235, 235, 1);
+	box-shadow: 0px 7px 2px -5px rgba(235, 235, 235, 1);
+}
+
+.ant-table table {
+	border-spacing: 0 12px !important;
+}

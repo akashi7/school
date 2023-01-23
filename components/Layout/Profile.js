@@ -5,7 +5,7 @@ const Profile = () => {
 	return (
 		<div className="flex items-center gap-12">
 			<CustomImage
-				src="/icons/profile.jpg"
+				src="/imgs/profile.jpg"
 				width={42}
 				height={42}
 				className="object-cover rounded-full"

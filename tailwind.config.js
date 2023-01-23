@@ -15,6 +15,7 @@ module.exports = {
 				red: "#FF0000",
 				grey: "#F8F8F8",
 				semi_grey: "#757575",
+				edit_bg: "rgba(0, 176, 175, 0.1)",
 			},
 		},
 	},

@@ -1,5 +1,7 @@
+import Login from "../components/Auth/Login";
+
 const IndexPage = () => {
-	return <p>Index page</p>;
+	return <Login />;
 };
 
 export default IndexPage;
