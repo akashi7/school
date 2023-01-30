@@ -70,7 +70,7 @@ const CustomModal = ({
 				)
 			}
 			open={isVisible}
-			onCancel={onCancel || handleCancel}
+			onCancel={handleCancel || onCancel}
 			centered
 			maskClosable={!loading}
 			closable={false}

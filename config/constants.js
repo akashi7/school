@@ -1,3 +1,5 @@
+export const BASE_DEV_URL = process.env.NEXT_PUBLIC_URL;
+
 export const menus = [
 	{
 		name: "Classrooms",
@@ -27,3 +29,7 @@ export const login_options = {
 	admin: "ADMIN",
 	student: "STUDENT",
 };
+
+export const _ns_token_ = "_nest_school_logged_in_";
+
+export const _pagination_number_ = 5;

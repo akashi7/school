@@ -74,8 +74,8 @@ function TabCmp() {
 							<div className="left">
 								<h3 className="title">SchoolNest Pay Mobile App</h3>
 								<p className="desc">
-									Students or guardians are able to check all the student's
-									transactions using a unique payment code.
+									Students or guardians are able to check all the student
+									&apos;s transactions using a unique payment code.
 								</p>
 							</div>
 							<div className="right">

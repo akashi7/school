@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Row from "antd/lib/row";
 import Col from "antd/lib/col";
 import { useRouter } from "next/router";
@@ -10,9 +10,21 @@ import CustomInput from "../../../components/Shared/CustomInput";
 import DownloadButton from "../../../components/Shared/DownloadButton";
 import GoBack from "../../../components/Shared/GoBack";
 import AssignedFeesTable from "../../../components/Tables/AssignedFeesTable";
+import { useLazyGetSingleStudentQuery } from "../../../lib/api/Students/studentsEndpoints";
+import handleAPIRequests from "../../../helpers/handleAPIRequests";
 
 const SingleStudent = () => {
 	const router = useRouter();
+	const { id } = router.query;
+
+	const [getSingleStudent, {data, isLoading}] = useLazyGetSingleStudentQuery();
+
+	useEffect(() => {
+		handleAPIRequests({
+			request: getSingleStudent,
+			id,
+		});
+	}, [getSingleStudent, id]);
 
 	const TableNavLeftSide = () => (
 		<Row align="middle" gutter={20}>
@@ -31,7 +43,7 @@ const SingleStudent = () => {
 			<Row align="middle" gutter={24}>
 				<Col>
 					<CustomInput
-						type="select"
+						type="small-select"
 						label="Status"
 						options={[
 							{ key: 1, value: "Unpaid", name: "Unpaid" },
@@ -43,7 +55,7 @@ const SingleStudent = () => {
 
 				<Col>
 					<CustomInput
-						type="select"
+						type="small-select"
 						label="Term"
 						options={[
 							{ key: 1, value: "I", name: "I" },
@@ -56,7 +68,7 @@ const SingleStudent = () => {
 
 				<Col>
 					<CustomInput
-						type="select"
+						type="small-select"
 						label="Year"
 						options={[
 							{ key: 1, value: "2023", name: "2023" },
@@ -75,7 +87,7 @@ const SingleStudent = () => {
 
 	return (
 		<Layout>
-			<StudentProfile />
+			<StudentProfile data={data} />
 
 			<ContentTableContainer>
 				<ContentNavbar

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import CustomImage from "../Shared/CustomImage";
 import AuthIndex from "../Auth/AuthIndex";
 import activeForm from "../../helpers/activeForm";
-import { SchoolLogin } from "../Auth/SchoolLogin";
+import SchoolLogin from "../Auth/SchoolLogin";
 
 const LoginForm = () => {
 	const [activeLogin, setActiveLogin] = useState(null);

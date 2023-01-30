@@ -12,6 +12,8 @@ const CustomButton = ({
 	children,
 	htmlType,
 	className,
+	loading,
+	form,
 }) => {
 	const PrimaryButton = () => {
 		return (
@@ -24,6 +26,8 @@ const CustomButton = ({
 				type={type}
 				onClick={onClick}
 				htmlType={htmlType}
+				loading={loading}
+				form={form}
 			>
 				{children}
 			</Button>
@@ -42,6 +46,7 @@ const CustomButton = ({
 				type={type}
 				onClick={onClick}
 				htmlType={htmlType}
+				loading={loading}
 			>
 				{children}
 			</Button>
@@ -60,6 +65,7 @@ const CustomButton = ({
 				type={type}
 				onClick={onClick}
 				htmlType={htmlType}
+				loading={loading}
 			>
 				{children}
 			</Button>
@@ -77,6 +83,7 @@ const CustomButton = ({
 				type={type}
 				onClick={onClick}
 				htmlType={htmlType}
+				loading={loading}
 			>
 				{children}
 			</Button>
@@ -94,6 +101,7 @@ const CustomButton = ({
 				type={type}
 				onClick={onClick}
 				htmlType={htmlType}
+				loading={loading}
 			>
 				{children}
 			</Button>
@@ -137,6 +145,7 @@ CustomButton.propTypes = {
 	children: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
 	htmlType: PropTypes.string,
 	className: PropTypes.string,
+	loading: PropTypes.bool,
 };
 
 export default CustomButton;

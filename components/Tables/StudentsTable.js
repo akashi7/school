@@ -6,202 +6,13 @@ import routes from "../../config/routes";
 
 const { Column } = Table;
 
-const dumpData = [
-	{
-		id: 0,
-		name: "Issa Jean Marie",
-		class: "P3",
-		stream: "F",
-		location: "Kibagabaga",
-	},
-
-	{
-		id: 1,
-		name: "Kabayiza Yannick",
-		class: "S4",
-		stream: "C",
-		location: "Munzenze",
-	},
-
-	{
-		id: 2,
-		name: "Rwigema ERic",
-		class: "P1",
-		stream: "A",
-		location: "Nyarugenge, Downtown",
-	},
-
-	{
-		id: 3,
-		name: "Yves Bisemage",
-		class: "P3",
-		stream: "F",
-		location: "Nyabugogo",
-	},
-	{
-		id: 4,
-		name: "Issa Jean Marie",
-		class: "P3",
-		stream: "F",
-		location: "Kibagabaga",
-	},
-
-	{
-		id: 5,
-		name: "Kabayiza Yannick",
-		class: "S4",
-		stream: "C",
-		location: "Munzenze",
-	},
-
-	{
-		id: 6,
-		name: "Rwigema ERic",
-		class: "P1",
-		stream: "A",
-		location: "Nyarugenge, Downtown",
-	},
-
-	{
-		id: 7,
-		name: "Yves Bisemage",
-		class: "P3",
-		stream: "F",
-		location: "Nyabugogo",
-	},
-	{
-		id: 8,
-		name: "Issa Jean Marie",
-		class: "P3",
-		stream: "F",
-		location: "Kibagabaga",
-	},
-
-	{
-		id: 9,
-		name: "Kabayiza Yannick",
-		class: "S4",
-		stream: "C",
-		location: "Munzenze",
-	},
-
-	{
-		id: 10,
-		name: "Rwigema ERic",
-		class: "P1",
-		stream: "A",
-		location: "Nyarugenge, Downtown",
-	},
-
-	{
-		id: 11,
-		name: "Yves Bisemage",
-		class: "P3",
-		stream: "F",
-		location: "Nyabugogo",
-	},
-	{
-		id: 12,
-		name: "Issa Jean Marie",
-		class: "P3",
-		stream: "F",
-		location: "Kibagabaga",
-	},
-
-	{
-		id: 13,
-		name: "Kabayiza Yannick",
-		class: "S4",
-		stream: "C",
-		location: "Munzenze",
-	},
-
-	{
-		id: 14,
-		name: "Rwigema ERic",
-		class: "P1",
-		stream: "A",
-		location: "Nyarugenge, Downtown",
-	},
-
-	{
-		id: 15,
-		name: "Yves Bisemage",
-		class: "P3",
-		stream: "F",
-		location: "Nyabugogo",
-	},
-	{
-		id: 16,
-		name: "Issa Jean Marie",
-		class: "P3",
-		stream: "F",
-		location: "Kibagabaga",
-	},
-
-	{
-		id: 17,
-		name: "Kabayiza Yannick",
-		class: "S4",
-		stream: "C",
-		location: "Munzenze",
-	},
-
-	{
-		id: 18,
-		name: "Rwigema ERic",
-		class: "P1",
-		stream: "A",
-		location: "Nyarugenge, Downtown",
-	},
-
-	{
-		id: 19,
-		name: "Yves Bisemage",
-		class: "P3",
-		stream: "F",
-		location: "Nyabugogo",
-	},
-	{
-		id: 20,
-		name: "Issa Jean Marie",
-		class: "P3",
-		stream: "F",
-		location: "Kibagabaga",
-	},
-
-	{
-		id: 21,
-		name: "Kabayiza Yannick",
-		class: "S4",
-		stream: "C",
-		location: "Munzenze",
-	},
-
-	{
-		id: 22,
-		name: "Rwigema ERic",
-		class: "P1",
-		stream: "A",
-		location: "Nyarugenge, Downtown",
-	},
-
-	{
-		id: 23,
-		name: "Yves Bisemage",
-		class: "P3",
-		stream: "F",
-		location: "Nyabugogo",
-	},
-];
-
-const StudentsTable = () => {
+const StudentsTable = ({ students }) => {
 	const router = useRouter();
 
 	return (
 		<Table
 			className="data_table"
-			dataSource={dumpData}
+			dataSource={students}
 			rowKey={(record) => {
 				return record?.id;
 			}}
@@ -214,31 +25,31 @@ const StudentsTable = () => {
 				title="#"
 				key="#"
 				width={24}
-				render={(record) => <span>{record.id + 1}</span>}
+				render={(text, record, index) => <span>{index + 1}</span>}
 			/>
 
 			<Column
 				title="Name"
 				key="name"
-				render={(record) => <span>{record.name}</span>}
+				render={(record) => <span>{record?.student?.fullName}</span>}
 			/>
 
 			<Column
 				title="Class"
 				key="class"
-				render={(record) => <span>{record.class}</span>}
+				render={(record) => <span>{record?.stream?.classroom?.name}</span>}
 			/>
 
 			<Column
 				title="Stream"
 				key="stream"
-				render={(record) => <span>{record.stream}</span>}
+				render={(record) => <span>{record?.stream?.name}</span>}
 			/>
 
 			<Column
 				title="Location"
 				key="location"
-				render={(record) => <span>{record.location}</span>}
+				render={(record) => <span>{record?.student?.address}</span>}
 			/>
 
 			<Column
@@ -249,7 +60,9 @@ const StudentsTable = () => {
 					<div className="flex gap-12">
 						<CustomButton
 							type="view"
-							onClick={() => router.push(`${routes.students.url}/${record.id}`)}
+							onClick={() =>
+								router.push(`${routes.students.url}/${record?.student.id}`)
+							}
 						>
 							View
 						</CustomButton>

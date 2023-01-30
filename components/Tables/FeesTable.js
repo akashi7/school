@@ -1,139 +1,137 @@
-import React from "react";
+import React, { useState } from "react";
 import Table from "antd/lib/table";
 import CustomButton from "../Shared/CustomButton";
+import WarningModal from "../Shared/WarningModal";
+import { useDeleteFeeMutation } from "../../lib/api/Fees/FeesEndpoints";
 
 const { Column } = Table;
 
-const dumpData = [
-	{
-		id: 0,
-		name: "Fee name",
-		type: "Mandatory",
-		amount: "12, 00 Rwf",
-		classes: "P1, P3, P5",
-		terms: "I, I, II",
-		year: "2022",
-	},
+const FeesTable = ({ fees, isFetching, setItemToEdit, setIsVisible }) => {
+	const [isWarningVisible, setIsWarningVisible] = useState(false);
+	const [itemToDelete, setItemToDelete] = useState(null);
 
-	{
-		id: 1,
-		name: "Fee name",
-		type: "Mandatory",
-		amount: "12, 00 Rwf",
-		classes: "P1, P3, P5",
-		terms: "I, I, II",
-		year: "2022",
-	},
+	const [deleteFee, { isLoading: isDeleting }] = useDeleteFeeMutation();
 
-	{
-		id: 2,
-		name: "0 money",
-		type: "Optional",
-		amount: "12, 00 Rwf",
-		classes: "P1, P3, P5",
-		terms: "I, I, II",
-		year: "2022",
-	},
+	const onDeleteFeeSuccess = () => {
+		setIsWarningVisible(false);
+		setItemToDelete(null);
+	};
 
-	{
-		id: 3,
-		name: "0 money",
-		type: "Mandatory",
-		amount: "12, 00 Rwf",
-		classes: "P1, P3, P5",
-		terms: "I, I, II",
-		year: "2022",
-	},
+	const handleDeleteFee = (item) => {
+		setItemToDelete(item);
+		setIsWarningVisible(true);
+	};
 
-	{
-		id: 4,
-		name: "0 money",
-		type: "School fee",
-		amount: "12, 00 Rwf",
-		classes: "P1, P3, P5",
-		terms: "I, I, II",
-		year: "2022",
-	},
-];
+	const handleEditFee = (item) => {
+		setIsVisible(true);
+		setItemToEdit(item);
+	};
 
-const FeesTable = () => {
+	const onEditFeeFinish = (values) => values;
+
 	return (
-		<Table
-			className="data_table"
-			dataSource={dumpData}
-			rowKey={(record) => {
-				return record?.id;
-			}}
-			rowClassName="shadow"
-			pagination={false}
-			bordered={false}
-			scroll={{ x: 0 }}
-		>
-			<Column
-				title="#"
-				key="#"
-				width={24}
-				render={(record) => <span>{record.id + 1}</span>}
+		<>
+			<WarningModal
+				isVisible={isWarningVisible}
+				setIsVisible={setIsWarningVisible}
+				warningMessage="Do you really want to delete fee"
+				warningKey={itemToDelete?.name}
+				itemToDelete={itemToDelete?.id}
+				request={deleteFee}
+				loading={isDeleting}
+				onSuccess={onDeleteFeeSuccess}
 			/>
 
-			<Column
-				title="Name"
-				key="name"
-				render={(record) => <span>{record.name}</span>}
-			/>
+			<Table
+				className="data_table"
+				dataSource={fees?.payload?.items}
+				rowKey={(record) => {
+					return record?.id;
+				}}
+				rowClassName="shadow"
+				pagination={false}
+				loading={isFetching}
+				bordered={false}
+				scroll={{ x: 0 }}
+			>
+				<Column
+					title="#"
+					key="#"
+					width={24}
+					render={(text, record, index) => <span>{index + 1}</span>}
+				/>
 
-			<Column
-				title="Classes"
-				key="classes"
-				render={(record) => <span>{record.classes}</span>}
-			/>
+				<Column
+					title="Name"
+					key="name"
+					render={(record) => <span>{record?.name}</span>}
+				/>
 
-			<Column
-				title="Terms"
-				key="terms"
-				render={(record) => <span>{record.terms}</span>}
-			/>
+				<Column
+					title="Classes"
+					key="classes"
+					render={(record) => <span>{record?.classroom?.name}</span>}
+				/>
 
-			<Column
-				title="Year"
-				key="year"
-				render={(record) => <span>{record.year}</span>}
-			/>
+				<Column
+					title="Terms"
+					key="terms"
+					render={(record) => (
+						<span>{record?.academicTerms?.map((term) => `${term}, `)}</span>
+					)}
+				/>
 
-			<Column
-				title="Fee type"
-				key="type"
-				render={(record) => (
-					<span
-						className={`bg-gray-200 px-2 py-[4px] rounded ${
-							record.type === "School fee" && "font-medium bg-edit_bg"
-						} ${record.type === "Optional" && "bg-gray-200 text-gray-400"}`}
-					>
-						{record.type}
-					</span>
-				)}
-			/>
+				<Column
+					title="Year"
+					key="year"
+					render={(record) => <span>{record?.academicYear?.name}</span>}
+				/>
 
-			<Column
-				title="Amount"
-				key="amount"
-				render={(record) => (
-					<span className="text-black font-semibold">{record.amount}</span>
-				)}
-			/>
+				<Column
+					title="Fee type"
+					key="type"
+					render={(record) => (
+						<span
+							className={`bg-gray-200 px-2 py-[4px] rounded ${
+								record?.type === "SCHOOL_FEE" && "font-medium bg-edit_bg"
+							} ${record?.optional && "bg-gray-200 text-gray-400"}`}
+						>
+							{record?.type?.replaceAll("_", " ")}
+						</span>
+					)}
+				/>
 
-			<Column
-				title="Actions"
-				key="actions"
-				width={200}
-				render={() => (
-					<div className="flex gap-12">
-						<CustomButton type="edit">Edit</CustomButton>
-						<CustomButton type="delete">Delete</CustomButton>
-					</div>
-				)}
-			/>
-		</Table>
+				<Column
+					title="Amount"
+					key="amount"
+					render={(record) => (
+						<span className="text-black font-semibold">
+							{record?.amount} Rwf
+						</span>
+					)}
+				/>
+
+				<Column
+					title="Actions"
+					key="actions"
+					width={200}
+					render={(record) => (
+						<div className="flex gap-12">
+							<CustomButton type="edit" onClick={() => handleEditFee(record)}>
+								Edit
+							</CustomButton>
+
+							<CustomButton
+								type="delete"
+								onClick={() => handleDeleteFee(record)}
+							>
+								Delete
+							</CustomButton>
+						</div>
+					)}
+				/>
+			</Table>
+		</>
 	);
 };
 

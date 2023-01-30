@@ -1,8 +1,6 @@
 import React from "react";
 import Table from "antd/lib/table";
 import CustomButton from "../Shared/CustomButton";
-import { useRouter } from "next/router";
-import routes from "../../config/routes";
 
 const { Column } = Table;
 
@@ -99,8 +97,6 @@ const dumpData = [
 ];
 
 const AssignedFeesTable = () => {
-	const router = useRouter();
-
 	return (
 		<Table
 			className="data_table"

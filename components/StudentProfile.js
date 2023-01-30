@@ -4,7 +4,7 @@ import Col from "antd/lib/col";
 import CustomButton from "./Shared/CustomButton";
 import CustomImage from "./Shared/CustomImage";
 
-const StudentProfile = () => {
+const StudentProfile = ({ data }) => {
 	return (
 		<div className="bg-white p-6">
 			<Row gutter={32} justify="space-between" align="top">
@@ -22,7 +22,7 @@ const StudentProfile = () => {
 						<Col className="flex flex-col h-[120px] gap-0 mb-3">
 							<div>
 								<p className="text-dark text-[32px] font-semibold">
-									Issa Jean Marie
+									{data?.payload?.fullName || "-- ---"}
 								</p>
 
 								<p className="text-black">

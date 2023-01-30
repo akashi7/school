@@ -4,6 +4,7 @@ import Modal from "antd/lib/modal";
 import Row from "antd/lib/row";
 import Col from "antd/lib/col";
 import CustomButton from "./CustomButton";
+import handleAPIRequests from "../../helpers/handleAPIRequests";
 
 const WarningModal = ({
 	isVisible,
@@ -14,9 +15,23 @@ const WarningModal = ({
 	width = 500,
 	warningMessage,
 	warningKey,
+	itemToDelete,
+	streamId,
+	onSuccess,
+	request,
 }) => {
 	const onCancel = () => {
 		setIsVisible(false);
+	};
+
+	const handleDelete = () => {
+		handleAPIRequests({
+			request,
+			id: itemToDelete,
+			streamId: streamId,
+			notify: true,
+			onSuccess: onSuccess || onCancel,
+		});
 	};
 
 	return (
@@ -26,18 +41,24 @@ const WarningModal = ({
 			footer={
 				<Row align="middle" justify="space-between" gutter={12}>
 					<Col>
-						<CustomButton onClick={onCancel} type="view">
+						<CustomButton onClick={onCancel} type="view" disabled={loading}>
 							No, that was a mistake!
 						</CustomButton>
 					</Col>
 
 					<Col>
-						<CustomButton type="danger">Yes</CustomButton>
+						<CustomButton
+							type="danger"
+							onClick={handleDelete}
+							loading={loading}
+						>
+							Yes
+						</CustomButton>
 					</Col>
 				</Row>
 			}
 			open={isVisible}
-			onCancel={onCancel || handleCancel}
+			onCancel={!loading && (onCancel || handleCancel)}
 			centered
 			maskClosable={!loading}
 			closable={false}
@@ -65,6 +86,10 @@ WarningModal.propTypes = {
 	handleCancel: PropTypes.func,
 	destroyOnClose: PropTypes.bool,
 	width: PropTypes.number,
+	itemToDelete: PropTypes.string,
+	request: PropTypes.func,
+	streamId: PropTypes.string,
+	onSuccess: PropTypes.func,
 };
 
 export default WarningModal;

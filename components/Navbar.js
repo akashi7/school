@@ -3,6 +3,7 @@ import NavItem from "./NavItem";
 import Logo from "../resources/images/logo.png";
 import { FiXCircle } from "react-/icons/fi";
 import Image from "next/image";
+import Link from "next/link";
 
 const MENU_LIST_RIGHT = [
 	{ text: "Home", href: "/", btn: false },
@@ -54,7 +55,11 @@ const Navbar = ({
 					{MENU_LIST_RIGHT.map((menu, idx) => {
 						if (idx === 0) {
 							return (
-								<div className="nav__link" onClick={() => homeClickHandler()}>
+								<div
+									key={idx}
+									className="nav__link"
+									onClick={() => homeClickHandler()}
+								>
 									Home
 								</div>
 							);
@@ -62,6 +67,7 @@ const Navbar = ({
 						if (idx === 1) {
 							return (
 								<div
+									key={idx}
 									className="nav__link"
 									onClick={() => {
 										onPaymentCodeSearchHandler();
@@ -74,14 +80,15 @@ const Navbar = ({
 						}
 						if (idx === 3) {
 							return (
-								<a className="nav__link" href="/login">
+								<Link key={idx} className="nav__link" href="/login">
 									Login
-								</a>
+								</Link>
 							);
 						}
 						if (idx === 4) {
 							return (
 								<div
+									key={idx}
 									className="button"
 									onClick={() => {
 										onPaynowHandler();
