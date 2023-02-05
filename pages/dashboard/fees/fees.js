@@ -81,11 +81,19 @@ const Students = () => {
 		form.resetFields();
 	};
 
+	const handleEditFeeSuccess = () => {
+		setIsVisible(false);
+		form.resetFields();
+	};
+
 	const onAddFeeFinish = (values) => {
+		// Needs to be updated when API is updated
 		const data = {
 			...values,
-			optional: isPaymentOPtional,
+			optional: !!isPaymentOPtional,
 			type: isPaymentAdditional ? "ADDITIONAL_FEE" : "SCHOOL_FEE",
+			academicYearId: "63c3095091812995aa5ff92c",
+			classroomId: values?.classroomIDs[0],
 			amount: +values?.amount,
 		};
 
@@ -94,7 +102,7 @@ const Students = () => {
 			notify: true,
 			...data,
 			id: itemToEdit?.id,
-			onSuccess,
+			onSuccess: itemToEdit ? handleEditFeeSuccess : onSuccess,
 		});
 	};
 
@@ -139,7 +147,7 @@ const Students = () => {
 				loading={isAddingFee || isEditingFee}
 				handleCancel={handleCancelEditModal}
 				width={750}
-				title="Create fee"
+				title={itemToEdit ? "Edit fee" : "Add a fee"}
 				footerContent={
 					<CustomButton
 						loading={isAddingFee || isEditingFee}

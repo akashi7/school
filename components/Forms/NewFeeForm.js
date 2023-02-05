@@ -27,7 +27,7 @@ const NewFeeForm = ({
 		if (itemToEdit) {
 			form.setFieldsValue({
 				...itemToEdit,
-				classroomIDs: itemToEdit?.classroomId,
+				classroomIDs: itemToEdit?.classroomIDs || [itemToEdit?.classroomId],
 			});
 		}
 	}, [form, itemToEdit]);
