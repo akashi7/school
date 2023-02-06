@@ -1,8 +1,9 @@
 import React from "react";
 import Layout from "../../../components/Layout/index";
 import Fees from "./fees";
+import Private from "../../../components/Routes/Private";
 
-const index = () => {
+const Index = () => {
 	return (
 		<Layout>
 			<Fees />
@@ -10,4 +11,4 @@ const index = () => {
 	);
 };
 
-export default index;
+export default Private(Index);

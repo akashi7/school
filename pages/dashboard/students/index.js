@@ -3,7 +3,7 @@ import Layout from "../../../components/Layout/index";
 import Private from "../../../components/Routes/Private";
 import Students from "./students";
 
-const index = () => {
+const Index = () => {
 	return (
 		<Layout>
 			<Students />
@@ -11,4 +11,4 @@ const index = () => {
 	);
 };
 
-export default Private(index);
+export default Private(Index);
