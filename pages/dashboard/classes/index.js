@@ -20,6 +20,7 @@ import handleAPIRequests from "../../../helpers/handleAPIRequests";
 import Paginator from "../../../components/Shared/Paginator";
 import { _pagination_number_ } from "../../../config/constants";
 import ClassesTable from "../../../components/Tables/ClassesTable";
+import { useSelector } from "react-redux";
 
 const Classes = () => {
 	const [isVisible, setIsVisible] = useState(false);
@@ -40,6 +41,9 @@ const Classes = () => {
 
 	const [addClass, { isLoading: isAddingClass }] = useAddClassMutation();
 	const [editClass, { isLoading: isEditing }] = useEditClassMutation();
+
+	const lang = useSelector((state) => state?.translation?.payload);
+	console.log("HERE: ", lang?.classrooms_pg?.title);
 
 	const [form] = Form.useForm();
 
@@ -86,13 +90,13 @@ const Classes = () => {
 
 	const RightSide = () => (
 		<CustomButton onClick={() => setIsVisible(true)} type="primary">
-			New class
+			{lang?.classrooms_pg?.new_btn}
 		</CustomButton>
 	);
 
 	const LeftSide = () => (
 		<p className="text-[20px] text-dark font-semibold">
-			{classes?.payload?.items?.length || ""} Classrooms
+			{classes?.payload?.items?.length || ""} {lang?.classrooms_pg?.title}
 		</p>
 	);
 

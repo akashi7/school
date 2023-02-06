@@ -12,12 +12,14 @@ import GoBack from "../../../components/Shared/GoBack";
 import AssignedFeesTable from "../../../components/Tables/AssignedFeesTable";
 import { useLazyGetSingleStudentQuery } from "../../../lib/api/Students/studentsEndpoints";
 import handleAPIRequests from "../../../helpers/handleAPIRequests";
+import Private from "../../../components/Routes/Private";
 
 const SingleStudent = () => {
 	const router = useRouter();
 	const { id } = router.query;
 
-	const [getSingleStudent, {data, isLoading}] = useLazyGetSingleStudentQuery();
+	const [getSingleStudent, { data, isLoading }] =
+		useLazyGetSingleStudentQuery();
 
 	useEffect(() => {
 		handleAPIRequests({
@@ -103,4 +105,4 @@ const SingleStudent = () => {
 	);
 };
 
-export default SingleStudent;
+export default Private(SingleStudent);

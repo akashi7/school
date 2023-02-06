@@ -1,0 +1,69 @@
+{
+	"en_us": {
+		"name": "English",
+		"flag": "🇺🇸",
+		"auth": {
+			"title": "Continue as",
+			"school": "SCHOOL",
+			"admin": "ADMIN",
+			"parent": "PARENT",
+			"student": "STUDENT",
+			"as_school": {
+				"title": "Login as school",
+				"u_name": "Username",
+				"password": "Password",
+				"button": "Login"
+			}
+		},
+
+		"navbar": {
+			"classroom": "Classrooms",
+			"students": "Students",
+			"fees": "Fees"
+		},
+
+		"classrooms_pg": {
+			"title": "Classrooms",
+			"new_btn": "New class"
+		},
+
+		"students_pg": {
+			"title": "Students",
+			"new_btn": "New student"
+		}
+	},
+
+	"kinya": {
+		"name": "Kinyarwanda",
+		"flag": "🇷🇼",
+		"auth": {
+			"title": "Komeza nka",
+			"school": "ISHURI",
+			"admin": "ADMIN",
+			"parent": "UMUBYEYI",
+			"student": "UMUNYESHURI",
+			"as_school": {
+				"title": "Injira nk'umunyeshuri",
+				"u_name": "Izina",
+				"password": "Ijambo banga",
+				"button": "Injira"
+			}
+		},
+
+		"navbar": {
+			"classroom": "Amashuri",
+			"students": "Abanyeshuri",
+			"fees": "Amafaranga"
+		},
+
+		"classrooms_pg": {
+			"title": "Amahuri",
+			"new_btn": "Ishuri rishya"
+		},
+
+		"students_pg": {
+			"title": "Abanyeshuri",
+			"new_btn": "Umunyeshuri mushya"
+		}
+	}
+}
