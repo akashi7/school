@@ -15,7 +15,7 @@ import {
 import DownloadButton from "../../../components/Shared/DownloadButton";
 import handleAPIRequests from "../../../helpers/handleAPIRequests";
 import FeesTable from "../../../components/Tables/FeesTable";
-import { _pagination_number_ } from "../../../config/constants";
+import { termOptions, _pagination_number_ } from "../../../config/constants";
 import ContentTableContainer from "../../../components/Shared/ContentTableContainer";
 import NewFeeForm from "../../../components/Forms/NewFeeForm";
 import {
@@ -92,7 +92,6 @@ const Students = () => {
 			...values,
 			optional: !!isPaymentOPtional,
 			type: isPaymentAdditional ? "ADDITIONAL_FEE" : "SCHOOL_FEE",
-			academicYearId: "63c3095091812995aa5ff92c",
 			classroomId: values?.classroomIDs[0],
 			amount: +values?.amount,
 		};
@@ -234,9 +233,7 @@ const Students = () => {
 										label="Term"
 										options={[
 											{ key: 0, value: "", label: "Select term" },
-											{ key: 1, value: "TERM1", label: "Term I" },
-											{ key: 2, value: "TERM2", label: "Term II" },
-											{ key: 3, value: "TERM13", label: "Term III" },
+											...termOptions,
 										]}
 									/>
 								</Col>

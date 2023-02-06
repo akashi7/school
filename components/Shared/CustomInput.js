@@ -2,6 +2,7 @@ import React from "react";
 import Form from "antd/lib/form";
 import Input from "antd/lib/input";
 import Select from "antd/lib/select";
+import DatePicker from "antd/lib/date-picker";
 import PropTypes from "prop-types";
 
 const { Option } = Select;
@@ -115,6 +116,26 @@ const CustomInput = ({
 		</div>
 	);
 
+	const CustomDatePicker = (
+		<div className="mb-[-10px] w-[100%]">
+			{label && (
+				<label className="text-[18px] text-black font-medium mb-2 block">
+					{label}
+				</label>
+			)}
+
+			<Form.Item name={name} rules={rules}>
+				<DatePicker
+					value={value}
+					type={inputType}
+					placeholder={placeholder || "Type"}
+					className="rounded h-[40px] w-[100%]"
+					onChange={({ target }) => onChange(target.value)}
+				/>
+			</Form.Item>
+		</div>
+	);
+
 	switch (type) {
 		case "small-select":
 			return SmallSelectInput;
@@ -126,6 +147,10 @@ const CustomInput = ({
 
 		case "select-multiple":
 			return SelectMultipleInput;
+			break;
+
+		case "date":
+			return CustomDatePicker;
 			break;
 
 		default:
