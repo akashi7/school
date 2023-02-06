@@ -27,7 +27,7 @@ const CustomModal = ({
 
 	return (
 		<Modal
-			className="sn-modal"
+			className="sn-modal my-12"
 			title={
 				<div className="flex justify-between items-center">
 					<div>

@@ -1,32 +1,43 @@
 import React, { useState } from "react";
-import { useRouter } from "next/router";
 import Table from "antd/lib/table";
+import { useDeleteClassMutation } from "../../lib/api/Classrooms/classroomsEndpoints";
 import CustomButton from "../Shared/CustomButton";
 import WarningModal from "../Shared/WarningModal";
-import routes from "../../config/routes";
-import { useDeleteStudentMutation } from "../../lib/api/Students/studentsEndpoints";
 
 const { Column } = Table;
 
-const StudentsTable = ({ students, isFetching }) => {
+const ClassesTable = ({
+	classes,
+	visibleClass,
+	setVisibleClass,
+	setItemToEdit,
+	setSearch,
+	setCurrentPage,
+	setIsVisible,
+	isFetching,
+}) => {
 	const [isWarningVisible, setIsWarningVisible] = useState(false);
 	const [itemToDelete, setItemToDelete] = useState(null);
 
-	const [deleteStudent, { isLoading: isDeleting }] = useDeleteStudentMutation();
+	const [deleteClass, { isLoading: isDeleting }] = useDeleteClassMutation();
 
-	const onDeleteStudentSuccess = () => {
+	const onDeleteClassSuccess = () => {
 		setIsWarningVisible(false);
+		setSearch("");
+		setCurrentPage(0);
+		setVisibleClass(null);
 		setItemToDelete(null);
 	};
 
-	const handleDeleteStudents = (item) => {
+	const handleDeleteClass = (item) => {
 		setItemToDelete(item);
 		setIsWarningVisible(true);
 	};
 
-	console.log("ITEM TO EDIT: ", itemToDelete);
-
-	const router = useRouter();
+	const handleEditClass = (item) => {
+		setIsVisible(true);
+		setItemToEdit(item);
+	};
 
 	return (
 		<>
@@ -34,23 +45,24 @@ const StudentsTable = ({ students, isFetching }) => {
 				isVisible={isWarningVisible}
 				setIsVisible={setIsWarningVisible}
 				warningMessage="Do you really want to delete class"
-				warningKey={itemToDelete?.student?.fullName}
-				itemToDelete={itemToDelete?.student?.id}
-				request={deleteStudent}
+				warningKey={itemToDelete?.name}
+				itemToDelete={itemToDelete?.id}
+				request={deleteClass}
 				loading={isDeleting}
-				onSuccess={onDeleteStudentSuccess}
+				onSuccess={onDeleteClassSuccess}
 			/>
 
 			<Table
 				className="data_table"
-				dataSource={students}
+				dataSource={classes}
 				rowKey={(record) => {
 					return record?.id;
 				}}
 				rowClassName="shadow"
 				pagination={false}
-				loading={isFetching}
 				bordered={false}
+				loading={isFetching}
+				showHeader={false}
 				scroll={{ x: 0 }}
 			>
 				<Column
@@ -63,25 +75,7 @@ const StudentsTable = ({ students, isFetching }) => {
 				<Column
 					title="Name"
 					key="name"
-					render={(record) => <span>{record?.student?.fullName}</span>}
-				/>
-
-				<Column
-					title="Class"
-					key="class"
-					render={(record) => <span>{record?.stream?.classroom?.name}</span>}
-				/>
-
-				<Column
-					title="Stream"
-					key="stream"
-					render={(record) => <span>{record?.stream?.name}</span>}
-				/>
-
-				<Column
-					title="Location"
-					key="location"
-					render={(record) => <span>{record?.student?.address}</span>}
+					render={(record) => <span>{record?.name}</span>}
 				/>
 
 				<Column
@@ -92,16 +86,19 @@ const StudentsTable = ({ students, isFetching }) => {
 						<div className="flex gap-12">
 							<CustomButton
 								type="view"
-								onClick={() =>
-									router.push(`${routes.students.url}/${record?.student.id}`)
-								}
+								onClick={() => setVisibleClass(record)}
+								disabled={record?.id === visibleClass?.id}
 							>
 								View
 							</CustomButton>
-							<CustomButton type="edit">Edit</CustomButton>
+
+							<CustomButton type="edit" onClick={() => handleEditClass(record)}>
+								Edit
+							</CustomButton>
+
 							<CustomButton
 								type="delete"
-								onClick={() => handleDeleteStudents(record)}
+								onClick={() => handleDeleteClass(record)}
 							>
 								Delete
 							</CustomButton>
@@ -113,4 +110,4 @@ const StudentsTable = ({ students, isFetching }) => {
 	);
 };
 
-export default StudentsTable;
+export default ClassesTable;

@@ -24,12 +24,15 @@ import StudentsTable from "../../../components/Tables/StudentsTable";
 import { _pagination_number_ } from "../../../config/constants";
 import ContentTableContainer from "../../../components/Shared/ContentTableContainer";
 import { useGetAcademicYearsQuery } from "../../../lib/api/AcademicYear/academicYearEndpoints";
+import NewStudentForm from "../../../components/Forms/NewStudentForm";
 
 const Students = () => {
 	const [isVisible, setIsVisible] = useState(false);
 	const [currentPage, setCurrentPage] = useState(0);
 	const [search, setSearch] = useState("");
 	const [classroomId, setClassroomId] = useState("");
+	const [newStudentSelectedClassroomId, setNewStudentSelectedClassroomId] =
+		useState("");
 	const [streamId, setStreamId] = useState("");
 	const [academicYearId, setAcademicYearId] = useState("");
 
@@ -57,13 +60,13 @@ const Students = () => {
 	const [addClass, { isLoading: isAddingClass }] = useAddClassMutation();
 
 	useEffect(() => {
-		if (classroomId) {
+		if (classroomId || newStudentSelectedClassroomId) {
 			handleAPIRequests({
 				request: getStreams,
-				id: classroomId,
+				id: classroomId || newStudentSelectedClassroomId,
 			});
 		}
-	}, [getStreams, classroomId]);
+	}, [getStreams, classroomId, newStudentSelectedClassroomId]);
 
 	const [form] = Form.useForm();
 
@@ -117,32 +120,35 @@ const Students = () => {
 		</p>
 	);
 
+	console.log("STREAMS: ", streams);
+
 	return (
 		<>
 			<CustomModal
 				isVisible={isVisible}
 				setIsVisible={setIsVisible}
 				loading={isAddingClass}
+				width={700}
 				title="Create student"
 				footerContent={
 					<CustomButton
 						loading={isAddingClass}
 						type="primary"
 						htmlType="submit"
-						form="add-class"
+						form="add-student"
 					>
 						Save
 					</CustomButton>
 				}
 			>
-				<Form form={form} name="add-class" onFinish={onAddClassFinish}>
-					<CustomInput
-						label="Class name"
-						placeholder="Class name..."
-						name="name"
-						rules={requiredField("Class name")}
-					/>
-				</Form>
+				<NewStudentForm
+					form={form}
+					onFinish={onAddClassFinish}
+					academicYears={academicYears}
+					classes={classes}
+					streams={streams}
+					setClassroomId={setNewStudentSelectedClassroomId}
+				/>
 			</CustomModal>
 
 			<ContentNavbar left={<LeftSide />} right={<RightSide />} />
@@ -227,10 +233,13 @@ const Students = () => {
 					</Row>
 
 					<div className="mt-5 h-[60vh] 2xl:h-[68vh] overflow-x-auto">
-						{isFetching ? (
+						{isLoading ? (
 							<AppLoader />
 						) : (
-							<StudentsTable students={students?.payload?.items} />
+							<StudentsTable
+								students={students?.payload?.items}
+								isFetching={isFetching}
+							/>
 						)}
 					</div>
 				</ContentTableContainer>

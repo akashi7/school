@@ -5,6 +5,7 @@ import Col from "antd/lib/col";
 import Checkbox from "antd/lib/checkbox";
 import CustomInput from "../Shared/CustomInput";
 import requiredField from "../../helpers/requiredField";
+import { termOptions } from "../../config/constants";
 
 const NewFeeForm = ({
 	onFinish,
@@ -17,17 +18,11 @@ const NewFeeForm = ({
 	academicYears,
 	itemToEdit,
 }) => {
-	const termOptions = [
-		{ key: 1, value: "TERM1", label: "Term I" },
-		{ key: 2, value: "TERM2", label: "Term II" },
-		{ key: 3, value: "TERM3", label: "Term III" },
-	];
-
 	useEffect(() => {
 		if (itemToEdit) {
 			form.setFieldsValue({
 				...itemToEdit,
-				classroomIDs: itemToEdit?.classroomId,
+				classroomIDs: itemToEdit?.classroomIDs || [itemToEdit?.classroomId],
 			});
 		}
 	}, [form, itemToEdit]);
@@ -99,15 +94,13 @@ const NewFeeForm = ({
 				<Col span={12}>
 					{academicYears?.payload?.items?.length >= 1 && (
 						<CustomInput
-							onChange={handleAcademicYearChange}
-							type="small-select"
+							type="select"
 							name="academicYearId"
-							label="Year"
-							rules={requiredField("Year")}
+							label="Academic year"
+							rules={requiredField("Academic year")}
 							options={[
-								{ key: 1, value: "", label: "Select year" },
 								...academicYears?.payload?.items?.map((item) => ({
-									key: item?.id,
+									key: item?.name,
 									value: item?.id,
 									label: item.name,
 								})),

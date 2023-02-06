@@ -27,8 +27,6 @@ const FeesTable = ({ fees, isFetching, setItemToEdit, setIsVisible }) => {
 		setItemToEdit(item);
 	};
 
-	const onEditFeeFinish = (values) => values;
-
 	return (
 		<>
 			<WarningModal

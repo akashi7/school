@@ -15,7 +15,7 @@ import {
 import DownloadButton from "../../../components/Shared/DownloadButton";
 import handleAPIRequests from "../../../helpers/handleAPIRequests";
 import FeesTable from "../../../components/Tables/FeesTable";
-import { _pagination_number_ } from "../../../config/constants";
+import { termOptions, _pagination_number_ } from "../../../config/constants";
 import ContentTableContainer from "../../../components/Shared/ContentTableContainer";
 import NewFeeForm from "../../../components/Forms/NewFeeForm";
 import {
@@ -81,11 +81,18 @@ const Students = () => {
 		form.resetFields();
 	};
 
+	const handleEditFeeSuccess = () => {
+		setIsVisible(false);
+		form.resetFields();
+	};
+
 	const onAddFeeFinish = (values) => {
+		// Needs to be updated when API is updated
 		const data = {
 			...values,
-			optional: isPaymentOPtional,
+			optional: !!isPaymentOPtional,
 			type: isPaymentAdditional ? "ADDITIONAL_FEE" : "SCHOOL_FEE",
+			classroomId: values?.classroomIDs[0],
 			amount: +values?.amount,
 		};
 
@@ -94,7 +101,7 @@ const Students = () => {
 			notify: true,
 			...data,
 			id: itemToEdit?.id,
-			onSuccess,
+			onSuccess: itemToEdit ? handleEditFeeSuccess : onSuccess,
 		});
 	};
 
@@ -139,7 +146,7 @@ const Students = () => {
 				loading={isAddingFee || isEditingFee}
 				handleCancel={handleCancelEditModal}
 				width={750}
-				title="Create fee"
+				title={itemToEdit ? "Edit fee" : "Add a fee"}
 				footerContent={
 					<CustomButton
 						loading={isAddingFee || isEditingFee}
@@ -226,9 +233,7 @@ const Students = () => {
 										label="Term"
 										options={[
 											{ key: 0, value: "", label: "Select term" },
-											{ key: 1, value: "TERM1", label: "Term I" },
-											{ key: 2, value: "TERM2", label: "Term II" },
-											{ key: 3, value: "TERM13", label: "Term III" },
+											...termOptions,
 										]}
 									/>
 								</Col>
