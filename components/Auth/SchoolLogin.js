@@ -37,7 +37,12 @@ const SchoolLogin = ({ setActiveLogin }) => {
 
 	return (
 		<Form onFinish={onFinish} name="login-form" form={form}>
-			<Row justify="center" align="middle" gutter={24} className="mt-8 mb-6">
+			<Row
+				justify="center"
+				align="middle"
+				gutter={24}
+				className="mt-8 w-[100%] mb-6"
+			>
 				<Col onClick={() => setActiveLogin(null)}>
 					<CustomImage
 						src="/icons/back.svg"
@@ -45,7 +50,9 @@ const SchoolLogin = ({ setActiveLogin }) => {
 					/>
 				</Col>
 
-				<Col className="font-medium text-dark text-[24px]">Login as school</Col>
+				<Col className="font-medium text-dark text-[24px]" flex={1}>
+					Login as school
+				</Col>
 			</Row>
 
 			<div className="w-[100%]">
