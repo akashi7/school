@@ -9,7 +9,7 @@ const LoginForm = () => {
 
 	const { school, admin, parent, student } = activeForm(activeLogin);
 	return (
-		<div className="m-auto bg-white rounded-[12px] p-16 flex flex-col items-center w-[600px]">
+		<div className="m-auto bg-white rounded-[12px] p-12  w-[500px] flex flex-col items-center">
 			<CustomImage src="/icons/logo.png" width={240} />
 
 			{school ? (
