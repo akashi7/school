@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import Notify from "../components/Shared/Notification";
+import { _ns_token_ } from "../config/constants";
 
 const handleAPIRequests = ({
 	request,
@@ -24,6 +25,12 @@ const handleAPIRequests = ({
 		})
 		.catch((err) => {
 			onError(err);
+
+			if (err.statusCode === 401) {
+				localStorage.removeItem(_ns_token_);
+				window.location.href = "/";
+			}
+
 			if (err?.data) {
 				Notify({
 					message: err?.data?.error || "Error",
