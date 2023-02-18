@@ -17,7 +17,7 @@ const Profile = () => {
 			</p>
 
 			<p
-				className="w-[100%] rounded p-4 py-2 bg-gray-100 font-[500] pointer hover:p-6 hover:py-3 hover:bg-gray-200"
+				className="w-[100%] rounded p-4 py-2 bg-gray-100 font-[500] cursor-pointer hover:p-6 hover:py-3 hover:bg-gray-200"
 				onClick={() => logout()}
 			>
 				Logout
@@ -35,7 +35,7 @@ const Profile = () => {
 			/>
 
 			<Dropdown overlay={ProfileDropdown} trigger={["click"]}>
-				<div className="flex items-center gap-12 pointer">
+				<div className="flex items-center gap-12 cursor-pointer">
 					<p>Issa Jean Marie </p>
 
 					<CustomImage
