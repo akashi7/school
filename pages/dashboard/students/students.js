@@ -8,23 +8,28 @@ import CustomModal from "../../../components/Shared/CustomModal";
 import CustomInput from "../../../components/Shared/CustomInput";
 import Private from "../../../components/Routes/Private";
 import {
-	useAddClassMutation,
 	useGetClassesQuery,
 	useLazyGetStreamsQuery,
 } from "../../../lib/api/Classrooms/classroomsEndpoints";
-import { useGetStudentsQuery } from "../../../lib/api/Students/studentsEndpoints";
+import {
+	useAddStudentMutation,
+	useEditStudentMutation,
+	useGetStudentsQuery,
+	useLazyGetSingleStudentQuery,
+} from "../../../lib/api/Students/studentsEndpoints";
 import {
 	AppLoader,
 	GeneralContentLoader,
 } from "../../../components/Shared/Loaders";
-import DownloadButton from "../../../components/Shared/DownloadButton";
-import requiredField from "../../../helpers/requiredField";
 import handleAPIRequests from "../../../helpers/handleAPIRequests";
 import StudentsTable from "../../../components/Tables/StudentsTable";
 import { _pagination_number_ } from "../../../config/constants";
 import ContentTableContainer from "../../../components/Shared/ContentTableContainer";
 import { useGetAcademicYearsQuery } from "../../../lib/api/AcademicYear/academicYearEndpoints";
 import NewStudentForm from "../../../components/Forms/NewStudentForm";
+import uploadFile from "../../../helpers/uploadFile";
+import useHandleNewStudentForm from "../../../components/Forms/useHandleNewStudentForm";
+import Notify from "../../../components/Shared/Notification";
 
 const Students = () => {
 	const [isVisible, setIsVisible] = useState(false);
@@ -35,6 +40,15 @@ const Students = () => {
 		useState("");
 	const [streamId, setStreamId] = useState("");
 	const [academicYearId, setAcademicYearId] = useState("");
+	const [uploadLoading, setUploadLoading] = useState(false);
+	const [imgURL, setImgURL] = useState(null);
+	const [selectedCountry, setSelectedCountry] = useState(null);
+	const [itemToEdit, setItemToEdit] = useState(null);
+
+	const handleCancel = () => {
+		setItemToEdit(null);
+		setIsVisible(false);
+	};
 
 	const {
 		data: students,
@@ -49,24 +63,60 @@ const Students = () => {
 		search,
 	});
 
-	const { data: classes, isLoading: isClassLoading } = useGetClassesQuery({});
+	const { data: classes, isFetching: isClassLoading } = useGetClassesQuery({});
 
-	const { data: academicYears, isLoading: isAcademicYearsLoading } =
+	const [
+		getSingleStudent,
+		{ data: studentData, isFetching: isGetStudentLoading },
+	] = useLazyGetSingleStudentQuery();
+
+	const { data: academicYears, isFetching: isAcademicYearsLoading } =
 		useGetAcademicYearsQuery({});
 
 	const [getStreams, { data: streams, isFetching: isStreamLoading }] =
 		useLazyGetStreamsQuery();
 
-	const [addClass, { isLoading: isAddingClass }] = useAddClassMutation();
+	const [addStudent, { isLoading: isAddingClass }] = useAddStudentMutation();
+
+	const [editStudent, { isLoading: isEditingStudent }] =
+		useEditStudentMutation();
+
+	const canFetchStreams =
+		classroomId ||
+		newStudentSelectedClassroomId ||
+		itemToEdit?.stream?.classroom?.id;
 
 	useEffect(() => {
-		if (classroomId || newStudentSelectedClassroomId) {
+		if (itemToEdit) {
 			handleAPIRequests({
-				request: getStreams,
-				id: classroomId || newStudentSelectedClassroomId,
+				request: getSingleStudent,
+				id: itemToEdit?.student?.id,
+				onError: handleCancel,
 			});
 		}
-	}, [getStreams, classroomId, newStudentSelectedClassroomId]);
+	}, [getSingleStudent, itemToEdit]);
+
+	useEffect(() => {
+		setImgURL(studentData?.payload?.passportPhoto);
+	}, [studentData]);
+
+	useEffect(() => {
+		if (canFetchStreams) {
+			handleAPIRequests({
+				request: getStreams,
+				id:
+					classroomId ||
+					newStudentSelectedClassroomId ||
+					itemToEdit?.stream?.classroom?.id,
+			});
+		}
+	}, [
+		canFetchStreams,
+		classroomId,
+		getStreams,
+		itemToEdit,
+		newStudentSelectedClassroomId,
+	]);
 
 	const [form] = Form.useForm();
 
@@ -77,12 +127,21 @@ const Students = () => {
 		form.resetFields();
 	};
 
-	const onAddClassFinish = (values) => {
+	const onAddStudentFinish = (values) => {
+		const data = {
+			...values,
+			countryCode: selectedCountry?.code,
+			passportPhoto: imgURL,
+		};
+
+		delete data?.classroomId;
+
 		handleAPIRequests({
-			request: addClass,
+			request: itemToEdit ? editStudent : addStudent,
 			onSuccess: onSuccess,
 			notify: true,
-			...values,
+			id: itemToEdit?.student?.id,
+			...data,
 		});
 	};
 
@@ -92,8 +151,8 @@ const Students = () => {
 	};
 
 	const handleClassChange = (value) => {
-		setStreamId("");
 		setClassroomId(value);
+		setStreamId("");
 	};
 
 	const handleStreamChange = (value) => {
@@ -104,9 +163,60 @@ const Students = () => {
 		setAcademicYearId(value);
 	};
 
-	const isPageLoading = isLoading || isClassLoading || isAcademicYearsLoading;
+	const handleUploadProfile = (files) => {
+		const isValid =
+			files[0]?.type === "image/png" ||
+			files[0]?.type === "image/jpg" ||
+			files[0]?.type === "image/jpeg";
 
-	const showStreamOption = streams?.payload?.items?.length >= 1;
+		isValid
+			? uploadFile({
+					files,
+					setUploadLoading,
+					setImgURL,
+			  })
+			: Notify({
+					message: "Invalid file type",
+					description:
+						"Only, PNG, JPG, JPEG Images are valid formats to be uploaded!",
+					type: "error",
+			  });
+	};
+
+	useHandleNewStudentForm({ form, itemToEdit: studentData?.payload });
+
+	const isPageLoading = isLoading;
+
+	const academicYearsList = academicYears?.payload?.totalItems
+		? [
+				...academicYears?.payload?.items?.map((item) => ({
+					key: item?.name,
+					value: item?.id,
+					label: item.name,
+				})),
+		  ]
+		: [];
+
+	const classesList = classes?.payload?.items?.length
+		? [
+				...classes?.payload?.items?.map((item) => ({
+					key: item?.id,
+					value: item?.id,
+					label: item.name,
+				})),
+		  ]
+		: [];
+
+	const streamsList =
+		streams?.payload?.items?.length && !isStreamLoading
+			? [
+					...streams?.payload?.items?.map((item) => ({
+						key: item?.id,
+						value: item?.id,
+						label: item.name,
+					})),
+			  ]
+			: [];
 
 	const RightSide = () => (
 		<CustomButton onClick={() => setIsVisible(true)} type="primary">
@@ -120,35 +230,47 @@ const Students = () => {
 		</p>
 	);
 
-	console.log("STREAMS: ", streams);
-
 	return (
 		<>
 			<CustomModal
 				isVisible={isVisible}
 				setIsVisible={setIsVisible}
-				loading={isAddingClass}
+				loading={isAddingClass || isEditingStudent}
 				width={700}
-				title="Create student"
+				handleCancel={handleCancel}
+				title={itemToEdit ? "Edit student" : "Create student"}
 				footerContent={
-					<CustomButton
-						loading={isAddingClass}
-						type="primary"
-						htmlType="submit"
-						form="add-student"
-					>
-						Save
-					</CustomButton>
+					!isGetStudentLoading && (
+						<CustomButton
+							loading={isAddingClass || uploadLoading || isEditingStudent}
+							type="primary"
+							htmlType="submit"
+							form="add-student"
+						>
+							Save
+						</CustomButton>
+					)
 				}
 			>
-				<NewStudentForm
-					form={form}
-					onFinish={onAddClassFinish}
-					academicYears={academicYears}
-					classes={classes}
-					streams={streams}
-					setClassroomId={setNewStudentSelectedClassroomId}
-				/>
+				{isGetStudentLoading ? (
+					<AppLoader height="60vh" />
+				) : (
+					<NewStudentForm
+						form={form}
+						onFinish={onAddStudentFinish}
+						academicYears={academicYears}
+						classes={classes}
+						streams={streams}
+						setClassroomId={setNewStudentSelectedClassroomId}
+						uploadLoading={uploadLoading}
+						handleUploadProfile={handleUploadProfile}
+						isClassLoading={isClassLoading}
+						isStreamLoading={isStreamLoading}
+						isAcademicYearsLoading={isAcademicYearsLoading}
+						setSelectedCountry={setSelectedCountry}
+						imgURL={imgURL || itemToEdit?.passportPhoto}
+					/>
+				)}
 			</CustomModal>
 
 			<ContentNavbar left={<LeftSide />} right={<RightSide />} />
@@ -169,64 +291,45 @@ const Students = () => {
 						<Col>
 							<Row align="middle" gutter={24}>
 								<Col>
-									{classes?.payload?.items?.length > 1 && (
-										<CustomInput
-											onChange={handleClassChange}
-											value={classroomId}
-											type="small-select"
-											label="Class"
-											options={[
-												{ key: 0, value: "", label: "Select class" },
-												...classes?.payload?.items?.map((item) => ({
-													key: item?.id,
-													value: item?.id,
-													label: item.name,
-												})),
-											]}
-										/>
-									)}
+									<CustomInput
+										onChange={handleAcademicYearChange}
+										value={academicYearId}
+										type="small-select"
+										label="Year"
+										options={[
+											{ key: 0, value: "", label: "Select year" },
+											...academicYearsList,
+										]}
+										isLoading={isAcademicYearsLoading}
+									/>
 								</Col>
 
 								<Col>
-									{!isStreamLoading && showStreamOption && (
-										<CustomInput
-											onChange={handleStreamChange}
-											value={streamId}
-											type="small-select"
-											label="Stream"
-											options={[
-												{ key: 0, value: "", label: "Select stream" },
-												...streams?.payload?.items?.map((item) => ({
-													key: item?.id,
-													value: item?.id,
-													label: item.name,
-												})),
-											]}
-										/>
-									)}
+									<CustomInput
+										onChange={handleClassChange}
+										value={classroomId}
+										type="small-select"
+										label="Class"
+										options={[
+											{ key: 0, value: "", label: "Select class" },
+											...classesList,
+										]}
+										isLoading={isClassLoading}
+									/>
 								</Col>
 
 								<Col>
-									{academicYears?.payload?.items?.length >= 1 && (
-										<CustomInput
-											onChange={handleAcademicYearChange}
-											value={academicYearId}
-											type="small-select"
-											label="Year"
-											options={[
-												{ key: 0, value: "", label: "Select year" },
-												...academicYears?.payload?.items?.map((item) => ({
-													key: item?.id,
-													value: item?.id,
-													label: item.name,
-												})),
-											]}
-										/>
-									)}
-								</Col>
-
-								<Col>
-									<DownloadButton />
+									<CustomInput
+										onChange={handleStreamChange}
+										value={streamId}
+										type="small-select"
+										label="Stream"
+										options={[
+											{ key: 0, value: "", label: "Select" },
+											...streamsList,
+										]}
+										isLoading={isStreamLoading}
+									/>
 								</Col>
 							</Row>
 						</Col>
@@ -239,6 +342,8 @@ const Students = () => {
 							<StudentsTable
 								students={students?.payload?.items}
 								isFetching={isFetching}
+								setItemToEdit={setItemToEdit}
+								setIsEditModalVisible={setIsVisible}
 							/>
 						)}
 					</div>

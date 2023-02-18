@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "antd/lib/image";
 import PropTypes from "prop-types";
+import { GLOBAL_IMAGE_FALLBACK } from "../../config/constants";
 
 const CustomImage = ({
 	src,
@@ -23,6 +24,7 @@ const CustomImage = ({
 			height={height}
 			preview={!!preview}
 			placeholder={placeholder || ""}
+			fallback={GLOBAL_IMAGE_FALLBACK}
 			className={className}
 		/>
 	);

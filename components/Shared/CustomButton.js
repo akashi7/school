@@ -18,7 +18,7 @@ const CustomButton = ({
 	const PrimaryButton = () => {
 		return (
 			<Button
-				className={`${className} bg-primary font-medium text-white text-[16px] px-8 h-[48px] rounded-[4px] hover:text-white hover:bg-primary_hover border-none hover:border-none`}
+				className={`${className} bg-primary font-medium text-white text-[14px] px-6 h-[42px] rounded-[4px] hover:text-white hover:bg-primary_hover border-none hover:border-none`}
 				disabled={disabled}
 				icon={icon}
 				size={size}

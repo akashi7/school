@@ -1,4 +1,8 @@
 {
+	"languages": [
+		{ "name": "English", "value": "en_us", "flag": "🇺🇸" },
+		{ "name": "Kinyarwanda", "value": "kinya", "flag": "🇷🇼" }
+	],
 	"en_us": {
 		"name": "English",
 		"flag": "🇺🇸",
@@ -16,6 +20,28 @@
 			}
 		},
 
+		"dashboard_shared": {
+			"buttons": {
+				"view": "View",
+				"edit": "Edit",
+				"delete": "Delete",
+				"save": "Save",
+				"yes": "Yes",
+				"mistake": "No, that was a mistake!"
+			},
+			"modals": {
+				"delete_modal": {
+					"title": "Do you really want to delete",
+					"desc": "Know that this action is irreversible!"
+				}
+			},
+			"messages": {
+				"select_class_to_view_streams": "Please select a class to view details!",
+				"no_data": "No data!",
+				"type_to_search": "Type to search"
+			}
+		},
+
 		"navbar": {
 			"classroom": "Classrooms",
 			"students": "Students",
@@ -24,12 +50,42 @@
 
 		"classrooms_pg": {
 			"title": "Classrooms",
-			"new_btn": "New class"
+			"new_btn": "New class",
+			"modals": {
+				"add_class_title": "Add a class",
+				"edit_class_title": "Edit class",
+				"add_stream_title": "Add stream",
+				"add_stream_sub_title": "For class",
+				"edit_stream_title": "Edit class",
+				"class_name": "Class name",
+				"stream_name": "Stream name"
+			},
+			"streams": { "title": "Streams" }
 		},
 
 		"students_pg": {
 			"title": "Students",
 			"new_btn": "New student"
+		},
+
+		"fees": {
+			"title": "Fees",
+			"new_btn": "Add fee",
+			"table": {
+				"name": "Name",
+				"classes": "Classes",
+				"terms": "Terms",
+				"year": "Year",
+				"fee_type": "Fee type",
+				"amount": "Amount",
+				"actions": "Actions"
+			},
+			"header": {
+				"select_type": "Select type",
+				"select_term": "Select term",
+				"type": "Type",
+				"Term": "Term"
+			}
 		}
 	},
 

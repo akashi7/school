@@ -1534,3 +1534,10 @@ input[type="number"] {
 .ant-notification-notice-message {
 	font-weight: 700;
 }
+
+.text_404 {
+	background: #eddfdf;
+	background: linear-gradient(to top, #eddfdf 32%, #bf5858 55%, #000000 100%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}

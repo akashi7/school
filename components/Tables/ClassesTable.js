@@ -69,13 +69,15 @@ const ClassesTable = ({
 					title="#"
 					key="#"
 					width={24}
-					render={(text, record, index) => <span>{index + 1}</span>}
+					render={(text, record, index) => (
+						<span className="text-gray-500">{index + 1}.</span>
+					)}
 				/>
 
 				<Column
 					title="Name"
 					key="name"
-					render={(record) => <span>{record?.name}</span>}
+					render={(record) => <span className="font-bold">{record?.name}</span>}
 				/>
 
 				<Column

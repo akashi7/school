@@ -43,7 +43,6 @@ const Classes = () => {
 	const [editClass, { isLoading: isEditing }] = useEditClassMutation();
 
 	const lang = useSelector((state) => state?.translation?.payload);
-	console.log("HERE: ", lang?.classrooms_pg?.title);
 
 	const [form] = Form.useForm();
 
@@ -137,7 +136,9 @@ const Classes = () => {
 				<GeneralContentLoader />
 			) : (
 				<div className="flex gap-4 mt-8 h-[73vh] overflow-y-hidden">
-					<div className={`w-[55%] h-[73vh] overflow-y-auto mr-12`}>
+					<div
+						className={`w-[55%] max-h-[73vh] h-[fit-content] mr-12 border p-4 rounded`}
+					>
 						<div className="w-[350px] mb-8">
 							<CustomInput
 								onChange={onSearchChange}
@@ -147,16 +148,18 @@ const Classes = () => {
 						{isLoading ? (
 							<AppLoader className="h-[60vh]" />
 						) : (
-							<ClassesTable
-								classes={classes?.payload?.items}
-								visibleClass={visibleClass}
-								setVisibleClass={setVisibleClass}
-								setIsVisible={setIsVisible}
-								setSearch={setSearch}
-								setCurrentPage={setCurrentPage}
-								isFetching={isFetching}
-								setItemToEdit={setItemToEdit}
-							/>
+							<div className="max-h-[61vh] h-[fit-content] overflow-y-auto">
+								<ClassesTable
+									classes={classes?.payload?.items}
+									visibleClass={visibleClass}
+									setVisibleClass={setVisibleClass}
+									setIsVisible={setIsVisible}
+									setSearch={setSearch}
+									setCurrentPage={setCurrentPage}
+									isFetching={isFetching}
+									setItemToEdit={setItemToEdit}
+								/>
+							</div>
 						)}
 
 						<Paginator

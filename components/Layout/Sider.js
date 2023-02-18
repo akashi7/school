@@ -10,6 +10,7 @@ import translate from "../../config/translate";
 import CustomImage from "../Shared/CustomImage";
 import { useDispatch, useSelector } from "react-redux";
 import { getTranslation } from "../../lib/redux/translationSlice";
+import routes from "../../config/routes";
 
 const Sider = () => {
 	const local_saved_lang = localStorage.getItem(_selected_lang_);
@@ -92,10 +93,19 @@ export const SingleMenu = ({ menu }) => {
 		router.push(url);
 	};
 
+	const isMenuIndex = menu.url === routes.dashboard.url;
+
+	const isActive = (url) => {
+		return (
+			(router.pathname === routes.dashboard.url && isMenuIndex) ||
+			(router.pathname.includes(url) && !isMenuIndex)
+		);
+	};
+
 	return (
 		<div
 			className={`flex align-center gap-12 p-2 my-4 cursor-pointer w-[265px] single_menu ${
-				router.pathname === menu.url
+				isActive(menu.url)
 					? "rounded-r-full bg-grey text-dark font-medium"
 					: "text-gray-500"
 			}`}
@@ -103,9 +113,7 @@ export const SingleMenu = ({ menu }) => {
 		>
 			<div className="flex-0">
 				<CustomImage
-					src={`${menu.icon}${router.pathname === menu.url ? "-active" : ""}${
-						menu.ext
-					}`}
+					src={`${menu.icon}${isActive(menu.url) ? "-active" : ""}${menu.ext}`}
 					width={24}
 				/>
 			</div>

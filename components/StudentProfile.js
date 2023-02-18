@@ -4,7 +4,12 @@ import Col from "antd/lib/col";
 import CustomButton from "./Shared/CustomButton";
 import CustomImage from "./Shared/CustomImage";
 
-const StudentProfile = ({ data }) => {
+const StudentProfile = ({
+	data,
+	setIsVisible,
+	setIsWarningVisible,
+	setIsPromoteModalVisible,
+}) => {
 	return (
 		<div className="bg-white p-6">
 			<Row gutter={32} justify="space-between" align="top">
@@ -12,17 +17,17 @@ const StudentProfile = ({ data }) => {
 					<Row align="middle" gutter={32}>
 						<Col>
 							<CustomImage
-								src="/imgs/profile.jpg"
+								src={data?.payload?.passportPhoto}
 								width={120}
 								height={120}
-								className="object-cover"
+								className="object-cover rounded"
 							/>
 						</Col>
 
 						<Col className="flex flex-col h-[120px] gap-0 mb-3">
 							<div>
 								<p className="text-dark text-[32px] font-semibold">
-									{data?.payload?.fullName || "-- ---"}
+									{data?.payload?.fullName}
 								</p>
 
 								<p className="text-black">
@@ -41,8 +46,23 @@ const StudentProfile = ({ data }) => {
 
 				<Col>
 					<div className="flex gap-12">
-						<CustomButton type="edit">Edit</CustomButton>
-						<CustomButton type="delete">Delete</CustomButton>
+						<CustomButton
+							type="view"
+							onClick={() => setIsPromoteModalVisible(true)}
+						>
+							Promote
+						</CustomButton>
+
+						<CustomButton type="edit" onClick={() => setIsVisible(true)}>
+							Edit
+						</CustomButton>
+
+						<CustomButton
+							type="delete"
+							onClick={() => setIsWarningVisible(true)}
+						>
+							Delete
+						</CustomButton>
 					</div>
 				</Col>
 			</Row>
