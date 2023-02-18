@@ -96,7 +96,7 @@ const ClassProfile = ({ visibleClass }) => {
 							{visibleClass?.name}
 						</h1>
 
-						<div className="flex justify-between items-center bg-grey p-4 rounded-md mb-4">
+						<div className="flex justify-between items-center bg-grey p-4 py-2 rounded-md mb-4">
 							<p className="text-[20px] text-dark font-semibold">
 								{streams?.payload?.totalItems} Streams
 							</p>

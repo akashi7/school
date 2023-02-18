@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import Table from "antd/lib/table";
+import PropTypes from "prop-types";
 import CustomButton from "../Shared/CustomButton";
 import WarningModal from "../Shared/WarningModal";
 import routes from "../../config/routes";
@@ -8,7 +9,12 @@ import { useDeleteStudentMutation } from "../../lib/api/Students/studentsEndpoin
 
 const { Column } = Table;
 
-const StudentsTable = ({ students, isFetching }) => {
+const StudentsTable = ({
+	students,
+	isFetching,
+	setItemToEdit,
+	setIsEditModalVisible,
+}) => {
 	const [isWarningVisible, setIsWarningVisible] = useState(false);
 	const [itemToDelete, setItemToDelete] = useState(null);
 
@@ -24,7 +30,10 @@ const StudentsTable = ({ students, isFetching }) => {
 		setIsWarningVisible(true);
 	};
 
-	console.log("ITEM TO EDIT: ", itemToDelete);
+	const handleEditStudent = (item) => {
+		setItemToEdit(item);
+		setIsEditModalVisible(true);
+	};
 
 	const router = useRouter();
 
@@ -98,7 +107,12 @@ const StudentsTable = ({ students, isFetching }) => {
 							>
 								View
 							</CustomButton>
-							<CustomButton type="edit">Edit</CustomButton>
+							<CustomButton
+								type="edit"
+								onClick={() => handleEditStudent(record)}
+							>
+								Edit
+							</CustomButton>
 							<CustomButton
 								type="delete"
 								onClick={() => handleDeleteStudents(record)}
@@ -111,6 +125,13 @@ const StudentsTable = ({ students, isFetching }) => {
 			</Table>
 		</>
 	);
+};
+
+StudentsTable.propTypes = {
+	students: PropTypes.array,
+	isFetching: PropTypes.bool,
+	setItemToEdit: PropTypes.func,
+	setIsEditModalVisible: PropTypes.func,
 };
 
 export default StudentsTable;

@@ -2,9 +2,7 @@ import React from "react";
 import Row from "antd/lib/row";
 import Col from "antd/lib/col";
 import Modal from "antd/lib/modal";
-
 import PropTypes from "prop-types";
-import CustomButton from "./CustomButton";
 import CustomImage from "./CustomImage";
 
 const CustomModal = ({

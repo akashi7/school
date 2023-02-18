@@ -52,7 +52,7 @@ const WarningModal = ({
 							onClick={handleDelete}
 							loading={loading}
 						>
-							Yes
+							{loading ? "Deleting" : "Yes"}
 						</CustomButton>
 					</Col>
 				</Row>

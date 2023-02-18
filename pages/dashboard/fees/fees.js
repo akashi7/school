@@ -2,17 +2,14 @@ import React, { useEffect, useState } from "react";
 import Form from "antd/lib/form";
 import Row from "antd/lib/row";
 import Col from "antd/lib/col";
+import { LoadingOutlined } from "@ant-design/icons";
 import ContentNavbar from "../../../components/Shared/ContentNavbar";
 import CustomButton from "../../../components/Shared/CustomButton";
 import CustomModal from "../../../components/Shared/CustomModal";
 import CustomInput from "../../../components/Shared/CustomInput";
 import Private from "../../../components/Routes/Private";
 import { useGetClassesQuery } from "../../../lib/api/Classrooms/classroomsEndpoints";
-import {
-	AppLoader,
-	GeneralContentLoader,
-} from "../../../components/Shared/Loaders";
-import DownloadButton from "../../../components/Shared/DownloadButton";
+import { GeneralContentLoader } from "../../../components/Shared/Loaders";
 import handleAPIRequests from "../../../helpers/handleAPIRequests";
 import FeesTable from "../../../components/Tables/FeesTable";
 import { termOptions, _pagination_number_ } from "../../../config/constants";
@@ -20,12 +17,16 @@ import ContentTableContainer from "../../../components/Shared/ContentTableContai
 import NewFeeForm from "../../../components/Forms/NewFeeForm";
 import {
 	useAddFeeMutation,
+	useDownloadFeesMutation,
 	useEditFeeMutation,
 	useGetFeesQuery,
 } from "../../../lib/api/Fees/FeesEndpoints";
 import Paginator from "../../../components/Shared/Paginator";
 import { Empty } from "../../../components/Shared/Empty";
 import { useGetAcademicYearsQuery } from "../../../lib/api/AcademicYear/academicYearEndpoints";
+import { Dropdown } from "antd";
+import CustomImage from "../../../components/Shared/CustomImage";
+import handleDownloadFile from "../../../helpers/handleDownloadFile";
 
 const Students = () => {
 	const [isVisible, setIsVisible] = useState(false);
@@ -37,10 +38,14 @@ const Students = () => {
 	const [itemToEdit, setItemToEdit] = useState(null);
 	const [isPaymentOPtional, setIsPaymentOPtional] = useState(false);
 	const [isPaymentAdditional, setIsPaymentAdditional] = useState(false);
+	const [academicYearId, setAcademicYearId] = useState("");
+
+	const [form] = Form.useForm();
 
 	const handleCancelEditModal = () => {
 		setIsVisible(false);
 		setItemToEdit(null);
+		form.resetFields();
 	};
 
 	useEffect(() => {
@@ -59,15 +64,17 @@ const Students = () => {
 		classroomId,
 		term: termId,
 		type: feeType,
+		academicYearId,
 	});
 
-	const { data: classes, isLoading: isClassLoading } = useGetClassesQuery({});
-	const { data: academicYears } = useGetAcademicYearsQuery({});
+	const { data: classes, isFetching: isClassLoading } = useGetClassesQuery({});
+	const { data: academicYears, isFetching: isAcademicYearsLoading } =
+		useGetAcademicYearsQuery({});
 
 	const [addFee, { isLoading: isAddingFee }] = useAddFeeMutation();
 	const [editFee, { isLoading: isEditingFee }] = useEditFeeMutation();
-
-	const [form] = Form.useForm();
+	const [downloadReport, { isLoading: isDownloadLoading }] =
+		useDownloadFeesMutation();
 
 	const onSuccess = () => {
 		setIsVisible(false);
@@ -78,6 +85,7 @@ const Students = () => {
 		setTermId("");
 		setIsPaymentAdditional(false);
 		setIsPaymentOPtional(false);
+		setAcademicYearId("");
 		form.resetFields();
 	};
 
@@ -86,13 +94,15 @@ const Students = () => {
 		form.resetFields();
 	};
 
+	const handleDownloadReportSuccess = (file) => {
+		handleDownloadFile({ name: "Fees-Report", file });
+	};
+
 	const onAddFeeFinish = (values) => {
-		// Needs to be updated when API is updated
 		const data = {
 			...values,
 			optional: !!isPaymentOPtional,
 			type: isPaymentAdditional ? "ADDITIONAL_FEE" : "SCHOOL_FEE",
-			classroomId: values?.classroomIDs[0],
 			amount: +values?.amount,
 		};
 
@@ -122,14 +132,123 @@ const Students = () => {
 		setFeeType(value);
 	};
 
+	const handleDownloadFeeReport = (url) => {
+		handleAPIRequests({
+			request: downloadReport,
+			search,
+			classroomId,
+			term: termId,
+			type: feeType,
+			academicYearId,
+			url,
+			onSuccess: handleDownloadReportSuccess,
+			notify: true,
+		});
+	};
+
 	const showEmpty = fees?.payload?.totalItems <= 0;
 
-	const isPageLoading = isLoading || isClassLoading;
+	const isPageLoading = isLoading;
+
+	const handleAcademicYearChange = (value) => {
+		setAcademicYearId(value);
+	};
+
+	const classesList = classes?.payload?.items?.length
+		? [
+				...classes?.payload?.items?.map((item) => ({
+					key: item?.id,
+					value: item?.id,
+					label: item.name,
+				})),
+		  ]
+		: [];
+
+	const academicYearsList = academicYears?.payload?.totalItems
+		? [
+				...academicYears?.payload?.items?.map((item) => ({
+					key: item?.name,
+					value: item?.id,
+					label: item.name,
+				})),
+		  ]
+		: [];
+
+	const DownloadOverlay = (
+		<div className="p-4 w-[100%] bg-gray-200 rounded shadow-sm">
+			<p
+				className="transition ease-in-out delay-120 mb-2 hover:bg-gray-300 hover:p-2 hover:px-4 hover:rounded pointer"
+				onClick={() => handleDownloadFeeReport("students")}
+			>
+				For students
+			</p>
+
+			<p
+				className="transition ease-in-out delay-120 hover:bg-gray-300 hover:p-2 hover:px-4 hover:rounded pointer"
+				onClick={() => handleDownloadFeeReport("classrooms")}
+			>
+				For Classrooms
+			</p>
+		</div>
+	);
 
 	const RightSide = () => (
-		<CustomButton onClick={() => setIsVisible(true)} type="primary">
-			Add fee
-		</CustomButton>
+		<Row gutter={24} align="middle">
+			<Col>
+				<Dropdown
+					overlay={
+						isDownloadLoading || !academicYearId ? <></> : DownloadOverlay
+					}
+					trigger={["click"]}
+				>
+					<div
+						className={`flex items-center gap-6 bg-gray-200 p-4 py-3 rounded ${
+							isDownloadLoading || !academicYearId
+								? "cursor-not-allowed"
+								: " cursor-pointer"
+						}`}
+					>
+						{isDownloadLoading ? (
+							<LoadingOutlined style={{ fontSize: 16 }} spin />
+						) : (
+							<CustomImage
+								src="/icons/download.svg"
+								width={18}
+								height={18}
+								className={`${!academicYearId ? "opacity-60" : "opacity-1"}`}
+							/>
+						)}
+
+						<span
+							className={`${
+								isDownloadLoading || !academicYearId
+									? "opacity-60"
+									: "opacity-1"
+							}  text-[14px] font-medium ml-2`}
+						>
+							Download report
+						</span>
+
+						<CustomImage
+							src="/icons/expand.svg"
+							width={14}
+							height={14}
+							className={` ${
+								isDownloadLoading || !academicYearId
+									? "opacity-60"
+									: "opacity-1"
+							}  object-cover rounded-full`}
+						/>
+					</div>
+				</Dropdown>
+			</Col>
+
+			<Col>
+				<CustomButton onClick={() => setIsVisible(true)} type="primary">
+					Add fee
+				</CustomButton>
+			</Col>
+		</Row>
 	);
 
 	const LeftSide = () => (
@@ -145,7 +264,7 @@ const Students = () => {
 				setIsVisible={setIsVisible}
 				loading={isAddingFee || isEditingFee}
 				handleCancel={handleCancelEditModal}
-				width={750}
+				width={550}
 				title={itemToEdit ? "Edit fee" : "Add a fee"}
 				footerContent={
 					<CustomButton
@@ -190,39 +309,30 @@ const Students = () => {
 							<Row align="middle" gutter={24}>
 								<Col>
 									<CustomInput
-										onChange={handleFeeTypeChange}
-										value={feeType}
+										onChange={handleAcademicYearChange}
+										value={academicYearId}
 										type="small-select"
-										label="Type"
+										label="Year"
 										options={[
-											{ key: 0, value: "", label: "Select type" },
-											{ key: 1, value: "SCHOOL_FEE", label: "School fee" },
-											{
-												key: 2,
-												value: "ADDITIONAL_FEE",
-												label: "Additional fee",
-											},
+											{ key: 0, value: "", label: "Select" },
+											...academicYearsList,
 										]}
+										isLoading={isAcademicYearsLoading}
 									/>
 								</Col>
 
 								<Col>
-									{classes?.payload?.items?.length > 1 && (
-										<CustomInput
-											onChange={handleClassChange}
-											value={classroomId}
-											type="small-select"
-											label="Class"
-											options={[
-												{ key: 0, value: "", label: "Select class" },
-												...classes?.payload?.items?.map((item) => ({
-													key: item?.id,
-													value: item?.id,
-													label: item.name,
-												})),
-											]}
-										/>
-									)}
+									<CustomInput
+										onChange={handleClassChange}
+										value={classroomId}
+										type="small-select"
+										label="Class"
+										options={[
+											{ key: 0, value: "", label: "Select" },
+											...classesList,
+										]}
+										isLoading={isClassLoading}
+									/>
 								</Col>
 
 								<Col>
@@ -232,14 +342,28 @@ const Students = () => {
 										type="small-select"
 										label="Term"
 										options={[
-											{ key: 0, value: "", label: "Select term" },
+											{ key: 0, value: "", label: "Select" },
 											...termOptions,
 										]}
 									/>
 								</Col>
 
 								<Col>
-									<DownloadButton />
+									<CustomInput
+										onChange={handleFeeTypeChange}
+										value={feeType}
+										type="small-select"
+										label="Type"
+										options={[
+											{ key: 0, value: "", label: "Select" },
+											{ key: 1, value: "SCHOOL_FEE", label: "School fee" },
+											{
+												key: 2,
+												value: "ADDITIONAL_FEE",
+												label: "Additional fee",
+											},
+										]}
+									/>
 								</Col>
 							</Row>
 						</Col>

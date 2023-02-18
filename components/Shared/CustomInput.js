@@ -17,6 +17,10 @@ const CustomInput = ({
 	defaultValue,
 	options = [],
 	name,
+	isLoading,
+	disabled,
+	allowClear = false,
+	showSearch = false,
 	rules,
 	onChange = () => null,
 }) => {
@@ -34,7 +38,10 @@ const CustomInput = ({
 					type={inputType}
 					placeholder={placeholder || "Type"}
 					className="rounded h-[40px]"
-					onChange={({ target }) => onChange(target.value)}
+					disabled={(type == "file" && isLoading) || disabled}
+					onChange={({ target }) =>
+						onChange(type === "file" ? target?.files : target?.value)
+					}
 				/>
 			</Form.Item>
 		</div>
@@ -53,6 +60,10 @@ const CustomInput = ({
 					value={value}
 					onChange={(value) => onChange(value)}
 					className="rounded h-[40px] border border-gray-300 flex items-center"
+					loading={isLoading}
+					allowClear={allowClear}
+					showSearch={showSearch}
+					disabled={disabled}
 					options={options}
 					defaultValue={defaultValue}
 					name={name}
@@ -80,6 +91,8 @@ const CustomInput = ({
 					className="border border-gray-300 rounded"
 					mode="multiple"
 					size="large"
+					loading={isLoading}
+					disabled={disabled}
 					placeholder="Please select"
 					defaultValue={defaultValue}
 					style={{
@@ -99,6 +112,8 @@ const CustomInput = ({
 				<Select
 					value={value}
 					onChange={(value) => onChange(value)}
+					loading={isLoading}
+					disabled={disabled}
 					className={`border-none mt-5 ${
 						width ? `w-[${width}]` : "w-[100px]"
 					} rounded`}
@@ -128,9 +143,9 @@ const CustomInput = ({
 				<DatePicker
 					value={value}
 					type={inputType}
+					disabled={disabled}
 					placeholder={placeholder || "Type"}
 					className="rounded h-[40px] w-[100%]"
-					onChange={({ target }) => onChange(target.value)}
 				/>
 			</Form.Item>
 		</div>
@@ -168,6 +183,9 @@ CustomInput.propTypes = {
 	label: PropTypes.string,
 	name: PropTypes.string,
 	onChange: PropTypes.func,
+	isLoading: PropTypes.bool,
+	showSearch: PropTypes.bool,
+	allowClear: PropTypes.bool,
 };
 
 export default CustomInput;
