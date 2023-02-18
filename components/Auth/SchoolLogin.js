@@ -42,6 +42,7 @@ const SchoolLogin = ({ setActiveLogin }) => {
 				align="middle"
 				gutter={24}
 				className="mt-8 w-[100%] mb-6"
+				wrap={false}
 			>
 				<Col onClick={() => setActiveLogin(null)}>
 					<CustomImage
