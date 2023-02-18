@@ -36,7 +36,12 @@ const SchoolLogin = ({ setActiveLogin }) => {
 	};
 
 	return (
-		<Form onFinish={onFinish} name="login-form" form={form}>
+		<Form
+			onFinish={onFinish}
+			name="login-form"
+			form={form}
+			className="w-[100%]"
+		>
 			<Row
 				justify="center"
 				align="middle"
@@ -51,7 +56,7 @@ const SchoolLogin = ({ setActiveLogin }) => {
 					/>
 				</Col>
 
-				<Col className="font-medium text-dark text-[24px]" flex={1}>
+				<Col className="font-medium text-dark text-[24px] truncate" flex={1}>
 					Login as school
 				</Col>
 			</Row>
