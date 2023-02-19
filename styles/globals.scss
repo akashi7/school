@@ -1,9 +1,29 @@
-// @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
+// @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap");
+@font-face {
+	font-family: "Poppins";
+	src: url(../public/fonts/Poppins/Poppins-Regular.ttf),
+		url(../public/fonts/Poppins/Poppins-Black.ttf),
+		url(../public/fonts/Poppins/Poppins-BlackItalic.ttf),
+		url(../public/fonts/Poppins/Poppins-Bold.ttf),
+		url(../public/fonts/Poppins/Poppins-BoldItalic.ttf),
+		url(../public/fonts/Poppins/Poppins-ExtraBold.ttf),
+		url(../public/fonts/Poppins/Poppins-ExtraBoldItalic.ttf),
+		url(../public/fonts/Poppins/Poppins-ExtraLight.ttf),
+		url(../public/fonts/Poppins/Poppins-ExtraLightItalic.ttf),
+		url(../public/fonts/Poppins/Poppins-Italic.ttf),
+		url(../public/fonts/Poppins/Poppins-Light.ttf),
+		url(../public/fonts/Poppins/Poppins-LightItalic.ttf),
+		url(../public/fonts/Poppins/Poppins-Medium.ttf),
+		url(../public/fonts/Poppins/Poppins-MediumItalic.ttf),
+		url(../public/fonts/Poppins/Poppins-SemiBold.ttf),
+		url(../public/fonts/Poppins/Poppins-SemiBoldItalic.ttf),
+		url(../public/fonts/Poppins/Poppins-Thin.ttf),
+		url(../public/fonts/Poppins/Poppins-ThinItalic.ttf);
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
 @import "./variables";
 @import "./mixinis";
@@ -44,7 +64,7 @@ body {
 	padding: 0;
 	margin: 0;
 	font-size: 1.1rem;
-	font-family: Poppins, Helvetica, sans-serif, Arial;
+	font-family: "Poppins", Helvetica, sans-serif, Arial;
 	color: $main;
 	overflow: hidden;
 }

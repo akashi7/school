@@ -104,9 +104,9 @@ export const SingleMenu = ({ menu }) => {
 
 	return (
 		<div
-			className={`flex align-center gap-12 p-2 my-4 cursor-pointer w-[265px] single_menu ${
+			className={`flex text-[16px] align-center gap-12 p-2 my-4 cursor-pointer w-[265px] single_menu ${
 				isActive(menu.url)
-					? "rounded-r-full bg-grey text-dark font-medium"
+					? "rounded-r-full bg-grey text-dark font-[600]"
 					: "text-gray-500"
 			}`}
 			onClick={() => handleNavigation(menu.url)}

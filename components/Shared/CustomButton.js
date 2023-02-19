@@ -37,8 +37,8 @@ const CustomButton = ({
 	const EditButton = () => {
 		return (
 			<Button
-				style={{ background: "rgba(0, 176, 175, 0.1)" }}
-				className={`${className} text-white font-medium text-[12px] px-5 h-[38px] text-edit_blue rounded-[4px] font-semibold hover:text-edit_blue hover:bg-primary_hover border-none hover:border-none`}
+				style={{ background: "rgba(0, 176, 175, 0.1)", color: "#00B0AF" }}
+				className={`${className} text-white font-medium text-[12px] px-5 h-[38px] rounded-[4px] font-semibold hover:text-edit_blue hover:bg-primary_hover border-none hover:border-none`}
 				disabled={disabled}
 				icon={icon}
 				size={size}
@@ -56,8 +56,8 @@ const CustomButton = ({
 	const DeleteButton = () => {
 		return (
 			<Button
-				style={{ background: "rgba(235, 96, 36, 0.1)" }}
-				className={`${className} text-white font-medium text-[12px] px-5 h-[38px] text-delete_red rounded-[4px] font-semibold hover:text-delete_red hover:bg-delete_red border-none hover:border-none`}
+				style={{ background: "rgba(235, 96, 36, 0.1)", color: "#EB6024" }}
+				className={`${className} text-white font-medium text-[12px] px-5 h-[38px] rounded-[4px] font-semibold hover:text-delete_red hover:bg-delete_red border-none hover:border-none`}
 				disabled={disabled}
 				icon={icon}
 				size={size}
