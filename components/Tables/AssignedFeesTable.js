@@ -113,13 +113,15 @@ const AssignedFeesTable = () => {
 				title="#"
 				key="#"
 				width={24}
-				render={(record) => <span>{record.id + 1}</span>}
+				render={(record) => (
+					<span className="text-gray-500">{record.id + 1}.</span>
+				)}
 			/>
 
 			<Column
 				title="Fee name"
 				key="name"
-				render={(record) => <span>{record.name}</span>}
+				render={(record) => <span className="font-bold">{record.name}</span>}
 			/>
 
 			<Column
