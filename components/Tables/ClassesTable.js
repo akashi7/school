@@ -3,6 +3,7 @@ import Table from "antd/lib/table";
 import { useDeleteClassMutation } from "../../lib/api/Classrooms/classroomsEndpoints";
 import CustomButton from "../Shared/CustomButton";
 import WarningModal from "../Shared/WarningModal";
+import { useSelector } from "react-redux";
 
 const { Column } = Table;
 
@@ -20,6 +21,8 @@ const ClassesTable = ({
 	const [itemToDelete, setItemToDelete] = useState(null);
 
 	const [deleteClass, { isLoading: isDeleting }] = useDeleteClassMutation();
+
+	const lang = useSelector((state) => state?.translation?.payload);
 
 	const onDeleteClassSuccess = () => {
 		setIsWarningVisible(false);
@@ -44,7 +47,7 @@ const ClassesTable = ({
 			<WarningModal
 				isVisible={isWarningVisible}
 				setIsVisible={setIsWarningVisible}
-				warningMessage="Do you really want to delete class"
+				warningMessage={`${lang?.dashboard_shared?.modals?.delete_modal?.title} ${lang?.classrooms_pg?.classroom}`}
 				warningKey={itemToDelete?.name}
 				itemToDelete={itemToDelete?.id}
 				request={deleteClass}
@@ -91,18 +94,18 @@ const ClassesTable = ({
 								onClick={() => setVisibleClass(record)}
 								disabled={record?.id === visibleClass?.id}
 							>
-								View
+								{lang?.dashboard_shared?.buttons?.view}
 							</CustomButton>
 
 							<CustomButton type="edit" onClick={() => handleEditClass(record)}>
-								Edit
+								{lang?.dashboard_shared?.buttons?.edit}
 							</CustomButton>
 
 							<CustomButton
 								type="delete"
 								onClick={() => handleDeleteClass(record)}
 							>
-								Delete
+								{lang?.dashboard_shared?.buttons?.delete}
 							</CustomButton>
 						</div>
 					)}

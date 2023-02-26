@@ -6,12 +6,10 @@ export const isTokenValid = (err) => {
 	const token = getFromLocal(_ns_token_);
 	const decoded = jwt.decode(token);
 
-	console.log("DECODED: ", decoded);
-
 	if (err?.status === 401) {
 		localStorage.removeItem(_ns_token_);
 		window.location.href = "/";
 	}
 
-	return { role: decoded?.role || "" };
+	return { role: decoded?.role, id: decoded?.id };
 };

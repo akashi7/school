@@ -13,6 +13,7 @@ import AssignedFeesTable from "../../../components/Tables/AssignedFeesTable";
 import {
 	useDeleteStudentMutation,
 	useEditStudentMutation,
+	useGetStudentFeesQuery,
 	useLazyGetSingleStudentQuery,
 	usePromoteStudentMutation,
 } from "../../../lib/api/Students/studentsEndpoints";
@@ -35,6 +36,7 @@ import WarningModal from "../../../components/Shared/WarningModal";
 import routes from "../../../config/routes";
 import { termOptions } from "../../../config/constants";
 import PromoteStudentForm from "../../../components/Forms/PromoteStudentForm";
+import { useSelector } from "react-redux";
 
 const SingleStudent = () => {
 	const [isVisible, setIsVisible] = useState(false);
@@ -48,8 +50,8 @@ const SingleStudent = () => {
 	const [itemToEdit, setItemToEdit] = useState(null);
 	const [isWarningVisible, setIsWarningVisible] = useState(false);
 	const [isPromoteModalVisible, setIsPromoteModalVisible] = useState(false);
-	const [academicTerm, setAcademicTerm] = useState("");
-	const [feeStatus, setFeeStatus] = useState("");
+	const [academicTerm, setAcademicTerm] = useState("TERM1");
+	const [feeStatus, setFeeStatus] = useState("PAID");
 
 	const handleCancel = () => {
 		setItemToEdit(null);
@@ -64,15 +66,24 @@ const SingleStudent = () => {
 	const { id } = router.query;
 	const [form] = Form.useForm();
 
+	const lang = useSelector((state) => state?.translation?.payload);
+
 	const { data: academicYears, isFetching: isAcademicYearsLoading } =
 		useGetAcademicYearsQuery({});
 
 	const { data: classes, isFetching: isClassLoading } = useGetClassesQuery({});
+	const { data: studentFees, isFetching: isStudentFeesFetching } =
+		useGetStudentFeesQuery({
+			id,
+			academicTerm,
+			academicYearId,
+			status: feeStatus,
+		});
 
 	const [getStreams, { data: streams, isFetching: isStreamLoading }] =
 		useLazyGetStreamsQuery();
 
-	const [getSingleStudent, { data, isLoading }] =
+	const [getSingleStudent, { data, isLoading, isFetching }] =
 		useLazyGetSingleStudentQuery();
 
 	const [editStudent, { isLoading: isEditingStudent }] =
@@ -81,6 +92,12 @@ const SingleStudent = () => {
 	const [deleteStudent, { isLoading: isDeleting }] = useDeleteStudentMutation();
 	const [promoteStudent, { isLoading: isPromotingStudent }] =
 		usePromoteStudentMutation();
+
+	useEffect(() => {
+		if (academicYears?.payload?.items?.length) {
+			setAcademicYearId(academicYears?.payload?.items[0]?.id);
+		}
+	}, [academicYears]);
 
 	const canFetchStreams =
 		classroomId ||
@@ -145,7 +162,8 @@ const SingleStudent = () => {
 		const isValid =
 			files[0]?.type === "image/png" ||
 			files[0]?.type === "image/jpg" ||
-			files[0]?.type === "image/jpeg";
+			files[0]?.type === "image/jpeg" ||
+			files[0]?.type === "image/svg+xml";
 
 		isValid
 			? uploadFile({
@@ -200,6 +218,11 @@ const SingleStudent = () => {
 		  ]
 		: [];
 
+	const totalUnpaid = studentFees?.payload?.reduce(
+		(a, b) => a + b?.remaining,
+		0
+	);
+
 	const TableNavLeftSide = () => (
 		<Row align="middle" gutter={20}>
 			<Col>
@@ -207,7 +230,9 @@ const SingleStudent = () => {
 			</Col>
 
 			<Col>
-				<p className="text-[20px] text-dark font-semibold">Assigned fees</p>
+				<p className="text-[20px] text-dark font-semibold">
+					{lang?.students_pg?.profile?.table?.title}
+				</p>
 			</Col>
 		</Row>
 	);
@@ -220,9 +245,13 @@ const SingleStudent = () => {
 						onChange={handleAcademicYearChange}
 						value={academicYearId}
 						type="small-select"
-						label="Year"
+						label={lang?.dashboard_shared?.filters?.year?.name}
 						options={[
-							{ key: 0, value: "", label: "Select year" },
+							{
+								key: 0,
+								value: "",
+								label: lang?.dashboard_shared?.filters?.year?.sub_title,
+							},
 							...academicYearsList,
 						]}
 						isLoading={isAcademicYearsLoading}
@@ -232,11 +261,15 @@ const SingleStudent = () => {
 				<Col>
 					<CustomInput
 						type="small-select"
-						label="Term"
+						label={lang?.dashboard_shared?.filters?.term?.name}
 						value={academicTerm}
 						onChange={handleTermChange}
 						options={[
-							{ key: 1, value: "", label: "Select term" },
+							{
+								key: 1,
+								value: "",
+								label: lang?.dashboard_shared?.filters?.term?.sub_title,
+							},
 							...termOptions,
 						]}
 					/>
@@ -245,13 +278,17 @@ const SingleStudent = () => {
 				<Col>
 					<CustomInput
 						type="small-select"
-						label="Status"
+						label={lang?.dashboard_shared?.filters?.status?.name}
 						value={feeStatus}
 						onChange={handleFeeStatusChange}
 						options={[
-							{ key: 0, value: "", label: "Select status" },
-							{ key: 1, value: "Unpaid", name: "Unpaid" },
-							{ key: 2, value: "Paid", name: "Paid" },
+							{
+								key: 0,
+								value: "",
+								label: lang?.dashboard_shared?.filters?.status?.sub_title,
+							},
+							{ key: 1, value: "UNPAID", name: "Unpaid" },
+							{ key: 2, value: "PAID", name: "Paid" },
 						]}
 					/>
 				</Col>
@@ -264,7 +301,7 @@ const SingleStudent = () => {
 			<WarningModal
 				isVisible={isWarningVisible}
 				setIsVisible={setIsWarningVisible}
-				warningMessage="Do you really want to delete class"
+				warningMessage={`${lang?.dashboard_shared?.modals?.delete_modal?.title} ${lang?.students_pg?.student}`}
 				warningKey={data?.payload?.fullName}
 				itemToDelete={data?.payload?.id}
 				request={deleteStudent}
@@ -278,7 +315,7 @@ const SingleStudent = () => {
 				loading={isEditingStudent}
 				width={700}
 				handleCancel={handleCancel}
-				title="Edit student"
+				title={lang?.students_pg?.modals?.edit_student_title}
 				subTitle={data?.payload?.fullName}
 				footerContent={
 					!isLoading && (
@@ -288,7 +325,7 @@ const SingleStudent = () => {
 							htmlType="submit"
 							form="add-student"
 						>
-							Save
+							{lang?.dashboard_shared?.buttons?.save}
 						</CustomButton>
 					)
 				}
@@ -320,7 +357,7 @@ const SingleStudent = () => {
 				loading={isPromotingStudent}
 				width={700}
 				handleCancel={handleCancelPromoteModal}
-				title="Promote student"
+				title={lang?.students_pg?.profile?.modals?.promote_student_title}
 				subTitle={data?.payload?.fullName}
 				footerContent={
 					<CustomButton
@@ -329,7 +366,7 @@ const SingleStudent = () => {
 						htmlType="submit"
 						form="promote-student"
 					>
-						Save
+						{lang?.dashboard_shared?.buttons?.save}
 					</CustomButton>
 				}
 			>
@@ -349,14 +386,16 @@ const SingleStudent = () => {
 			{isLoading ? (
 				<AppLoader />
 			) : !data ? (
-				<Empty message="The item you are looking for is not available!" />
+				<Empty message={lang?.students_pg?.profile?.not_available_item} />
 			) : (
 				<>
 					<StudentProfile
 						data={data}
+						isFetching={isFetching}
 						setIsVisible={setIsVisible}
 						setIsWarningVisible={setIsWarningVisible}
 						setIsPromoteModalVisible={setIsPromoteModalVisible}
+						totalUnpaid={totalUnpaid}
 					/>
 
 					<ContentTableContainer>
@@ -365,8 +404,15 @@ const SingleStudent = () => {
 							right={<TableNavRightSide />}
 						/>
 
-						<div className="mt-5 h-[55vh] overflow-x-auto">
-							<AssignedFeesTable />
+						<div
+							style={{ maxHeight: "calc(100vh - 440px)" }}
+							className="mt-5 h-[fit-content] overflow-x-auto"
+						>
+							<AssignedFeesTable
+								data={studentFees}
+								isFetching={isStudentFeesFetching}
+								lang={lang}
+							/>
 						</div>
 					</ContentTableContainer>
 				</>

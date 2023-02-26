@@ -3,15 +3,24 @@ import Row from "antd/lib/row";
 import Col from "antd/lib/col";
 import CustomButton from "./Shared/CustomButton";
 import CustomImage from "./Shared/CustomImage";
+import { BeingPromotedLoader } from "./Shared/Loaders";
+import { toLocalString } from "../helpers/numbers";
+import { useSelector } from "react-redux";
 
 const StudentProfile = ({
 	data,
+	isFetching,
 	setIsVisible,
 	setIsWarningVisible,
 	setIsPromoteModalVisible,
+	totalUnpaid,
 }) => {
+	const lang = useSelector((state) => state?.translation?.payload);
+
 	return (
-		<div className="bg-white p-6">
+		<div className="bg-white p-6 relative">
+			{isFetching && <BeingPromotedLoader />}
+
 			<Row gutter={32} justify="space-between" align="top">
 				<Col>
 					<Row align="middle" gutter={32}>
@@ -30,14 +39,31 @@ const StudentProfile = ({
 									{data?.payload?.fullName}
 								</p>
 
-								<p className="text-black">
-									Class: <span className="text-gray-400">S2 B</span>
-								</p>
+								<div className="text-black text-[14px] grid grid-cols-4 gap-0">
+									<span className="">
+										{lang?.students_pg?.modals?.class}:{" "}
+										<span className="text-gray-400">
+											{data?.payload?.stream?.classroom?.name}{" "}
+											{data?.payload?.stream?.name}
+										</span>
+									</span>
+
+									<span className="">
+										{lang?.students_pg?.modals?.academic_year}:{" "}
+										<span className="text-gray-400">
+											{data?.payload?.academicYear?.name}
+										</span>
+									</span>
+								</div>
 							</div>
 
 							<div>
-								<p>
-									Unpaid: <span className="text-red">1200 Rwf</span>
+								<p className="flex gap-12 w-[fit-content] items-center">
+									<span>{lang?.students_pg?.profile?.total_unpaid}</span>
+
+									<span className="text-red font-medium">
+										{toLocalString(totalUnpaid || 0)} Rwf
+									</span>
 								</p>
 							</div>
 						</Col>
@@ -50,18 +76,18 @@ const StudentProfile = ({
 							type="view"
 							onClick={() => setIsPromoteModalVisible(true)}
 						>
-							Promote
+							{lang?.dashboard_shared?.buttons?.promote}
 						</CustomButton>
 
 						<CustomButton type="edit" onClick={() => setIsVisible(true)}>
-							Edit
+							{lang?.dashboard_shared?.buttons?.edit}
 						</CustomButton>
 
 						<CustomButton
 							type="delete"
 							onClick={() => setIsWarningVisible(true)}
 						>
-							Delete
+							{lang?.dashboard_shared?.buttons?.delete}
 						</CustomButton>
 					</div>
 				</Col>

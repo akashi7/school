@@ -6,7 +6,7 @@ const useHandleNewStudentForm = ({ form, itemToEdit }) => {
 
 	useEffect(() => {
 		form.setFieldsValue({
-			academicYearId: itemToEdit?.academicYearId || "",
+			academicYearId: itemToEdit?.academicYear?.id || "",
 			fullName: itemToEdit?.fullName || "",
 			gender: itemToEdit?.gender || "",
 			dob: dob ? moment(dob) : "",
@@ -19,6 +19,7 @@ const useHandleNewStudentForm = ({ form, itemToEdit }) => {
 			academicTerm: itemToEdit?.academicTerm || "",
 			classroomId: itemToEdit?.stream?.classroom?.id || "",
 			streamId: itemToEdit?.streamId || "",
+			studentIdentifier: itemToEdit?.studentIdentifier || "",
 		});
 	}, [dob, form, itemToEdit]);
 

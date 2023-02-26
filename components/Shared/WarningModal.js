@@ -5,6 +5,7 @@ import Row from "antd/lib/row";
 import Col from "antd/lib/col";
 import CustomButton from "./CustomButton";
 import handleAPIRequests from "../../helpers/handleAPIRequests";
+import { useSelector } from "react-redux";
 
 const WarningModal = ({
 	isVisible,
@@ -24,6 +25,8 @@ const WarningModal = ({
 		setIsVisible(false);
 	};
 
+	const lang = useSelector((state) => state?.translation?.payload);
+
 	const handleDelete = () => {
 		handleAPIRequests({
 			request,
@@ -42,7 +45,7 @@ const WarningModal = ({
 				<Row align="middle" justify="space-between" gutter={12}>
 					<Col>
 						<CustomButton onClick={onCancel} type="view" disabled={loading}>
-							No, that was a mistake!
+							{lang?.dashboard_shared?.buttons?.mistake}
 						</CustomButton>
 					</Col>
 
@@ -52,7 +55,7 @@ const WarningModal = ({
 							onClick={handleDelete}
 							loading={loading}
 						>
-							{loading ? "Deleting" : "Yes"}
+							{loading ? lang?.dashboard_shared?.buttons?.deleting : lang?.dashboard_shared?.buttons?.yes}
 						</CustomButton>
 					</Col>
 				</Row>
@@ -71,7 +74,7 @@ const WarningModal = ({
 			</p>
 
 			<span className="text-[12px] text-gray-400">
-				Know that this action is irreversible!
+				{lang?.dashboard_shared?.modals?.delete_modal?.desc}
 			</span>
 		</Modal>
 	);

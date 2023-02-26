@@ -27,6 +27,7 @@ import { useGetAcademicYearsQuery } from "../../../lib/api/AcademicYear/academic
 import { Dropdown } from "antd";
 import CustomImage from "../../../components/Shared/CustomImage";
 import handleDownloadFile from "../../../helpers/handleDownloadFile";
+import { useSelector } from "react-redux";
 
 const Students = () => {
 	const [isVisible, setIsVisible] = useState(false);
@@ -39,6 +40,8 @@ const Students = () => {
 	const [isPaymentOPtional, setIsPaymentOPtional] = useState(false);
 	const [isPaymentAdditional, setIsPaymentAdditional] = useState(false);
 	const [academicYearId, setAcademicYearId] = useState("");
+
+	const lang = useSelector((state) => state?.translation?.payload);
 
 	const [form] = Form.useForm();
 
@@ -180,14 +183,14 @@ const Students = () => {
 				className="transition ease-in-out delay-120 mb-2 hover:bg-gray-300 hover:p-2 hover:px-4 hover:rounded pointer"
 				onClick={() => handleDownloadFeeReport("students")}
 			>
-				For students
+				{lang?.fees_pg?.download_btn?.for_students}
 			</p>
 
 			<p
 				className="transition ease-in-out delay-120 hover:bg-gray-300 hover:p-2 hover:px-4 hover:rounded pointer"
 				onClick={() => handleDownloadFeeReport("classrooms")}
 			>
-				For Classrooms
+				{lang?.fees_pg?.download_btn?.for_classrooms}
 			</p>
 		</div>
 	);
@@ -226,7 +229,7 @@ const Students = () => {
 									: "opacity-1"
 							}  text-[14px] font-medium ml-2`}
 						>
-							Download report
+							{lang?.fees_pg?.download_btn?.title}
 						</span>
 
 						<CustomImage
@@ -245,7 +248,7 @@ const Students = () => {
 
 			<Col>
 				<CustomButton onClick={() => setIsVisible(true)} type="primary">
-					Add fee
+					{lang?.fees_pg?.new_btn}
 				</CustomButton>
 			</Col>
 		</Row>
@@ -253,7 +256,7 @@ const Students = () => {
 
 	const LeftSide = () => (
 		<p className="text-[20px] text-dark font-semibold">
-			{fees?.payload?.items?.length || ""} Fees
+			{fees?.payload?.totalItems || ""} {lang?.fees_pg?.title}
 		</p>
 	);
 
@@ -265,7 +268,11 @@ const Students = () => {
 				loading={isAddingFee || isEditingFee}
 				handleCancel={handleCancelEditModal}
 				width={550}
-				title={itemToEdit ? "Edit fee" : "Add a fee"}
+				title={
+					itemToEdit
+						? lang?.fees_pg?.modals?.edit_fee_title
+						: lang?.fees_pg?.modals?.add_fee_title
+				}
 				footerContent={
 					<CustomButton
 						loading={isAddingFee || isEditingFee}
@@ -273,7 +280,7 @@ const Students = () => {
 						htmlType="submit"
 						form="add-class"
 					>
-						Save
+						{lang?.dashboard_shared?.buttons?.save}
 					</CustomButton>
 				}
 			>
@@ -301,7 +308,7 @@ const Students = () => {
 						<Col className="w-[150px]">
 							<CustomInput
 								onChange={onSearchChange}
-								placeholder="type to search..."
+								placeholder={lang?.dashboard_shared?.messages?.type_to_search}
 							/>
 						</Col>
 
@@ -312,9 +319,13 @@ const Students = () => {
 										onChange={handleAcademicYearChange}
 										value={academicYearId}
 										type="small-select"
-										label="Year"
+										label={lang?.dashboard_shared?.filters?.year?.name}
 										options={[
-											{ key: 0, value: "", label: "Select" },
+											{
+												key: 0,
+												value: "",
+												label: lang?.dashboard_shared?.filters?.year?.sub_title,
+											},
 											...academicYearsList,
 										]}
 										isLoading={isAcademicYearsLoading}
@@ -326,9 +337,14 @@ const Students = () => {
 										onChange={handleClassChange}
 										value={classroomId}
 										type="small-select"
-										label="Class"
+										label={lang?.dashboard_shared?.filters?.class?.name}
 										options={[
-											{ key: 0, value: "", label: "Select" },
+											{
+												key: 0,
+												value: "",
+												label:
+													lang?.dashboard_shared?.filters?.class?.sub_title,
+											},
 											...classesList,
 										]}
 										isLoading={isClassLoading}
@@ -340,9 +356,13 @@ const Students = () => {
 										onChange={handleTermChange}
 										value={termId}
 										type="small-select"
-										label="Term"
+										label={lang?.dashboard_shared?.filters?.term?.name}
 										options={[
-											{ key: 0, value: "", label: "Select" },
+											{
+												key: 0,
+												value: "",
+												label: lang?.dashboard_shared?.filters?.term?.sub_title,
+											},
 											...termOptions,
 										]}
 									/>
@@ -353,9 +373,13 @@ const Students = () => {
 										onChange={handleFeeTypeChange}
 										value={feeType}
 										type="small-select"
-										label="Type"
+										label={lang?.dashboard_shared?.filters?.type?.name}
 										options={[
-											{ key: 0, value: "", label: "Select" },
+											{
+												key: 0,
+												value: "",
+												label: lang?.dashboard_shared?.filters?.type?.sub_title,
+											},
 											{ key: 1, value: "SCHOOL_FEE", label: "School fee" },
 											{
 												key: 2,
@@ -369,7 +393,10 @@ const Students = () => {
 						</Col>
 					</Row>
 
-					<div className="mt-5 h-[60vh] 2xl:h-[68vh] overflow-x-auto">
+					<div
+						style={{ maxHeight: "calc(100vh - 310px)" }}
+						className="mt-5 h-[fit-content] overflow-x-auto"
+					>
 						{showEmpty ? (
 							<Empty className="mt-6 h-[62vh]" />
 						) : (
@@ -378,6 +405,7 @@ const Students = () => {
 								isFetching={isFetching}
 								setItemToEdit={setItemToEdit}
 								setIsVisible={setIsVisible}
+								lang={lang}
 							/>
 						)}
 

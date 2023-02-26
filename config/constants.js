@@ -1,29 +1,74 @@
 export const BASE_DEV_URL = process.env.NEXT_PUBLIC_URL;
 import message from "../config/message.json";
+import userType from "../helpers/userType";
 
-export const menus = (trans) => {
-	return [
+export const menus = ({ trans, role }) => {
+	const { isAdmin, isSchool, isParent, isStudent } = userType(role);
+
+	const schoolMenu = [
 		{
-			name: trans?.navbar?.classroom,
+			name: trans?.navbar?.classroom || "Classrooms",
 			url: "/dashboard",
 			icon: "/icons/classes",
 			ext: ".svg",
 		},
 
 		{
-			name: trans?.navbar?.students,
+			name: trans?.navbar?.students || "Students",
 			url: "/dashboard/students",
 			icon: "/icons/students",
 			ext: ".svg",
 		},
 
 		{
-			name: trans?.navbar?.fees,
+			name: trans?.navbar?.fees || "Fees",
 			url: "/dashboard/fees",
 			icon: "/icons/fees",
 			ext: ".svg",
 		},
 	];
+
+	const adminMenu = [
+		{
+			name: trans?.navbar?.schools || "Schools",
+			url: "/dashboard",
+			icon: "/icons/schools",
+			ext: ".svg",
+		},
+
+		{
+			name: trans?.navbar?.academic_years || "Academic years",
+			url: "/dashboard/academic-years",
+			icon: "/icons/academic",
+			ext: ".svg",
+		},
+	];
+
+	const parentMenu = [
+		{
+			name: trans?.navbar?.children || "Children",
+			url: "/dashboard",
+			icon: "/icons/children",
+			ext: ".svg",
+		},
+	];
+
+	const studentMenu = [
+		{
+			name: trans?.navbar?.my_profile || "My profile",
+			url: "/dashboard",
+			icon: "/icons/student-profile",
+			ext: ".svg",
+		},
+	];
+
+	return isAdmin
+		? adminMenu
+		: isParent
+		? parentMenu
+		: isStudent
+		? studentMenu
+		: schoolMenu;
 };
 
 export const login_options = {
@@ -34,7 +79,7 @@ export const login_options = {
 };
 
 export const _ns_token_ = "_nest_school_logged_in_";
-export const _pagination_number_ = 10;
+export const _pagination_number_ = 40;
 export const _selected_lang_ = "_selected_lang_";
 
 export const termOptions = [

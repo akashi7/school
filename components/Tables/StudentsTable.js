@@ -6,6 +6,7 @@ import CustomButton from "../Shared/CustomButton";
 import WarningModal from "../Shared/WarningModal";
 import routes from "../../config/routes";
 import { useDeleteStudentMutation } from "../../lib/api/Students/studentsEndpoints";
+import { useSelector } from "react-redux";
 
 const { Column } = Table;
 
@@ -17,6 +18,8 @@ const StudentsTable = ({
 }) => {
 	const [isWarningVisible, setIsWarningVisible] = useState(false);
 	const [itemToDelete, setItemToDelete] = useState(null);
+
+	const lang = useSelector((state) => state?.translation?.payload);
 
 	const [deleteStudent, { isLoading: isDeleting }] = useDeleteStudentMutation();
 
@@ -42,9 +45,9 @@ const StudentsTable = ({
 			<WarningModal
 				isVisible={isWarningVisible}
 				setIsVisible={setIsWarningVisible}
-				warningMessage="Do you really want to delete class"
-				warningKey={itemToDelete?.student?.fullName}
-				itemToDelete={itemToDelete?.student?.id}
+				warningMessage={`${lang?.dashboard_shared?.modals?.delete_modal?.title} ${lang?.students_pg?.student}`}
+				warningKey={itemToDelete?.fullName}
+				itemToDelete={itemToDelete?.id}
 				request={deleteStudent}
 				loading={isDeleting}
 				onSuccess={onDeleteStudentSuccess}
@@ -72,33 +75,43 @@ const StudentsTable = ({
 				/>
 
 				<Column
-					title="Name"
+					title={lang?.students_pg?.table?.name}
 					key="name"
 					render={(record) => (
-						<span className="font-bold">{record?.student?.fullName}</span>
+						<span className="font-bold">{record?.fullName}</span>
 					)}
 				/>
 
 				<Column
-					title="Class"
+					title={lang?.students_pg?.table?.class}
 					key="class"
-					render={(record) => <span>{record?.stream?.classroom?.name}</span>}
+					render={(record) => (
+						<span>
+							{record?.studentPromotions?.length &&
+								record?.studentPromotions[0]?.stream?.classroom?.name}
+						</span>
+					)}
 				/>
 
 				<Column
-					title="Stream"
+					title={lang?.students_pg?.table?.stream}
 					key="stream"
-					render={(record) => <span>{record?.stream?.name}</span>}
+					render={(record) => (
+						<span>
+							{record?.studentPromotions.length &&
+								record?.studentPromotions[0]?.stream?.name}
+						</span>
+					)}
 				/>
 
 				<Column
-					title="Location"
+					title={lang?.students_pg?.table?.location}
 					key="location"
-					render={(record) => <span>{record?.student?.address}</span>}
+					render={(record) => <span>{record?.address}</span>}
 				/>
 
 				<Column
-					title="Actions"
+					title={lang?.students_pg?.table?.actions}
 					key="actions"
 					width={200}
 					render={(record) => (
@@ -106,22 +119,22 @@ const StudentsTable = ({
 							<CustomButton
 								type="view"
 								onClick={() =>
-									router.push(`${routes.students.url}/${record?.student.id}`)
+									router.push(`${routes.students.url}/${record?.id}`)
 								}
 							>
-								View
+								{lang?.dashboard_shared?.buttons?.view}
 							</CustomButton>
 							<CustomButton
 								type="edit"
 								onClick={() => handleEditStudent(record)}
 							>
-								Edit
+								{lang?.dashboard_shared?.buttons?.edit}
 							</CustomButton>
 							<CustomButton
 								type="delete"
 								onClick={() => handleDeleteStudents(record)}
 							>
-								Delete
+								{lang?.dashboard_shared?.buttons?.delete}
 							</CustomButton>
 						</div>
 					)}

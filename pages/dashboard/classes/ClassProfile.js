@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import Form from "antd/lib/form";
+import { useSelector } from "react-redux";
 import CustomImage from "../../../components/Shared/CustomImage";
 import SingleStream from "../../../components/SingleStream";
 import CustomButton from "../../../components/Shared/CustomButton";
@@ -20,6 +21,8 @@ import { Empty } from "../../../components/Shared/Empty";
 
 const ClassProfile = ({ visibleClass }) => {
 	const [isVisible, setIsVisible] = useState(false);
+
+	const lang = useSelector((state) => state?.translation?.payload);
 
 	const [getStreams, { isFetching, isLoading, data: streams }] =
 		useLazyGetStreamsQuery();
@@ -57,7 +60,7 @@ const ClassProfile = ({ visibleClass }) => {
 				isVisible={isVisible}
 				setIsVisible={setIsVisible}
 				loading={isAddingStream}
-				title="Add stream"
+				title={lang?.classrooms_pg?.modals?.add_stream_title}
 				footerContent={
 					<CustomButton
 						type="primary"
@@ -68,7 +71,7 @@ const ClassProfile = ({ visibleClass }) => {
 						Save
 					</CustomButton>
 				}
-				subTitle="For class"
+				subTitle={lang?.classrooms_pg?.modals?.add_stream_sub_title}
 				subTitleKey={visibleClass?.name}
 			>
 				<Form form={form} name="add-stream" onFinish={onAddStreamFinish}>
@@ -84,7 +87,9 @@ const ClassProfile = ({ visibleClass }) => {
 			<div className="w-[100%] bg-white p-8 py-4 rounded-md">
 				{!visibleClass ? (
 					<Empty
-						message="Please select a class to view details!"
+						message={
+							lang.dashboard_shared?.messages?.select_class_to_view_streams
+						}
 						className="mt-6"
 						height="73vh"
 					/>
@@ -98,7 +103,8 @@ const ClassProfile = ({ visibleClass }) => {
 
 						<div className="flex justify-between items-center bg-grey p-4 py-2 rounded-md mb-4">
 							<p className="text-[20px] text-dark font-semibold">
-								{streams?.payload?.totalItems} Streams
+								{streams?.payload?.totalItems}{" "}
+								{lang?.classrooms_pg?.streams?.title}
 							</p>
 
 							<CustomImage
@@ -108,7 +114,10 @@ const ClassProfile = ({ visibleClass }) => {
 							/>
 						</div>
 
-						<div className="h-[50vh] overflow-y-auto">
+						<div
+							style={{ maxHeight: "calc(100vh - 400px)" }}
+							className="h-[fit-content] overflow-y-auto"
+						>
 							{isFetching ? (
 								<AppLoader height="45vh" className="mt-6" />
 							) : streams?.payload?.totalItems <= 0 ? (

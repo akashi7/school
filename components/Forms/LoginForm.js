@@ -3,23 +3,30 @@ import CustomImage from "../Shared/CustomImage";
 import AuthIndex from "../Auth/AuthIndex";
 import activeForm from "../../helpers/activeForm";
 import SchoolLogin from "../Auth/SchoolLogin";
+import AdminLogin from "../Auth/AdminLogin";
+import StudentLogin from "../Auth/StudentLogin";
+import ParentLogin from "../Auth/ParentLogin";
+import { useSelector } from "react-redux";
 
 const LoginForm = () => {
 	const [activeLogin, setActiveLogin] = useState(null);
 
 	const { school, admin, parent, student } = activeForm(activeLogin);
+
+	const lang = useSelector((state) => state?.translation?.payload);
+
 	return (
 		<div className="m-auto bg-white rounded-[12px] p-12  w-[500px] flex flex-col items-center">
 			<CustomImage src="/icons/logo.png" width={240} />
 
 			{school ? (
-				<SchoolLogin setActiveLogin={setActiveLogin} />
+				<SchoolLogin lang={lang} setActiveLogin={setActiveLogin} />
 			) : admin ? (
-				<p>Admin</p>
+				<AdminLogin lang={lang} setActiveLogin={setActiveLogin} />
 			) : parent ? (
-				<p>Parent</p>
+				<ParentLogin lang={lang} setActiveLogin={setActiveLogin} />
 			) : student ? (
-				<p>Student</p>
+				<StudentLogin lang={lang} setActiveLogin={setActiveLogin} />
 			) : (
 				<AuthIndex setActiveLogin={setActiveLogin} />
 			)}
