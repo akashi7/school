@@ -95,7 +95,7 @@ const Classes = () => {
 
 	const LeftSide = () => (
 		<p className="text-[20px] text-dark font-semibold">
-			{classes?.payload?.items?.length || ""} {lang?.classrooms_pg?.title}
+			{classes?.payload?.totalItems || ""} {lang?.classrooms_pg?.title}
 		</p>
 	);
 
@@ -106,7 +106,11 @@ const Classes = () => {
 				setIsVisible={setIsVisible}
 				loading={isAddingClass || isEditing}
 				handleCancel={handleCancelEditModal}
-				title={itemToEdit ? "Edit class" : "Add a class"}
+				title={
+					itemToEdit
+						? lang?.classrooms_pg?.modals?.edit_class_title
+						: lang?.classrooms_pg?.modals?.add_class_title
+				}
 				subTitle={itemToEdit?.name || ""}
 				footerContent={
 					<CustomButton
@@ -115,14 +119,14 @@ const Classes = () => {
 						htmlType="submit"
 						form="add-class"
 					>
-						Save
+						{lang?.dashboard_shared?.buttons?.save}
 					</CustomButton>
 				}
 			>
 				<Form form={form} name="add-class" onFinish={onAddClassFinish}>
 					<CustomInput
-						label="Class name"
-						placeholder="Class name..."
+						label={lang?.classrooms_pg?.modals?.class_name}
+						placeholder={`${lang?.classrooms_pg?.modals?.class_name}...`}
 						name="name"
 						rules={requiredField("Class name")}
 					/>
@@ -135,20 +139,24 @@ const Classes = () => {
 			{isLoading ? (
 				<GeneralContentLoader />
 			) : (
-				<div className="flex gap-4 mt-8 h-[73vh] overflow-y-hidden">
+				<div className="flex gap-4 mt-8 h-[fit-content] overflow-y-hidden">
 					<div
-						className={`w-[55%] max-h-[73vh] h-[fit-content] mr-12 border p-4 rounded`}
+						style={{ maxHeight: "calc(100vh - 180px)" }}
+						className={`w-[55%] h-[fit-content] mr-12 border p-4 rounded`}
 					>
 						<div className="w-[350px] mb-8">
 							<CustomInput
 								onChange={onSearchChange}
-								placeholder="type to search..."
+								placeholder={lang?.dashboard_shared?.messages?.type_to_search}
 							/>
 						</div>
 						{isLoading ? (
 							<AppLoader className="h-[60vh]" />
 						) : (
-							<div className="max-h-[61vh] h-[fit-content] overflow-y-auto">
+							<div
+								style={{ maxHeight: "calc(100vh - 280px)" }}
+								className="h-[fit-content] overflow-y-auto"
+							>
 								<ClassesTable
 									classes={classes?.payload?.items}
 									visibleClass={visibleClass}

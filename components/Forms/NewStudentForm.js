@@ -9,6 +9,8 @@ import requiredField from "../../helpers/requiredField";
 import { termOptions } from "../../config/constants";
 import countries_with_codes from "../../config/countries_with_codes";
 import CustomImage from "../Shared/CustomImage";
+import { useGetSchoolProfileQuery } from "../../lib/api/Schools/schoolsEndpoints";
+import { useSelector } from "react-redux";
 
 const NewStudentForm = ({
 	onFinish,
@@ -25,6 +27,10 @@ const NewStudentForm = ({
 	setSelectedCountry,
 	imgURL,
 }) => {
+	const { data: schoolProfile, isLoading } = useGetSchoolProfileQuery();
+
+	const lang = useSelector((state) => state?.translation?.payload);
+
 	const handleClassroomIdChange = (value) => {
 		setClassroomId(value);
 		form.setFieldsValue({ streamId: "" });
@@ -74,13 +80,15 @@ const NewStudentForm = ({
 
 	return (
 		<Form form={form} name="add-student" onFinish={onFinish}>
-			<p className="text-gray-300 mb-4">Personal info</p>
+			<p className="text-gray-300 mb-4">
+				{lang?.students_pg?.modals?.personal_info}
+			</p>
 
 			<Row align="middle" wrap={false} gutter={24}>
 				<Col className="w-[100%]">
 					<CustomInput
-						label="Full name"
-						placeholder="Full name..."
+						label={lang?.students_pg?.modals?.full_name}
+						placeholder={`${lang?.students_pg?.modals?.full_name}...`}
 						name="fullName"
 						rules={requiredField("Full name")}
 					/>
@@ -90,7 +98,7 @@ const NewStudentForm = ({
 			<Row align="middle" wrap={false} gutter={24}>
 				<Col className="w-[50%]">
 					<CustomInput
-						label="Gender"
+						label={lang?.students_pg?.modals?.gender}
 						type="select"
 						name="gender"
 						options={[
@@ -105,7 +113,7 @@ const NewStudentForm = ({
 
 				<Col className="w-[50%]">
 					<CustomInput
-						label="DOB"
+						label={lang?.students_pg?.modals?.dob}
 						type="date"
 						name="dob"
 						rules={requiredField("DOB")}
@@ -120,7 +128,7 @@ const NewStudentForm = ({
 			>
 				<Col flex={1}>
 					<CustomInput
-						label="Profile"
+						label={lang?.students_pg?.modals?.profile}
 						type="file"
 						placeholder="Select to upload"
 						name="passportPhoto"
@@ -131,28 +139,35 @@ const NewStudentForm = ({
 					/>
 				</Col>
 
-				<Col>
-					{uploadLoading ? (
-						<LoadingOutlined style={{ fontSize: 24, marginTop: "16px" }} spin />
-					) : (
-						imgURL && (
-							<CustomImage
-								src={imgURL}
-								width={38}
-								height={38}
-								className="object-cover mt-[32px] rounded"
+				{(uploadLoading || imgURL) && (
+					<Col>
+						{uploadLoading ? (
+							<LoadingOutlined
+								style={{ fontSize: 24, marginTop: "16px" }}
+								spin
 							/>
-						)
-					)}
-				</Col>
+						) : (
+							imgURL && (
+								<CustomImage
+									src={imgURL}
+									width={38}
+									height={38}
+									className="object-cover mt-[32px] rounded"
+								/>
+							)
+						)}
+					</Col>
+				)}
 			</Row>
 
-			<p className="text-gray-300 my-4">Contact info</p>
+			<p className="text-gray-300 my-4">
+				{lang?.students_pg?.modals?.contact_info}
+			</p>
 
 			<Row align="middle" wrap={false} gutter={24}>
 				<Col className="w-[50%]">
 					<CustomInput
-						label="Email"
+						label={lang?.students_pg?.modals?.email}
 						placeholder="example@company.domain"
 						name="email"
 						rules={requiredField("Email")}
@@ -161,10 +176,10 @@ const NewStudentForm = ({
 
 				<Col className="w-[50%]">
 					<CustomInput
-						label="Address"
-						placeholder="Type location..."
+						label={lang?.students_pg?.modals?.address}
+						placeholder={`${lang?.students_pg?.modals?.address}...`}
 						name="address"
-						rules={requiredField("Last name")}
+						rules={requiredField("Address")}
 					/>
 				</Col>
 			</Row>
@@ -172,7 +187,7 @@ const NewStudentForm = ({
 			<Row align="middle" wrap={false} gutter={24}>
 				<Col className="w-[50%]">
 					<CustomInput
-						label="Country name"
+						label={lang?.students_pg?.modals?.country_name}
 						placeholder="Select country"
 						type="select"
 						name="countryName"
@@ -190,8 +205,8 @@ const NewStudentForm = ({
 
 				<Col className="w-[50%]">
 					<CustomInput
-						label="Parent phone number"
-						placeholder="Phone number..."
+						label={lang?.students_pg?.modals?.parent_phone_number}
+						placeholder={`${lang?.students_pg?.modals?.parent_phone_number}...`}
 						name="parentPhoneNumber"
 						rules={requiredField("Parent phone")}
 					/>
@@ -201,8 +216,8 @@ const NewStudentForm = ({
 			<Row align="middle" wrap={false} gutter={24}>
 				<Col className="w-[50%]">
 					<CustomInput
-						label="First contact phone"
-						placeholder="Phone number..."
+						label={lang?.students_pg?.modals?.first_contact_phone}
+						placeholder={`${lang?.students_pg?.modals?.first_contact_phone}...`}
 						name="firstContactPhone"
 						rules={requiredField("First contact phone")}
 					/>
@@ -210,8 +225,8 @@ const NewStudentForm = ({
 
 				<Col className="w-[50%]">
 					<CustomInput
-						label="Second contact phone"
-						placeholder="Phone number..."
+						label={lang?.students_pg?.modals?.second_contact_phone}
+						placeholder={`${lang?.students_pg?.modals?.second_contact_phone}...`}
 						name="secondContactPhone"
 						rules={requiredField("Second contact phone")}
 					/>
@@ -220,12 +235,26 @@ const NewStudentForm = ({
 
 			<p className="text-gray-300 my-4">Academic info</p>
 
+			{schoolProfile?.payload?.hasStudentIds && (
+				<Row align="middle" wrap={false} gutter={24}>
+					<Col className="w-[100%]">
+						<CustomInput
+							placeholder={lang?.students_pg?.modals?.student_identifier}
+							name="studentIdentifier"
+							label={`${lang?.students_pg?.modals?.student_identifier}...`}
+							isLoading={isLoading}
+							rules={requiredField("Student identifier")}
+						/>
+					</Col>
+				</Row>
+			)}
+
 			<Row align="middle" wrap={false} gutter={24}>
 				<Col className="w-[50%]">
 					<CustomInput
 						type="select"
 						name="academicYearId"
-						label="Academic year"
+						label={lang?.students_pg?.modals?.academic_year}
 						isLoading={isAcademicYearsLoading}
 						rules={requiredField("Academic year")}
 						options={academicYearsList}
@@ -234,7 +263,7 @@ const NewStudentForm = ({
 
 				<Col className="w-[50%]">
 					<CustomInput
-						label="Term"
+						label={lang?.students_pg?.modals?.term}
 						type="select"
 						name="academicTerm"
 						options={[...termOptions]}
@@ -247,7 +276,7 @@ const NewStudentForm = ({
 			<Row align="middle" wrap={false} gutter={24}>
 				<Col className="w-[50%]">
 					<CustomInput
-						label="Classes"
+						label={lang?.students_pg?.modals?.class}
 						name="classroomId"
 						type="select"
 						placeholder="Please select"
@@ -261,7 +290,7 @@ const NewStudentForm = ({
 				<Col className="w-[50%]">
 					<CustomInput
 						type="select"
-						label="Stream"
+						label={lang?.students_pg?.modals?.stream}
 						name="streamId"
 						isLoading={isStreamLoading}
 						disabled={isStreamLoading}

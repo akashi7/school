@@ -3,10 +3,12 @@ import Table from "antd/lib/table";
 import CustomButton from "../Shared/CustomButton";
 import WarningModal from "../Shared/WarningModal";
 import { useDeleteFeeMutation } from "../../lib/api/Fees/FeesEndpoints";
+import { useSelector } from "react-redux";
+import { toLocalString } from "../../helpers/numbers";
 
 const { Column } = Table;
 
-const FeesTable = ({ fees, isFetching, setItemToEdit, setIsVisible }) => {
+const FeesTable = ({ fees, isFetching, setItemToEdit, setIsVisible, lang }) => {
 	const [isWarningVisible, setIsWarningVisible] = useState(false);
 	const [itemToDelete, setItemToDelete] = useState(null);
 
@@ -32,7 +34,7 @@ const FeesTable = ({ fees, isFetching, setItemToEdit, setIsVisible }) => {
 			<WarningModal
 				isVisible={isWarningVisible}
 				setIsVisible={setIsWarningVisible}
-				warningMessage="Do you really want to delete fee"
+				warningMessage={`${lang?.dashboard_shared?.modals?.delete_modal?.title} ${lang?.fees_pg?.fee}`}
 				warningKey={itemToDelete?.name}
 				itemToDelete={itemToDelete?.id}
 				request={deleteFee}
@@ -62,19 +64,23 @@ const FeesTable = ({ fees, isFetching, setItemToEdit, setIsVisible }) => {
 				/>
 
 				<Column
-					title="Name"
+					title={lang?.fees_pg?.table?.name}
 					key="name"
 					render={(record) => <span className="font-bold">{record?.name}</span>}
 				/>
 
 				<Column
-					title="Classes"
+					title={lang?.fees_pg?.table?.classes}
 					key="classes"
-					render={(record) => <span>{record?.classroom?.name}</span>}
+					render={(record) => (
+						<span>
+							{record?.classrooms?.map((classroom) => `${classroom?.name}, `)}
+						</span>
+					)}
 				/>
 
 				<Column
-					title="Terms"
+					title={lang?.fees_pg?.table?.terms}
 					key="terms"
 					render={(record) => (
 						<span>{record?.academicTerms?.map((term) => `${term}, `)}</span>
@@ -82,13 +88,13 @@ const FeesTable = ({ fees, isFetching, setItemToEdit, setIsVisible }) => {
 				/>
 
 				<Column
-					title="Year"
+					title={lang?.fees_pg?.table?.year}
 					key="year"
 					render={(record) => <span>{record?.academicYear?.name}</span>}
 				/>
 
 				<Column
-					title="Fee type"
+					title={lang?.fees_pg?.table?.fee_type}
 					key="type"
 					render={(record) => (
 						<span
@@ -102,30 +108,30 @@ const FeesTable = ({ fees, isFetching, setItemToEdit, setIsVisible }) => {
 				/>
 
 				<Column
-					title="Amount"
+					title={lang?.fees_pg?.table?.amount}
 					key="amount"
 					render={(record) => (
 						<span className="text-black font-semibold">
-							{record?.amount} Rwf
+							{toLocalString(record?.amount || 0)} Rwf
 						</span>
 					)}
 				/>
 
 				<Column
-					title="Actions"
+					title={lang?.fees_pg?.table?.actions}
 					key="actions"
 					width={200}
 					render={(record) => (
 						<div className="flex gap-12">
 							<CustomButton type="edit" onClick={() => handleEditFee(record)}>
-								Edit
+								{lang?.dashboard_shared?.buttons?.edit}
 							</CustomButton>
 
 							<CustomButton
 								type="delete"
 								onClick={() => handleDeleteFee(record)}
 							>
-								Delete
+								{lang?.dashboard_shared?.buttons?.delete}
 							</CustomButton>
 						</div>
 					)}

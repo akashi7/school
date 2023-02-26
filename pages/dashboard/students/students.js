@@ -30,6 +30,8 @@ import NewStudentForm from "../../../components/Forms/NewStudentForm";
 import uploadFile from "../../../helpers/uploadFile";
 import useHandleNewStudentForm from "../../../components/Forms/useHandleNewStudentForm";
 import Notify from "../../../components/Shared/Notification";
+import Paginator from "../../../components/Shared/Paginator";
+import { useSelector } from "react-redux";
 
 const Students = () => {
 	const [isVisible, setIsVisible] = useState(false);
@@ -48,6 +50,7 @@ const Students = () => {
 	const handleCancel = () => {
 		setItemToEdit(null);
 		setIsVisible(false);
+		setImgURL(null);
 	};
 
 	const {
@@ -65,6 +68,8 @@ const Students = () => {
 
 	const { data: classes, isFetching: isClassLoading } = useGetClassesQuery({});
 
+	const lang = useSelector((state) => state?.translation?.payload);
+
 	const [
 		getSingleStudent,
 		{ data: studentData, isFetching: isGetStudentLoading },
@@ -81,16 +86,18 @@ const Students = () => {
 	const [editStudent, { isLoading: isEditingStudent }] =
 		useEditStudentMutation();
 
+	const classroomIDFromResponse =
+		itemToEdit?.studentPromotions.length &&
+		itemToEdit?.studentPromotions[0]?.stream?.classroom?.id;
+
 	const canFetchStreams =
-		classroomId ||
-		newStudentSelectedClassroomId ||
-		itemToEdit?.stream?.classroom?.id;
+		classroomId || newStudentSelectedClassroomId || classroomIDFromResponse;
 
 	useEffect(() => {
 		if (itemToEdit) {
 			handleAPIRequests({
 				request: getSingleStudent,
-				id: itemToEdit?.student?.id,
+				id: itemToEdit?.id,
 				onError: handleCancel,
 			});
 		}
@@ -107,14 +114,14 @@ const Students = () => {
 				id:
 					classroomId ||
 					newStudentSelectedClassroomId ||
-					itemToEdit?.stream?.classroom?.id,
+					classroomIDFromResponse,
 			});
 		}
 	}, [
 		canFetchStreams,
+		classroomIDFromResponse,
 		classroomId,
 		getStreams,
-		itemToEdit,
 		newStudentSelectedClassroomId,
 	]);
 
@@ -140,7 +147,7 @@ const Students = () => {
 			request: itemToEdit ? editStudent : addStudent,
 			onSuccess: onSuccess,
 			notify: true,
-			id: itemToEdit?.student?.id,
+			id: itemToEdit?.id,
 			...data,
 		});
 	};
@@ -152,22 +159,26 @@ const Students = () => {
 
 	const handleClassChange = (value) => {
 		setClassroomId(value);
+		setCurrentPage(0);
 		setStreamId("");
 	};
 
 	const handleStreamChange = (value) => {
 		setStreamId(value);
+		setCurrentPage(0);
 	};
 
 	const handleAcademicYearChange = (value) => {
 		setAcademicYearId(value);
+		setCurrentPage(0);
 	};
 
 	const handleUploadProfile = (files) => {
 		const isValid =
 			files[0]?.type === "image/png" ||
 			files[0]?.type === "image/jpg" ||
-			files[0]?.type === "image/jpeg";
+			files[0]?.type === "image/jpeg" ||
+			files[0]?.type === "image/svg+xml";
 
 		isValid
 			? uploadFile({
@@ -183,7 +194,10 @@ const Students = () => {
 			  });
 	};
 
-	useHandleNewStudentForm({ form, itemToEdit: studentData?.payload });
+	useHandleNewStudentForm({
+		form,
+		itemToEdit: itemToEdit ? studentData?.payload : null,
+	});
 
 	const isPageLoading = isLoading;
 
@@ -220,13 +234,13 @@ const Students = () => {
 
 	const RightSide = () => (
 		<CustomButton onClick={() => setIsVisible(true)} type="primary">
-			New student
+			{lang?.students_pg?.new_btn}
 		</CustomButton>
 	);
 
 	const LeftSide = () => (
 		<p className="text-[20px] text-dark font-semibold">
-			{students?.payload?.items?.length || ""} Students
+			{students?.payload?.totalItems || ""} {lang?.students_pg?.title}
 		</p>
 	);
 
@@ -238,7 +252,11 @@ const Students = () => {
 				loading={isAddingClass || isEditingStudent}
 				width={700}
 				handleCancel={handleCancel}
-				title={itemToEdit ? "Edit student" : "Create student"}
+				title={
+					itemToEdit
+						? lang?.students_pg?.modals?.edit_student_title
+						: lang?.students_pg?.modals?.add_student_title
+				}
 				footerContent={
 					!isGetStudentLoading && (
 						<CustomButton
@@ -247,7 +265,7 @@ const Students = () => {
 							htmlType="submit"
 							form="add-student"
 						>
-							Save
+							{lang?.dashboard_shared?.buttons?.save}
 						</CustomButton>
 					)
 				}
@@ -284,7 +302,7 @@ const Students = () => {
 						<Col className="w-[350px]">
 							<CustomInput
 								onChange={onSearchChange}
-								placeholder="type to search..."
+								placeholder={lang?.dashboard_shared?.messages?.type_to_search}
 							/>
 						</Col>
 
@@ -295,9 +313,13 @@ const Students = () => {
 										onChange={handleAcademicYearChange}
 										value={academicYearId}
 										type="small-select"
-										label="Year"
+										label={lang?.dashboard_shared?.filters?.year?.name}
 										options={[
-											{ key: 0, value: "", label: "Select year" },
+											{
+												key: 0,
+												value: "",
+												label: lang?.dashboard_shared?.filters?.year?.sub_title,
+											},
 											...academicYearsList,
 										]}
 										isLoading={isAcademicYearsLoading}
@@ -309,9 +331,14 @@ const Students = () => {
 										onChange={handleClassChange}
 										value={classroomId}
 										type="small-select"
-										label="Class"
+										label={lang?.dashboard_shared?.filters?.class?.name}
 										options={[
-											{ key: 0, value: "", label: "Select class" },
+											{
+												key: 0,
+												value: "",
+												label:
+													lang?.dashboard_shared?.filters?.class?.sub_title,
+											},
 											...classesList,
 										]}
 										isLoading={isClassLoading}
@@ -323,9 +350,14 @@ const Students = () => {
 										onChange={handleStreamChange}
 										value={streamId}
 										type="small-select"
-										label="Stream"
+										label={lang?.dashboard_shared?.filters?.stream?.name}
 										options={[
-											{ key: 0, value: "", label: "Select" },
+											{
+												key: 0,
+												value: "",
+												label:
+													lang?.dashboard_shared?.filters?.stream?.sub_title,
+											},
 											...streamsList,
 										]}
 										isLoading={isStreamLoading}
@@ -335,7 +367,10 @@ const Students = () => {
 						</Col>
 					</Row>
 
-					<div className="mt-5 h-[60vh] 2xl:h-[68vh] overflow-x-auto">
+					<div
+						style={{ maxHeight: "calc(100vh - 300px)" }}
+						className="mt-5 h-[fit-content] overflow-x-auto"
+					>
 						{isLoading ? (
 							<AppLoader />
 						) : (
@@ -346,6 +381,12 @@ const Students = () => {
 								setIsEditModalVisible={setIsVisible}
 							/>
 						)}
+
+						<Paginator
+							total={students?.payload?.totalItems}
+							setCurrentPage={setCurrentPage}
+							totalPages={students?.payload?.totalPages}
+						/>
 					</div>
 				</ContentTableContainer>
 			)}

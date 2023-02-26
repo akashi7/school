@@ -11,12 +11,15 @@ import {
 } from "../lib/api/Classrooms/classroomsEndpoints";
 import requiredField from "../helpers/requiredField";
 import handleAPIRequests from "../helpers/handleAPIRequests";
+import { useSelector } from "react-redux";
 
 const SingleStream = ({ data, index, visibleClass }) => {
 	const [isVisible, setIsVisible] = useState(false);
 	const [isWarningVisible, setIsWarningVisible] = useState(false);
 
 	const [form] = Form.useForm();
+
+	const lang = useSelector((state) => state?.translation?.payload);
 
 	const [editStream, { isLoading: isEditing }] = useEditStreamMutation();
 	const [deleteStream, { isLoading: isDeleting }] = useDeleteStreamMutation();
@@ -52,7 +55,7 @@ const SingleStream = ({ data, index, visibleClass }) => {
 				isVisible={isVisible}
 				setIsVisible={setIsVisible}
 				loading={isEditing}
-				title="Edit stream"
+				title={lang?.classrooms_pg?.modals?.edit_stream_title}
 				footerContent={
 					<CustomButton
 						loading={isEditing}
@@ -60,17 +63,17 @@ const SingleStream = ({ data, index, visibleClass }) => {
 						htmlType="submit"
 						form="edit-stream"
 					>
-						Save
+						{lang?.dashboard_shared?.buttons?.save}
 					</CustomButton>
 				}
-				subTitle="For class"
+				subTitle={lang?.classrooms_pg?.modals?.add_stream_sub_title}
 				subTitleKey={visibleClass?.name}
 			>
 				<Form form={form} name="edit-stream" onFinish={onEditStreamFinish}>
 					<CustomInput
-						label="Stream name"
+						label={lang?.classrooms_pg?.modals?.stream_name}
 						name="name"
-						placeholder="Stream name.."
+						placeholder={`${lang?.classrooms_pg?.modals?.stream_name}...`}
 						rules={requiredField("Stream name")}
 					/>
 				</Form>
@@ -95,11 +98,11 @@ const SingleStream = ({ data, index, visibleClass }) => {
 
 				<div className="flex gap-12">
 					<CustomButton type="edit" onClick={() => setIsVisible(true)}>
-						Edit
+						{lang?.dashboard_shared?.buttons?.edit}
 					</CustomButton>
 
 					<CustomButton type="delete" onClick={handleDelete}>
-						Delete
+						{lang?.dashboard_shared?.buttons?.delete}
 					</CustomButton>
 				</div>
 			</div>

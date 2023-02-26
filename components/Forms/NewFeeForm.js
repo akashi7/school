@@ -6,6 +6,7 @@ import Checkbox from "antd/lib/checkbox";
 import CustomInput from "../Shared/CustomInput";
 import requiredField from "../../helpers/requiredField";
 import { termOptions } from "../../config/constants";
+import { useSelector } from "react-redux";
 
 const NewFeeForm = ({
 	onFinish,
@@ -18,6 +19,8 @@ const NewFeeForm = ({
 	academicYears,
 	itemToEdit,
 }) => {
+	const lang = useSelector((state) => state?.translation?.payload);
+
 	useEffect(() => {
 		if (itemToEdit) {
 			form.setFieldsValue({
@@ -41,8 +44,8 @@ const NewFeeForm = ({
 			<Row gutter={24}>
 				<Col span={12}>
 					<CustomInput
-						label="Fee name"
-						placeholder="Fee name..."
+						label={lang?.fees_pg?.modals?.fee_name}
+						placeholder={`${lang?.fees_pg?.modals?.fee_name}...`}
 						name="name"
 						rules={requiredField("Fee name")}
 					/>
@@ -50,8 +53,8 @@ const NewFeeForm = ({
 
 				<Col span={12}>
 					<CustomInput
-						label="Amount"
-						placeholder="Amount..."
+						label={lang?.fees_pg?.modals?.amount}
+						placeholder={`${lang?.fees_pg?.modals?.fee_name}...`}
 						name="amount"
 						inputType="number"
 						rules={requiredField("Amount")}
@@ -61,7 +64,7 @@ const NewFeeForm = ({
 				<Col span={24}>
 					{classes?.payload?.items?.length > 1 && (
 						<CustomInput
-							label="Classes"
+							label={lang?.fees_pg?.modals?.classes}
 							name="classroomIDs"
 							type="select-multiple"
 							placeholder="Please select"
@@ -79,7 +82,7 @@ const NewFeeForm = ({
 
 				<Col span={12}>
 					<CustomInput
-						label="Terms"
+						label={lang?.fees_pg?.modals?.terms}
 						name="academicTerms"
 						type="select-multiple"
 						rules={requiredField("Term")}
@@ -96,7 +99,7 @@ const NewFeeForm = ({
 						<CustomInput
 							type="select"
 							name="academicYearId"
-							label="Academic year"
+							label={lang?.fees_pg?.modals?.academic_year}
 							rules={requiredField("Academic year")}
 							options={[
 								...academicYears?.payload?.items?.map((item) => ({
@@ -117,7 +120,7 @@ const NewFeeForm = ({
 						checked={isPaymentAdditional}
 						onChange={() => handleIsPaymentAdditional()}
 					>
-						Additional payment
+						{lang?.fees_pg?.modals?.additional_payment}
 					</Checkbox>
 				</Col>
 
@@ -128,7 +131,7 @@ const NewFeeForm = ({
 							checked={isPaymentOPtional}
 							onChange={() => handleIsPaymentOptional()}
 						>
-							Optional payment
+							{lang?.fees_pg?.modals?.optional_payment}
 						</Checkbox>
 					</Col>
 				)}

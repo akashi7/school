@@ -1,7 +1,10 @@
 /* eslint-disable react/display-name */
 /* eslint-disable react-hooks/rules-of-hooks */
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 import routes from "../../config/routes";
+import { useWindowSize } from "../../helpers/useWindowSize";
+import SmallScreen from "../Shared/SmallScreen";
 
 const Public = (Wrapped) => {
 	return (props) => {
@@ -12,7 +15,10 @@ const Public = (Wrapped) => {
 			router.replace(routes.dashboard.url);
 			return null;
 		}
-		return <Wrapped {...props} />;
+
+		const { width } = useWindowSize();
+
+		return width <= 1025 ? <SmallScreen /> : <Wrapped {...props} />;
 	};
 };
 

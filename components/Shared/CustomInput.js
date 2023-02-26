@@ -27,7 +27,7 @@ const CustomInput = ({
 	const NormalInput = (
 		<div className="mb-[-10px]">
 			{label && (
-				<label className="text-[18px] text-black font-medium mb-2 block">
+				<label className="text-[18px] text-black font-[500] mb-2 block">
 					{label}
 				</label>
 			)}
@@ -50,7 +50,7 @@ const CustomInput = ({
 	const SelectInput = (
 		<div className="mb-[-10px]">
 			{label && (
-				<label className="text-[18px] text-black font-medium mb-2 block">
+				<label className="text-[18px] text-black font-[500] mb-2 block">
 					{label}
 				</label>
 			)}
@@ -81,7 +81,7 @@ const CustomInput = ({
 	const SelectMultipleInput = (
 		<div className="mb-[-10px]">
 			{label && (
-				<label className="text-[18px] text-black font-medium mb-2 block">
+				<label className="text-[18px] text-black font-[500] mb-2 block">
 					{label}
 				</label>
 			)}
@@ -134,7 +134,7 @@ const CustomInput = ({
 	const CustomDatePicker = (
 		<div className="mb-[-10px] w-[100%]">
 			{label && (
-				<label className="text-[18px] text-black font-medium mb-2 block">
+				<label className="text-[18px] text-black font-[500] mb-2 block">
 					{label}
 				</label>
 			)}

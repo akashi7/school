@@ -2,11 +2,10 @@ import React, { useEffect } from "react";
 import Form from "antd/lib/form";
 import Row from "antd/lib/row";
 import Col from "antd/lib/col";
-import From from "antd/lib/form";
 import PropTypes from "prop-types";
 import CustomInput from "../Shared/CustomInput";
 import requiredField from "../../helpers/requiredField";
-import { termOptions } from "../../config/constants";
+import { useSelector } from "react-redux";
 
 const PromoteStudentForm = ({
 	onFinish,
@@ -21,6 +20,8 @@ const PromoteStudentForm = ({
 }) => {
 	const [form] = Form.useForm();
 
+	const lang = useSelector((state) => state?.translation?.payload);
+
 	const handleClassroomChange = (value) => {
 		setClassroomId(value);
 		form.setFieldsValue({ streamId: "" });
@@ -29,6 +30,9 @@ const PromoteStudentForm = ({
 	useEffect(() => {
 		form.setFieldsValue({
 			placeHolderAcademicTerm: data?.payload?.academicTerm,
+			placeHolderAcademicYearId: data?.payload?.academicYear?.id,
+			placeHolderClassroomId: data?.payload?.stream?.classroom?.id,
+			placeHolderStreamId: data?.payload?.stream?.id,
 		});
 	}, [data, form]);
 
@@ -64,36 +68,27 @@ const PromoteStudentForm = ({
 
 	return (
 		<Form form={form} name="promote-student" onFinish={onFinish}>
-			<p className="text-gray-300 my-4 mt-0">Current academic info:</p>
+			<p className="text-gray-300 my-4 mt-0">
+				{lang?.students_pg?.profile?.modals?.current_academic_info}
+			</p>
 
-			<Row align="middle" wrap={false} gutter={24}>
-				<Col className="w-[50%]">
+			<Row align="middle" wrap={false} gutter={24} className="opacity-60">
+				<Col className="w-[100%]">
 					<CustomInput
 						type="select"
 						name="placeHolderAcademicYearId"
-						label="Academic year"
+						label={lang?.students_pg?.modals?.academic_year}
 						disabled
 						isLoading={isAcademicYearsLoading}
 						options={academicYearsList}
 					/>
 				</Col>
-
-				<Col className="w-[50%]">
-					<CustomInput
-						label="Term"
-						type="select"
-						name="placeHolderAcademicTerm"
-						disabled
-						options={[...termOptions]}
-						placeholder="Select term"
-					/>
-				</Col>
 			</Row>
 
-			<Row align="middle" wrap={false} gutter={24}>
+			<Row align="middle" wrap={false} gutter={24} className="opacity-60">
 				<Col className="w-[50%]">
 					<CustomInput
-						label="Classes"
+						label={lang?.students_pg?.modals?.class}
 						name="placeHolderClassroomId"
 						disabled
 						type="select"
@@ -107,7 +102,7 @@ const PromoteStudentForm = ({
 				<Col className="w-[50%]">
 					<CustomInput
 						type="select"
-						label="Stream"
+						label={lang?.students_pg?.modals?.stream}
 						name="placeHolderStreamId"
 						isLoading={isStreamLoading}
 						disabled
@@ -116,28 +111,20 @@ const PromoteStudentForm = ({
 				</Col>
 			</Row>
 
-			<p className="text-gray-300 my-4">Promote student to:</p>
+			<p className="text-gray-300 my-4">
+				{" "}
+				{lang?.students_pg?.profile?.modals?.promote_student_to}
+			</p>
 
 			<Row align="middle" wrap={false} gutter={24}>
-				<Col className="w-[50%]">
+				<Col className="w-[100%]">
 					<CustomInput
 						type="select"
 						name="academicYearId"
-						label="Academic year"
+						label={lang?.students_pg?.modals?.academic_year}
 						isLoading={isAcademicYearsLoading}
 						rules={requiredField("Academic year")}
 						options={academicYearsList}
-					/>
-				</Col>
-
-				<Col className="w-[50%]">
-					<CustomInput
-						label="Term"
-						type="select"
-						name="academicTerm"
-						options={termOptions}
-						placeholder="Select term"
-						rules={requiredField("Term")}
 					/>
 				</Col>
 			</Row>
@@ -145,7 +132,7 @@ const PromoteStudentForm = ({
 			<Row align="middle" wrap={false} gutter={24}>
 				<Col className="w-[50%]">
 					<CustomInput
-						label="Classes"
+						label={lang?.students_pg?.modals?.class}
 						name="classroomId"
 						type="select"
 						placeholder="Please select"
@@ -159,7 +146,7 @@ const PromoteStudentForm = ({
 				<Col className="w-[50%]">
 					<CustomInput
 						type="select"
-						label="Stream"
+						label={lang?.students_pg?.modals?.stream}
 						name="streamId"
 						isLoading={isStreamLoading}
 						disabled={isStreamLoading}

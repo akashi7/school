@@ -11,6 +11,8 @@ import CustomImage from "../Shared/CustomImage";
 import { useDispatch, useSelector } from "react-redux";
 import { getTranslation } from "../../lib/redux/translationSlice";
 import routes from "../../config/routes";
+import { useUserProfileQuery } from "../../lib/api/Auth/authEndpoints";
+import { isTokenValid } from "../../helpers/verifyToken";
 
 const Sider = () => {
 	const local_saved_lang = localStorage.getItem(_selected_lang_);
@@ -25,6 +27,10 @@ const Sider = () => {
 		localStorage.setItem(_selected_lang_, lng);
 		setSelectedLang(lng);
 	};
+
+	const { error } = useUserProfileQuery();
+
+	const { role } = isTokenValid(error);
 
 	useEffect(() => {
 		dispatch(getTranslation(trans));
@@ -56,17 +62,13 @@ const Sider = () => {
 
 				{/* Menu */}
 				<div>
-					{menus(trans).map((menu) => (
+					{menus({ trans, role }).map((menu) => (
 						<SingleMenu menu={menu} key={menu.name} />
 					))}
 				</div>
 			</div>
 
-			<Dropdown
-				overlay={dropdownOptions}
-				trigger={["click"]}
-				placement="topCenter"
-			>
+			<Dropdown overlay={dropdownOptions} trigger={["click"]} placement="top">
 				<div className="flex gap-12 bg-gray-200 p-2 rounded text-sm items-center w-[100%] ml-2 cursor-pointer hover:bg-gray-300">
 					<span className="text-[18px]">{globalLanguage?.flag}</span>
 					<span className="text-[12px] text-left flex-1 font-medium">
