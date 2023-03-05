@@ -1588,3 +1588,19 @@ input[type="number"] {
 	-ms-transform: rotate(3deg) translate(0px, -4px);
 	transform: rotate(3deg) translate(0px, -4px);
 }
+
+.ant-switch-inner {
+	color: black !important;
+}
+
+.ant-switch {
+	background-color: rgb(214, 214, 214) !important;
+}
+
+.ant-switch-checked {
+	background-color: #00b0af !important;
+}
+
+.ant-switch-checked .ant-switch-inner {
+	color: white !important;
+}

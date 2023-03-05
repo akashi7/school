@@ -101,6 +101,18 @@ const NewSchoolForm = ({
 								value: "SECONDARY",
 								key: "SECONDARY",
 							},
+
+							{
+								index: "TVET",
+								value: "TVET",
+								key: "TVET",
+							},
+
+							{
+								index: "UNIVERSITY",
+								value: "UNIVERSITY",
+								key: "UNIVERSITY",
+							},
 						]}
 						rules={requiredField("Does student have ids field")}
 					/>
@@ -161,20 +173,19 @@ const NewSchoolForm = ({
 			<Row align="middle" wrap={false} gutter={24}>
 				<Col className="w-[50%]">
 					<CustomInput
-						label={lang?.schools_pg?.modals?.username}
-						placeholder={`${lang?.schools_pg?.modals?.username}...`}
-						name="username"
-						rules={requiredField("Username")}
+						label={lang?.schools_pg?.modals?.phone_number}
+						placeholder={`${lang?.schools_pg?.modals?.phone_number}...`}
+						name="phoneNumber"
+						rules={requiredField("Phone number")}
 					/>
 				</Col>
 
 				<Col className="w-[50%]">
 					<CustomInput
-						label={lang?.schools_pg?.modals?.password}
-						placeholder="*** *** ***"
-						name="password"
-						inputType="password"
-						rules={requiredField("Password")}
+						label={lang?.schools_pg?.modals?.email}
+						placeholder={`${lang?.schools_pg?.modals?.email}...`}
+						name="email"
+						rules={requiredField("Email")}
 					/>
 				</Col>
 			</Row>

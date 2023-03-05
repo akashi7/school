@@ -1,10 +1,20 @@
 import React, { useState } from "react";
 import Table from "antd/lib/table";
+import moment from "moment";
+import Switch from "antd/lib/switch";
+import {
+	CheckOutlined,
+	CloseOutlined,
+	LoadingOutlined,
+} from "@ant-design/icons";
 import CustomButton from "../Shared/CustomButton";
 import WarningModal from "../Shared/WarningModal";
-import moment from "moment";
-import { useDeleteAcademicYearMutation } from "../../lib/api/AcademicYear/academicYearEndpoints";
+import {
+	useDeleteAcademicYearMutation,
+	useSetCurrentYearMutation,
+} from "../../lib/api/AcademicYear/academicYearEndpoints";
 import CustomImage from "../Shared/CustomImage";
+import handleAPIRequests from "../../helpers/handleAPIRequests";
 
 const { Column } = Table;
 
@@ -17,9 +27,12 @@ const AcademicYearsTable = ({
 }) => {
 	const [isWarningVisible, setIsWarningVisible] = useState(false);
 	const [itemToDelete, setItemToDelete] = useState(null);
+	const [itemToToggle, setItemToToggle] = useState(null);
 
 	const [deleteAcademicYear, { isLoading: isDeleting }] =
 		useDeleteAcademicYearMutation();
+	const [setCurrentYear, { isLoading: isSettingCurrentYear }] =
+		useSetCurrentYearMutation();
 
 	const onDeleteAcademicYearSuccess = () => {
 		setIsWarningVisible(false);
@@ -35,6 +48,19 @@ const AcademicYearsTable = ({
 		setItemToEdit(item);
 		setIsEditModalVisible(true);
 	};
+
+	const handleSetCurrentYear = (item) => {
+		setItemToToggle(item?.id);
+
+		handleAPIRequests({
+			request: setCurrentYear,
+			id: item.id,
+			notify: true,
+		});
+	};
+
+	const isToggling = (record) =>
+		isSettingCurrentYear && itemToToggle === record?.id;
 
 	return (
 		<>
@@ -87,12 +113,18 @@ const AcademicYearsTable = ({
 				<Column
 					title={lang?.academic_years_pg?.table?.is_current}
 					key="current"
-					render={(record) => (
-						<CustomImage
-							src={`/icons/${record.current ? "checked" : "red-close"}.svg`}
-							width={24}
-						/>
-					)}
+					render={(record) =>
+						!isToggling(record) && !isFetching ? (
+							<Switch
+								checkedChildren={<CheckOutlined />}
+								unCheckedChildren={<CloseOutlined />}
+								defaultChecked={record?.current}
+								onClick={() => handleSetCurrentYear(record)}
+							/>
+						) : (
+							<LoadingOutlined style={{ fontSize: 16 }} spin />
+						)
+					}
 				/>
 
 				<Column

@@ -38,6 +38,13 @@
 			}
 		},
 
+		"alert_messages": {
+			"create_classroom_success": "Classroom created successfully!",
+			"create_classroom_err": "Problem while creating classroom!",
+			"create_student_success": "Student created successfully!",
+			"create_student_err": "Problem while creating student!"
+		},
+
 		"dashboard_shared": {
 			"profile": {
 				"user_type": "User type:",
@@ -201,8 +208,8 @@
 				"has_student_ids": "Has student IDs",
 				"country_name": "Country name",
 				"school_address": "School address",
-				"username": "Username",
-				"password": "Password"
+				"phone_number": "Phone number",
+				"email": "Email"
 			},
 			"table": {
 				"name": "Name",
@@ -443,8 +450,8 @@
 				"has_student_ids": "Itanga ikiranga abanyeshuri",
 				"country_name": "Igihugu",
 				"school_address": "Aderesi y'ishuri",
-				"username": "Izina",
-				"password": "Ijambo banga"
+				"phone_number": "Nimero",
+				"email": "Imeyiri"
 			},
 			"table": {
 				"name": "Izina",
