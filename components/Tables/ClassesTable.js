@@ -3,7 +3,6 @@ import Table from "antd/lib/table";
 import { useDeleteClassMutation } from "../../lib/api/Classrooms/classroomsEndpoints";
 import CustomButton from "../Shared/CustomButton";
 import WarningModal from "../Shared/WarningModal";
-import { useSelector } from "react-redux";
 
 const { Column } = Table;
 
@@ -16,13 +15,12 @@ const ClassesTable = ({
 	setCurrentPage,
 	setIsVisible,
 	isFetching,
+	lang,
 }) => {
 	const [isWarningVisible, setIsWarningVisible] = useState(false);
 	const [itemToDelete, setItemToDelete] = useState(null);
 
 	const [deleteClass, { isLoading: isDeleting }] = useDeleteClassMutation();
-
-	const lang = useSelector((state) => state?.translation?.payload);
 
 	const onDeleteClassSuccess = () => {
 		setIsWarningVisible(false);
@@ -53,6 +51,7 @@ const ClassesTable = ({
 				request={deleteClass}
 				loading={isDeleting}
 				onSuccess={onDeleteClassSuccess}
+				message={lang?.alert_messages?.success?.delete_classroom}
 			/>
 
 			<Table

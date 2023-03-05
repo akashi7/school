@@ -151,6 +151,7 @@ const SingleStudent = () => {
 
 		handleAPIRequests({
 			request: editStudent,
+			message: lang?.alert_messages?.success?.edit_student,
 			onSuccess: onSuccess,
 			notify: true,
 			id,
@@ -194,9 +195,10 @@ const SingleStudent = () => {
 		handleAPIRequests({
 			request: promoteStudent,
 			id,
-			...values,
 			notify: true,
 			onSuccess: handleCancelPromoteModal,
+			message: lang?.alert_messages?.success?.promote_student,
+			...values,
 		});
 	};
 
@@ -307,6 +309,7 @@ const SingleStudent = () => {
 				request={deleteStudent}
 				loading={isDeleting}
 				onSuccess={onDeleteStudentSuccess}
+				message={lang?.alert_messages?.success?.delete_student}
 			/>
 
 			<CustomModal
@@ -396,6 +399,7 @@ const SingleStudent = () => {
 						setIsWarningVisible={setIsWarningVisible}
 						setIsPromoteModalVisible={setIsPromoteModalVisible}
 						totalUnpaid={totalUnpaid}
+						lang={lang}
 					/>
 
 					<ContentTableContainer>

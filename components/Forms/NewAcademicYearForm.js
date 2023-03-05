@@ -21,30 +21,6 @@ const NewAcademicYearForm = ({ onFinish, form, lang }) => {
 					/>
 				</Col>
 			</Row>
-
-			<Row align="middle" wrap={false} gutter={24}>
-				<Col className="w-[100%]">
-					<CustomInput
-						label={lang?.academic_years_pg?.modals?.is_year_current}
-						type="select"
-						name="current"
-						showSearch={true}
-						options={[
-							{
-								index: "YES",
-								value: "YES",
-								key: "YES",
-							},
-							{
-								index: "NO",
-								value: "NO",
-								key: "NO",
-							},
-						]}
-						rules={requiredField("Is year current field is ")}
-					/>
-				</Col>
-			</Row>
 		</Form>
 	);
 };

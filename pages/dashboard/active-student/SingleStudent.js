@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Row from "antd/lib/row";
 import Col from "antd/lib/col";
-import Form from "antd/lib/form";
 import { useRouter } from "next/router";
 import StudentProfile from "../../../components/StudentProfile";
 import ContentTableContainer from "../../../components/Shared/ContentTableContainer";
@@ -10,65 +9,31 @@ import CustomInput from "../../../components/Shared/CustomInput";
 import GoBack from "../../../components/Shared/GoBack";
 import AssignedFeesTable from "../../../components/Tables/AssignedFeesTable";
 import {
-	useDeleteStudentMutation,
-	useEditStudentMutation,
 	useGetStudentFeesQuery,
 	useLazyGetSingleStudentQuery,
-	usePromoteStudentMutation,
 } from "../../../lib/api/Students/studentsEndpoints";
 import handleAPIRequests from "../../../helpers/handleAPIRequests";
 import Private from "../../../components/Routes/Private";
 import { AppLoader } from "../../../components/Shared/Loaders";
 import { Empty } from "../../../components/Shared/Empty";
-import CustomModal from "../../../components/Shared/CustomModal";
-import CustomButton from "../../../components/Shared/CustomButton";
-import NewStudentForm from "../../../components/Forms/NewStudentForm";
 import { useGetAcademicYearsQuery } from "../../../lib/api/AcademicYear/academicYearEndpoints";
-import {
-	useGetClassesQuery,
-	useLazyGetStreamsQuery,
-} from "../../../lib/api/Classrooms/classroomsEndpoints";
-import uploadFile from "../../../helpers/uploadFile";
-import Notify from "../../../components/Shared/Notification";
-import useHandleNewStudentForm from "../../../components/Forms/useHandleNewStudentForm";
-import WarningModal from "../../../components/Shared/WarningModal";
-import routes from "../../../config/routes";
 import { termOptions } from "../../../config/constants";
-import PromoteStudentForm from "../../../components/Forms/PromoteStudentForm";
 import { isTokenValid } from "../../../helpers/verifyToken";
+import { useSelector } from "react-redux";
 
 const SingleStudent = () => {
-	const [isVisible, setIsVisible] = useState(false);
-	const [classroomId, setClassroomId] = useState("");
-	const [newStudentSelectedClassroomId, setNewStudentSelectedClassroomId] =
-		useState("");
-	const [uploadLoading, setUploadLoading] = useState(false);
-	const [imgURL, setImgURL] = useState(null);
-	const [selectedCountry, setSelectedCountry] = useState(null);
 	const [academicYearId, setAcademicYearId] = useState("");
-	const [itemToEdit, setItemToEdit] = useState(null);
-	const [isWarningVisible, setIsWarningVisible] = useState(false);
-	const [isPromoteModalVisible, setIsPromoteModalVisible] = useState(false);
 	const [academicTerm, setAcademicTerm] = useState("TERM1");
 	const [feeStatus, setFeeStatus] = useState("PAID");
 
-	const handleCancel = () => {
-		setItemToEdit(null);
-		setIsVisible(false);
-	};
-
-	const handleCancelPromoteModal = () => {
-		setIsPromoteModalVisible(false);
-	};
-
 	const router = useRouter();
 	const { id } = isTokenValid("");
-	const [form] = Form.useForm();
+
+	const lang = useSelector((state) => state?.translation?.payload);
 
 	const { data: academicYears, isFetching: isAcademicYearsLoading } =
 		useGetAcademicYearsQuery({});
 
-	const { data: classes, isFetching: isClassLoading } = useGetClassesQuery({});
 	const { data: studentFees, isFetching: isStudentFeesFetching } =
 		useGetStudentFeesQuery({
 			id,
@@ -77,18 +42,8 @@ const SingleStudent = () => {
 			status: feeStatus,
 		});
 
-	const [getStreams, { data: streams, isFetching: isStreamLoading }] =
-		useLazyGetStreamsQuery();
-
 	const [getSingleStudent, { data, isLoading, isFetching }] =
 		useLazyGetSingleStudentQuery();
-
-	const [editStudent, { isLoading: isEditingStudent }] =
-		useEditStudentMutation();
-
-	const [deleteStudent, { isLoading: isDeleting }] = useDeleteStudentMutation();
-	const [promoteStudent, { isLoading: isPromotingStudent }] =
-		usePromoteStudentMutation();
 
 	useEffect(() => {
 		if (academicYears?.payload?.items?.length) {
@@ -96,105 +51,15 @@ const SingleStudent = () => {
 		}
 	}, [academicYears]);
 
-	const canFetchStreams =
-		classroomId ||
-		newStudentSelectedClassroomId ||
-		itemToEdit?.stream?.classroom?.id;
-
 	useEffect(() => {
 		handleAPIRequests({
 			request: getSingleStudent,
-			onError: handleCancel,
 			id,
 		});
 	}, [getSingleStudent, id]);
 
-	useEffect(() => {
-		setImgURL(data?.payload?.passportPhoto);
-		setItemToEdit(data?.payload);
-	}, [data]);
-
-	useEffect(() => {
-		if (canFetchStreams) {
-			handleAPIRequests({
-				request: getStreams,
-				id:
-					classroomId ||
-					newStudentSelectedClassroomId ||
-					itemToEdit?.stream?.classroom?.id,
-			});
-		}
-	}, [
-		canFetchStreams,
-		classroomId,
-		getStreams,
-		itemToEdit,
-		newStudentSelectedClassroomId,
-	]);
-
-	const onSuccess = () => {
-		setIsVisible(false);
-		form.resetFields();
-	};
-
-	const onEditStudentFinish = (values) => {
-		const data = {
-			...values,
-			countryCode: selectedCountry?.code,
-			passportPhoto: imgURL,
-		};
-
-		delete data?.classroomId;
-
-		handleAPIRequests({
-			request: editStudent,
-			onSuccess: onSuccess,
-			notify: true,
-			id,
-			...data,
-		});
-	};
-
-	const handleUploadProfile = (files) => {
-		const isValid =
-			files[0]?.type === "image/png" ||
-			files[0]?.type === "image/jpg" ||
-			files[0]?.type === "image/jpeg" ||
-			files[0]?.type === "image/svg+xml";
-
-		isValid
-			? uploadFile({
-					files,
-					setUploadLoading,
-					setImgURL,
-			  })
-			: Notify({
-					message: "Invalid file type",
-					description:
-						"Only, PNG, JPG, JPEG Images are valid formats to be uploaded!",
-					type: "error",
-			  });
-	};
-
-	useHandleNewStudentForm({ form, itemToEdit: data?.payload });
-
-	const onDeleteStudentSuccess = () => {
-		setIsWarningVisible(false);
-		router.push(routes.students.url);
-	};
-
 	const handleAcademicYearChange = (value) => {
 		setAcademicYearId(value);
-	};
-
-	const onPromoteStudentFinish = (values) => {
-		handleAPIRequests({
-			request: promoteStudent,
-			id,
-			...values,
-			notify: true,
-			onSuccess: handleCancelPromoteModal,
-		});
 	};
 
 	const handleTermChange = (term) => {
@@ -227,7 +92,9 @@ const SingleStudent = () => {
 			</Col>
 
 			<Col>
-				<p className="text-[20px] text-dark font-semibold">Assigned fees</p>
+				<p className="text-[20px] text-dark font-semibold">
+					{lang?.students_pg?.profile?.table?.title}
+				</p>
 			</Col>
 		</Row>
 	);
@@ -240,9 +107,13 @@ const SingleStudent = () => {
 						onChange={handleAcademicYearChange}
 						value={academicYearId}
 						type="small-select"
-						label="Year"
+						label={lang?.dashboard_shared?.filters?.year?.name}
 						options={[
-							{ key: 0, value: "", label: "Select year" },
+							{
+								key: 0,
+								value: "",
+								label: lang?.dashboard_shared?.filters?.year?.sub_title,
+							},
 							...academicYearsList,
 						]}
 						isLoading={isAcademicYearsLoading}
@@ -252,11 +123,15 @@ const SingleStudent = () => {
 				<Col>
 					<CustomInput
 						type="small-select"
-						label="Term"
+						label={lang?.dashboard_shared?.filters?.term?.name}
 						value={academicTerm}
 						onChange={handleTermChange}
 						options={[
-							{ key: 1, value: "", label: "Select term" },
+							{
+								key: 1,
+								value: "",
+								label: lang?.dashboard_shared?.filters?.term?.sub_title,
+							},
 							...termOptions,
 						]}
 					/>
@@ -265,11 +140,15 @@ const SingleStudent = () => {
 				<Col>
 					<CustomInput
 						type="small-select"
-						label="Status"
+						label={lang?.dashboard_shared?.filters?.status?.name}
 						value={feeStatus}
 						onChange={handleFeeStatusChange}
 						options={[
-							{ key: 0, value: "", label: "Select status" },
+							{
+								key: 0,
+								value: "",
+								label: lang?.dashboard_shared?.filters?.status?.sub_title,
+							},
 							{ key: 1, value: "UNPAID", name: "Unpaid" },
 							{ key: 2, value: "PAID", name: "Paid" },
 						]}
@@ -281,91 +160,6 @@ const SingleStudent = () => {
 
 	return (
 		<>
-			<WarningModal
-				isVisible={isWarningVisible}
-				setIsVisible={setIsWarningVisible}
-				warningMessage="Do you really want to delete class"
-				warningKey={data?.payload?.fullName}
-				itemToDelete={data?.payload?.id}
-				request={deleteStudent}
-				loading={isDeleting}
-				onSuccess={onDeleteStudentSuccess}
-			/>
-
-			<CustomModal
-				isVisible={isVisible}
-				setIsVisible={setIsVisible}
-				loading={isEditingStudent}
-				width={700}
-				handleCancel={handleCancel}
-				title="Edit student"
-				subTitle={data?.payload?.fullName}
-				footerContent={
-					!isLoading && (
-						<CustomButton
-							loading={uploadLoading || isEditingStudent}
-							type="primary"
-							htmlType="submit"
-							form="add-student"
-						>
-							Save
-						</CustomButton>
-					)
-				}
-			>
-				{isLoading ? (
-					<AppLoader height="60vh" />
-				) : (
-					<NewStudentForm
-						form={form}
-						onFinish={onEditStudentFinish}
-						academicYears={academicYears}
-						classes={classes}
-						streams={streams}
-						setClassroomId={setNewStudentSelectedClassroomId}
-						uploadLoading={uploadLoading}
-						handleUploadProfile={handleUploadProfile}
-						isClassLoading={isClassLoading}
-						isStreamLoading={isStreamLoading}
-						isAcademicYearsLoading={isAcademicYearsLoading}
-						setSelectedCountry={setSelectedCountry}
-						imgURL={imgURL || itemToEdit?.passportPhoto}
-					/>
-				)}
-			</CustomModal>
-
-			<CustomModal
-				isVisible={isPromoteModalVisible}
-				setIsVisible={setIsPromoteModalVisible}
-				loading={isPromotingStudent}
-				width={700}
-				handleCancel={handleCancelPromoteModal}
-				title="Promote student"
-				subTitle={data?.payload?.fullName}
-				footerContent={
-					<CustomButton
-						loading={isPromotingStudent}
-						type="primary"
-						htmlType="submit"
-						form="promote-student"
-					>
-						Save
-					</CustomButton>
-				}
-			>
-				<PromoteStudentForm
-					onFinish={onPromoteStudentFinish}
-					academicYears={academicYears}
-					classes={classes}
-					streams={streams}
-					setClassroomId={setClassroomId}
-					isClassLoading={isClassLoading}
-					isStreamLoading={isStreamLoading}
-					isAcademicYearsLoading={isAcademicYearsLoading}
-					data={data}
-				/>
-			</CustomModal>
-
 			{isLoading ? (
 				<AppLoader />
 			) : !data ? (
@@ -375,10 +169,8 @@ const SingleStudent = () => {
 					<StudentProfile
 						data={data}
 						isFetching={isFetching}
-						setIsVisible={setIsVisible}
-						setIsWarningVisible={setIsWarningVisible}
-						setIsPromoteModalVisible={setIsPromoteModalVisible}
 						totalUnpaid={totalUnpaid}
+						lang={lang}
 					/>
 
 					<ContentTableContainer>

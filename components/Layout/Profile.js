@@ -20,12 +20,13 @@ const Profile = () => {
 				<span className="text-gray-400">{role}</span>
 			</p>
 
-			<div className="flex items-center gap-6 w-[100%] rounded p-2 bg-gray-100 font-[600] cursor-pointer hover:p-4 hover:py-3 hover:bg-gray-200">
+			<div
+				onClick={() => logout()}
+				className="flex items-center gap-6 w-[100%] rounded p-2 bg-gray-100 font-[600] cursor-pointer hover:p-4 hover:py-3 hover:bg-gray-200"
+			>
 				<CustomImage src="/icons/logout.svg" width={20} />
 
-				<p className="flex-1" onClick={() => logout()}>
-					{lang?.dashboard_shared?.profile?.logout}
-				</p>
+				<p className="flex-1">{lang?.dashboard_shared?.profile?.logout}</p>
 			</div>
 		</div>
 	);

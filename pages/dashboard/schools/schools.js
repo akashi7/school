@@ -91,6 +91,7 @@ const Schools = () => {
 		</p>
 	);
 
+	console.log(lang);
 	return (
 		<>
 			<CustomModal
@@ -107,7 +108,7 @@ const Schools = () => {
 						htmlType="submit"
 						form="add-school"
 					>
-						{lang?.dashboard_shared_buttons?.save}
+						{lang?.dashboard_shared?.buttons?.save}
 					</CustomButton>
 				}
 			>

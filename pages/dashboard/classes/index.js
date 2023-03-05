@@ -73,6 +73,9 @@ const Classes = () => {
 			onSuccess: itemToEdit ? onEditSuccess : onSuccess,
 			id: itemToEdit?.id,
 			notify: true,
+			message: itemToEdit
+				? lang?.alert_messages?.success?.edit_classroom
+				: lang?.alert_messages?.success?.create_classroom,
 			...values,
 		});
 	};
@@ -166,6 +169,7 @@ const Classes = () => {
 									setCurrentPage={setCurrentPage}
 									isFetching={isFetching}
 									setItemToEdit={setItemToEdit}
+									lang={lang}
 								/>
 							</div>
 						)}
@@ -178,7 +182,7 @@ const Classes = () => {
 					</div>
 
 					<div className="w-[45%]">
-						<ClassProfile visibleClass={visibleClass} />
+						<ClassProfile lang={lang} visibleClass={visibleClass} />
 					</div>
 				</div>
 			)}

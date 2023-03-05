@@ -148,6 +148,9 @@ const Students = () => {
 			onSuccess: onSuccess,
 			notify: true,
 			id: itemToEdit?.id,
+			message: itemToEdit
+				? lang?.alert_messages?.success?.edit_student
+				: lang?.alert_messages?.success?.add_student,
 			...data,
 		});
 	};
@@ -379,6 +382,7 @@ const Students = () => {
 								isFetching={isFetching}
 								setItemToEdit={setItemToEdit}
 								setIsEditModalVisible={setIsVisible}
+								lang={lang}
 							/>
 						)}
 

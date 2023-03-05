@@ -117,7 +117,7 @@ const FeesTable = ({ fees, isFetching, setItemToEdit, setIsVisible, lang }) => {
 					)}
 				/>
 
-				<Column
+				{/* <Column
 					title={lang?.fees_pg?.table?.actions}
 					key="actions"
 					width={200}
@@ -135,7 +135,7 @@ const FeesTable = ({ fees, isFetching, setItemToEdit, setIsVisible, lang }) => {
 							</CustomButton>
 						</div>
 					)}
-				/>
+				/> */}
 			</Table>
 		</>
 	);

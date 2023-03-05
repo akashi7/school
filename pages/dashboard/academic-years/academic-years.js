@@ -60,7 +60,6 @@ const AcademicYears = () => {
 		if (itemToEdit) {
 			form.setFieldsValue({
 				name: itemToEdit?.name?.split("-")[0] || itemToEdit?.name,
-				current: itemToEdit?.current ? "YES" : "NO",
 			});
 		}
 	}, [form, itemToEdit]);
@@ -108,7 +107,7 @@ const AcademicYears = () => {
 				isVisible={isVisible}
 				setIsVisible={setIsVisible}
 				loading={isAddingAcademicYear || isEditing}
-				width={600}
+				width={500}
 				handleCancel={handleCancel}
 				title={
 					itemToEdit

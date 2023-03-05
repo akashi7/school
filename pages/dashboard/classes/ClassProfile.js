@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import Form from "antd/lib/form";
-import { useSelector } from "react-redux";
 import CustomImage from "../../../components/Shared/CustomImage";
 import SingleStream from "../../../components/SingleStream";
 import CustomButton from "../../../components/Shared/CustomButton";
@@ -19,10 +18,8 @@ import {
 import requiredField from "../../../helpers/requiredField";
 import { Empty } from "../../../components/Shared/Empty";
 
-const ClassProfile = ({ visibleClass }) => {
+const ClassProfile = ({ visibleClass, lang }) => {
 	const [isVisible, setIsVisible] = useState(false);
-
-	const lang = useSelector((state) => state?.translation?.payload);
 
 	const [getStreams, { isFetching, isLoading, data: streams }] =
 		useLazyGetStreamsQuery();
@@ -40,8 +37,9 @@ const ClassProfile = ({ visibleClass }) => {
 			request: addStream,
 			notify: true,
 			id: visibleClass?.id,
-			...values,
+			message: lang?.alert_messages?.success?.add_stream,
 			onSuccess: onSuccess,
+			...values,
 		});
 	};
 
@@ -129,6 +127,7 @@ const ClassProfile = ({ visibleClass }) => {
 										data={stream}
 										index={index + 1}
 										visibleClass={visibleClass}
+										lang={lang}
 									/>
 								))
 							)}
