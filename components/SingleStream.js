@@ -11,15 +11,12 @@ import {
 } from "../lib/api/Classrooms/classroomsEndpoints";
 import requiredField from "../helpers/requiredField";
 import handleAPIRequests from "../helpers/handleAPIRequests";
-import { useSelector } from "react-redux";
 
-const SingleStream = ({ data, index, visibleClass }) => {
+const SingleStream = ({ data, index, visibleClass, lang }) => {
 	const [isVisible, setIsVisible] = useState(false);
 	const [isWarningVisible, setIsWarningVisible] = useState(false);
 
 	const [form] = Form.useForm();
-
-	const lang = useSelector((state) => state?.translation?.payload);
 
 	const [editStream, { isLoading: isEditing }] = useEditStreamMutation();
 	const [deleteStream, { isLoading: isDeleting }] = useDeleteStreamMutation();
@@ -34,8 +31,9 @@ const SingleStream = ({ data, index, visibleClass }) => {
 			id: visibleClass?.id,
 			streamId: data?.id,
 			notify: true,
-			...values,
+			message: lang?.alert_messages?.success?.edit_stream,
 			onSuccess: onSuccess,
+			...values,
 		});
 	};
 
@@ -88,6 +86,7 @@ const SingleStream = ({ data, index, visibleClass }) => {
 				request={deleteStream}
 				loading={isDeleting}
 				streamId={data?.id}
+				message={lang?.alert_messages?.success?.delete_stream}
 			/>
 
 			<div className="flex bg-white shadow-sm p-4 items-center rounded-sm mb-4">

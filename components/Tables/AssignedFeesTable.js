@@ -78,7 +78,7 @@ const AssignedFeesTable = ({ data, isFetching, lang }) => {
 				)}
 			/>
 
-			<Column
+			{/* <Column
 				title={lang?.students_pg?.profile?.table?.actions}
 				key="actions"
 				width={100}
@@ -87,7 +87,7 @@ const AssignedFeesTable = ({ data, isFetching, lang }) => {
 						{lang?.dashboard_shared?.buttons?.pay}
 					</CustomButton>
 				)}
-			/>
+			/> */}
 		</Table>
 	);
 };

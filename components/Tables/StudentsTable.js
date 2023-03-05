@@ -6,7 +6,6 @@ import CustomButton from "../Shared/CustomButton";
 import WarningModal from "../Shared/WarningModal";
 import routes from "../../config/routes";
 import { useDeleteStudentMutation } from "../../lib/api/Students/studentsEndpoints";
-import { useSelector } from "react-redux";
 
 const { Column } = Table;
 
@@ -15,11 +14,10 @@ const StudentsTable = ({
 	isFetching,
 	setItemToEdit,
 	setIsEditModalVisible,
+	lang,
 }) => {
 	const [isWarningVisible, setIsWarningVisible] = useState(false);
 	const [itemToDelete, setItemToDelete] = useState(null);
-
-	const lang = useSelector((state) => state?.translation?.payload);
 
 	const [deleteStudent, { isLoading: isDeleting }] = useDeleteStudentMutation();
 
@@ -51,6 +49,7 @@ const StudentsTable = ({
 				request={deleteStudent}
 				loading={isDeleting}
 				onSuccess={onDeleteStudentSuccess}
+				message={lang?.alert_messages?.success?.delete_student}
 			/>
 
 			<Table

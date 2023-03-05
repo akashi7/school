@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 import Notify from "../components/Shared/Notification";
 import { _ns_token_ } from "../config/constants";
 
@@ -18,7 +19,7 @@ const handleAPIRequests = ({
 				if (notify) {
 					Notify({
 						message: "Success",
-						description: res?.message || "Operation successful",
+						description: message || res?.message || "Operation successful",
 					});
 				}
 			}

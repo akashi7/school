@@ -20,6 +20,7 @@ const WarningModal = ({
 	streamId,
 	onSuccess,
 	request,
+	message,
 }) => {
 	const onCancel = () => {
 		setIsVisible(false);
@@ -33,6 +34,7 @@ const WarningModal = ({
 			id: itemToDelete,
 			streamId: streamId,
 			notify: true,
+			message,
 			onSuccess: onSuccess || onCancel,
 		});
 	};
@@ -55,7 +57,9 @@ const WarningModal = ({
 							onClick={handleDelete}
 							loading={loading}
 						>
-							{loading ? lang?.dashboard_shared?.buttons?.deleting : lang?.dashboard_shared?.buttons?.yes}
+							{loading
+								? lang?.dashboard_shared?.buttons?.deleting
+								: lang?.dashboard_shared?.buttons?.yes}
 						</CustomButton>
 					</Col>
 				</Row>

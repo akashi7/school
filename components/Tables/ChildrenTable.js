@@ -10,6 +10,8 @@ const { Column } = Table;
 const ChildrenTable = ({ isFetching, data, lang }) => {
 	const router = useRouter();
 
+	console.log("DATA: ", data);
+
 	return (
 		<>
 			<Table
@@ -49,30 +51,14 @@ const ChildrenTable = ({ isFetching, data, lang }) => {
 				<Column
 					title={lang?.children_pg?.table?.school}
 					key="title"
-					render={(record) => <span>{record?.schoolTitle}</span>}
+					render={(record) => <span>{record?.school?.schoolTitle}</span>}
 				/>
 
 				<Column
 					title={lang?.children_pg?.table?.class}
 					key="type"
-					render={(record) => <span>{record?.schoolType}</span>}
-				/>
-
-				<Column
-					title="Actions"
-					key="actions"
-					width={100}
 					render={(record) => (
-						<div className="flex gap-12">
-							<CustomButton
-								type="view"
-								onClick={() =>
-									router.push(`${routes.students.url}/${record?.id}`)
-								}
-							>
-								{lang?.dashboard_shared?.button?.view}
-							</CustomButton>
-						</div>
+						<span>{`${record?.stream?.classroom?.name} ${record?.stream?.name}`}</span>
 					)}
 				/>
 			</Table>

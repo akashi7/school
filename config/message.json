@@ -39,10 +39,29 @@
 		},
 
 		"alert_messages": {
-			"create_classroom_success": "Classroom created successfully!",
-			"create_classroom_err": "Problem while creating classroom!",
-			"create_student_success": "Student created successfully!",
-			"create_student_err": "Problem while creating student!"
+			"success": {
+				"create_classroom": "Classroom created successfully!",
+				"edit_classroom": "Classroom updated successfully!",
+				"delete_classroom": "Classroom deleted successfully!",
+				"create_stream": "Stream created successfully!",
+				"edit_stream": "Stream updated successfully!",
+				"delete_stream": "Stream deleted successfully!",
+				"create_student": "Student created successfully!",
+				"edit_student": "Student updated successfully!",
+				"delete_student": "Student deleted successfully!",
+				"promote_student": "Student promoted successfully!",
+				"create_fee": "Fee created successfully!",
+				"edit_fee": "Fee updated successfully!",
+				"delete_fee": "Fee deleted successfully!",
+				"download_report": "Document downloaded successfully!",
+				"create_school": "School created successfully!",
+				"delete_school": "School deleted successfully!",
+				"create_academic_year": "Academic year created successfully!",
+				"edit_academic_year": "Academic year updated successfully!",
+				"delete_academic_year": "Academic year deleted successfully!",
+				"switch_academic_year": "Academic year is set to current!"
+			},
+			"error": "Something went wrong, try again later!"
 		},
 
 		"dashboard_shared": {
@@ -285,6 +304,32 @@
 				"identifier": "Ikimuranga",
 				"button": "Injira"
 			}
+		},
+
+		"alert_messages": {
+			"success": {
+				"create_classroom": "Ishuri ryakozwe neza!",
+				"edit_classroom": "Ishuri ryahinduwe neza!",
+				"delete_classroom": "Ishuri ryasibwe neza!",
+				"create_stream": "Igice yakozwe neza!",
+				"edit_stream": "Igice cyahinduwe neza!",
+				"delete_stream": "Igice cyasibwe neza!",
+				"create_student": "Umunyeshuri yakozwe neza!",
+				"edit_student": "Umunyeshuri yahinduwe neza!",
+				"delete_student": "Umunyeshuri yasibwe neza!",
+				"promote_student": "Umunyeshuri yimuwe neza!",
+				"create_fee": "Inyishyu yakozwe neza!",
+				"edit_fee": "Inyishyu yahinduwe neza!",
+				"delete_fee": "Inyishyu yasibwe neza!",
+				"download_report": "Inyandiko yabonetse!",
+				"create_school": "Ishuri ryakowe neza!",
+				"delete_school": "Ishuri ryasibwe neza!",
+				"create_academic_year": "Umwaka wakozwe neza!",
+				"edit_academic_year": "Umwaka wahinduwe neza!",
+				"delete_academic_year": "Umwaka wasibwe neza!",
+				"switch_academic_year": "Umwaka turimo wahinduwe neza!"
+			},
+			"error": "Hari ikibazo, mugerageza mukanya!"
 		},
 
 		"dashboard_shared": {
