@@ -89,13 +89,13 @@ const SingleStream = ({ data, index, visibleClass, lang }) => {
 				message={lang?.alert_messages?.success?.delete_stream}
 			/>
 
-			<div className="flex bg-white shadow-sm p-4 items-center rounded-sm mb-4">
-				<div className="flex gap-12">
+			<div className="flex bg-white shadow-sm p-4 items-center rounded-sm mb-4 justify-between">
+				<div className="flex gap-4">
 					<p className="text-semi_grey">{index}.</p>
 					<p className="text-dark">{data.name}</p>
 				</div>
 
-				<div className="flex gap-12">
+				<div className="flex gap-4">
 					<CustomButton type="edit" onClick={() => setIsVisible(true)}>
 						{lang?.dashboard_shared?.buttons?.edit}
 					</CustomButton>

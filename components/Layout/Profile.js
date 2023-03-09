@@ -22,7 +22,7 @@ const Profile = () => {
 
 			<div
 				onClick={() => logout()}
-				className="flex items-center gap-6 w-[100%] rounded p-2 bg-gray-100 font-[600] cursor-pointer hover:p-4 hover:py-3 hover:bg-gray-200"
+				className="flex items-center gap-2 w-[100%] rounded p-2 bg-gray-100 font-[600] cursor-pointer hover:p-4 hover:py-3 hover:bg-gray-200"
 			>
 				<CustomImage src="/icons/logout.svg" width={20} />
 
@@ -32,7 +32,7 @@ const Profile = () => {
 	);
 
 	return (
-		<div className="flex items-center gap-12">
+		<div className="flex items-center gap-4">
 			<CustomImage
 				src="/imgs/profile.jpg"
 				width={42}
@@ -41,7 +41,7 @@ const Profile = () => {
 			/>
 
 			<Dropdown overlay={ProfileDropdown} trigger={["click"]}>
-				<div className="flex items-center gap-12 cursor-pointer">
+				<div className="flex items-center gap-2 cursor-pointer">
 					<p>Issa Jean Marie </p>
 
 					<CustomImage

@@ -62,7 +62,7 @@ const AuthIndex = ({ setActiveLogin }) => {
 					<div
 						key={lang.value}
 						onClick={() => handleSelectLanguage(lang.value)}
-						className="flex gap-12 bg-white hover:bg-gray-200 mb-1 cursor-pointer p-2 rounded text-sm items-center w-[100%]"
+						className="flex gap-4 bg-white hover:bg-gray-200 mb-1 cursor-pointer p-2 rounded text-sm items-center w-[100%]"
 					>
 						<span className="text-[18px]">{lang.flag}</span>
 						<span className="text-[12px] text-left flex-1 font-medium">
@@ -75,13 +75,13 @@ const AuthIndex = ({ setActiveLogin }) => {
 
 	return (
 		<>
-			<p className="font-medium text-dark text-[24px] mt-8 mb-6">
+			<p className="font-medium text-dark text-[24px] mt-8 mb-12">
 				{globalLanguage?.auth?.title}:
 			</p>
 
 			<Row
 				align="middle"
-				className="w-[100%] m-auto gap-12 mb-8"
+				className="w-[100%] m-auto gap-6 mb-8"
 				justify="center"
 			>
 				{login_cards?.map((card) => (
@@ -95,7 +95,7 @@ const AuthIndex = ({ setActiveLogin }) => {
 
 			<div className="w-[100%] grid justify-end px-4">
 				<Dropdown overlay={dropdownOptions} trigger={["click"]} placement="top">
-					<div className="flex gap-12 bg-gray-200 p-2 rounded text-sm items-center w-[100%] ml-2 cursor-pointer hover:bg-gray-300">
+					<div className="flex gap-4 bg-gray-200 p-2 rounded text-sm items-center w-[100%] ml-2 cursor-pointer hover:bg-gray-300">
 						<span className="text-[18px]">{globalLanguage?.flag}</span>
 						<span className="text-[12px] text-left flex-1 font-medium">
 							{globalLanguage?.name}
@@ -122,7 +122,7 @@ export default AuthIndex;
 export const LoginChoiceCard = ({ card, setActiveLogin }) => (
 	<Col
 		onClick={() => setActiveLogin(card?.activeValue)}
-		className="uppercase p-6 px-4 border border-gray-200 bg-gray-100 hover:bg-gray-200 w-[180px] text-center font-medium cursor-pointer"
+		className="uppercase p-6 px-4 border border-gray-200 bg-gray-100 hover:bg-gray-200 w-[180px] text-center font-[600] text-gray-600 cursor-pointer"
 	>
 		{card?.name}
 	</Col>

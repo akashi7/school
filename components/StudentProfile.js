@@ -22,7 +22,7 @@ const StudentProfile = ({
 		<div className="bg-white p-6 relative">
 			{isFetching && <BeingPromotedLoader />}
 
-			<Row gutter={32} align="middle" justify="start" wrap={false}>
+			<Row gutter={32} align="middle" justify="center" wrap={false}>
 				<Col>
 					<CustomImage
 						src={data?.payload?.passportPhoto}
@@ -32,7 +32,10 @@ const StudentProfile = ({
 					/>
 				</Col>
 
-				<Col flex={1} className="flex flex-col h-[120px] gap-0 mb-3">
+				<Col
+					flex={1}
+					className="flex flex-col h-[120px] gap-0 mb-3 justify-between"
+				>
 					{/* Names and buttons */}
 					<div>
 						<Row align="top" wrap={false} justify="space-between">
@@ -45,7 +48,7 @@ const StudentProfile = ({
 							<Col>
 								{role !== "STUDENT" && (
 									<Col>
-										<div className="flex gap-12">
+										<div className="flex gap-4">
 											<CustomButton
 												type="view"
 												onClick={() => setIsPromoteModalVisible(true)}
@@ -94,7 +97,7 @@ const StudentProfile = ({
 						</Row>
 					</div>
 
-					<p className="flex gap-12 w-[fit-content] items-center">
+					<p className="flex gap-4 w-[fit-content] items-center">
 						<span>{lang?.students_pg?.profile?.total_unpaid}</span>
 
 						<span className="text-red font-medium">
@@ -141,7 +144,7 @@ const StudentProfile = ({
 							</div>
 
 							<div>
-								<p className="flex gap-12 w-[fit-content] items-center">
+								<p className="flex gap-4 w-[fit-content] items-center">
 									<span>{lang?.students_pg?.profile?.total_unpaid}</span>
 
 									<span className="text-red font-medium">
@@ -155,7 +158,7 @@ const StudentProfile = ({
 
 				{role === "STUDENT" && (
 					<Col>
-						<div className="flex gap-12">
+						<div className="flex gap-4">
 							<CustomButton
 								type="view"
 								onClick={() => setIsPromoteModalVisible(true)}

@@ -93,7 +93,7 @@ const SchoolsTable = ({ schools, isFetching, lang }) => {
 					key="actions"
 					width={100}
 					render={(record) => (
-						<div className="flex gap-12">
+						<div className="flex gap-4">
 							<CustomButton
 								type="delete"
 								onClick={() => handleDeleteSchool(record)}

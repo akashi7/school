@@ -114,7 +114,7 @@ const StudentsTable = ({
 					key="actions"
 					width={200}
 					render={(record) => (
-						<div className="flex gap-12">
+						<div className="flex gap-4">
 							<CustomButton
 								type="view"
 								onClick={() =>

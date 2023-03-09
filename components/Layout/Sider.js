@@ -44,7 +44,7 @@ const Sider = () => {
 					<div
 						key={lang.value}
 						onClick={() => handleSelectLanguage(lang.value)}
-						className="flex gap-12 bg-white hover:bg-gray-200 mb-1 cursor-pointer p-2 rounded text-sm items-center w-[100%]"
+						className="flex gap-4 bg-white hover:bg-gray-200 mb-1 cursor-pointer p-2 rounded text-sm items-center w-[100%]"
 					>
 						<span className="text-[18px]">{lang.flag}</span>
 						<span className="text-[12px] text-left flex-1 font-medium">
@@ -56,9 +56,9 @@ const Sider = () => {
 	);
 
 	return (
-		<div className="w-[265px] h-[100vh] p-4 sider flex flex-col">
+		<div className="w-[265px] h-[100vh] p-4 flex flex-col justify-between">
 			<div>
-				<CustomImage src="/icons/logo.png" className="mb-12" />
+				<CustomImage src="/icons/logo.png" className="mb-12" width={200} />
 
 				{/* Menu */}
 				<div>
@@ -69,7 +69,7 @@ const Sider = () => {
 			</div>
 
 			<Dropdown overlay={dropdownOptions} trigger={["click"]} placement="top">
-				<div className="flex gap-12 bg-gray-200 p-2 rounded text-sm items-center w-[100%] ml-2 cursor-pointer hover:bg-gray-300">
+				<div className="flex gap-4 bg-gray-200 p-2 rounded text-sm items-center w-[100%] ml-2 cursor-pointer hover:bg-gray-300">
 					<span className="text-[18px]">{globalLanguage?.flag}</span>
 					<span className="text-[12px] text-left flex-1 font-medium">
 						{globalLanguage?.name}
@@ -106,7 +106,7 @@ export const SingleMenu = ({ menu }) => {
 
 	return (
 		<div
-			className={`flex text-[16px] align-center gap-12 p-2 my-4 cursor-pointer w-[265px] single_menu ${
+			className={`flex text-[16px] align-center gap-4 p-2 my-2 cursor-pointer w-[265px] single_menu ${
 				isActive(menu.url)
 					? "rounded-r-full bg-grey text-dark font-[600]"
 					: "text-gray-500"

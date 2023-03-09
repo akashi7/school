@@ -14,7 +14,7 @@ export const Empty = ({ className, height, message }) => {
 				<CustomImage
 					src="/icons/empty.svg"
 					width={90}
-					className="opacity-20 mb-[-12px]"
+					className="opacity-20 mb-2"
 				/>
 				<span className="opacity-50 font-medium text-[16px] max-w-[200px] text-center">
 					{message || lang?.dashboard_shared?.messages?.no_data}

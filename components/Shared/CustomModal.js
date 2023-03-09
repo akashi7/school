@@ -27,7 +27,7 @@ const CustomModal = ({
 		<Modal
 			className="sn-modal my-12"
 			title={
-				<div className="flex justify-between items-center">
+				<div className="flex justify-between items-center px-[42px] pt-12 pb-0">
 					<div>
 						<span className="font-bold block text-[32px] text-dark  mb-2">
 							{title}
@@ -51,7 +51,7 @@ const CustomModal = ({
 			width={width}
 			footer={
 				footerContent ? (
-					<Row justify="end">
+					<Row justify="end" className="px-[42px] pb-12">
 						<Col
 							xs={24}
 							sm={24}
@@ -73,7 +73,7 @@ const CustomModal = ({
 			maskClosable={!loading}
 			closable={false}
 			destroyOnClose={destroyOnClose}
-			bodyStyle={{ padding: "64px 64px 32px" }}
+			bodyStyle={{ padding: "32px 64px 6px" }}
 		>
 			{children}
 		</Modal>

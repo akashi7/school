@@ -122,7 +122,7 @@ const FeesTable = ({ fees, isFetching, setItemToEdit, setIsVisible, lang }) => {
 					key="actions"
 					width={200}
 					render={(record) => (
-						<div className="flex gap-12">
+						<div className="flex gap-4">
 							<CustomButton type="edit" onClick={() => handleEditFee(record)}>
 								{lang?.dashboard_shared?.buttons?.edit}
 							</CustomButton>

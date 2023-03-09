@@ -44,7 +44,12 @@ const WarningModal = ({
 			className="sn-modal"
 			width={width}
 			footer={
-				<Row align="middle" justify="space-between" gutter={12}>
+				<Row
+					align="middle"
+					justify="space-between"
+					gutter={12}
+					className="px-[42px] pb-12"
+				>
 					<Col>
 						<CustomButton onClick={onCancel} type="view" disabled={loading}>
 							{lang?.dashboard_shared?.buttons?.mistake}
