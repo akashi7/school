@@ -18,7 +18,12 @@ import {
 import requiredField from "../../../helpers/requiredField";
 import { Empty } from "../../../components/Shared/Empty";
 
-const ClassProfile = ({ visibleClass, lang }) => {
+const ClassProfile = ({
+	visibleClass,
+	setVisibleClass,
+	lang,
+	showClassProfile,
+}) => {
 	const [isVisible, setIsVisible] = useState(false);
 
 	const [getStreams, { isFetching, isLoading, data: streams }] =
@@ -82,7 +87,7 @@ const ClassProfile = ({ visibleClass, lang }) => {
 				</Form>
 			</CustomModal>
 
-			<div className="w-[100%] bg-white p-8 py-4 rounded-md">
+			<div className="w-[100%] bg-white p-4 lg:p-8 lg:py-4 rounded-md">
 				{!visibleClass ? (
 					<Empty
 						message={
@@ -95,9 +100,19 @@ const ClassProfile = ({ visibleClass, lang }) => {
 					<GeneralContentLoader />
 				) : (
 					<>
-						<h1 className="text-dark font-semibold mb-12 border-b pb-4 text-[32px]">
-							{visibleClass?.name}
-						</h1>
+						<div className="flex gap-4 items-center mb-6 border-b pb-3 px-2">
+							{!showClassProfile && (
+								<CustomImage
+									src="/icons/back.svg"
+									className="cursor-pointer bg-gray-500 hover:bg-gray-600 p-[8px] rounded"
+									onClick={() => setVisibleClass(null)}
+								/>
+							)}
+
+							<h1 className="text-dark font-semibold text-[32px]">
+								{visibleClass?.name}
+							</h1>
+						</div>
 
 						<div className="flex justify-between items-center bg-grey p-4 py-2 rounded-md mb-4">
 							<p className="text-[20px] text-dark font-semibold">
@@ -113,13 +128,17 @@ const ClassProfile = ({ visibleClass, lang }) => {
 						</div>
 
 						<div
-							style={{ maxHeight: "calc(100vh - 400px)" }}
-							className="h-[fit-content] overflow-y-auto"
+							style={{
+								height: showClassProfile
+									? "calc(100vh - 420px)"
+									: "calc(100vh - 400px)",
+							}}
+							className="overflow-y-auto"
 						>
 							{isFetching ? (
-								<AppLoader height="45vh" className="mt-6" />
+								<AppLoader height="45vh" className="mt-12" />
 							) : streams?.payload?.totalItems <= 0 ? (
-								<Empty className="mt-6" height="45vh" />
+								<Empty className="mt-12" height="45vh" />
 							) : (
 								streams?.payload?.items?.map((stream, index) => (
 									<SingleStream
@@ -141,6 +160,8 @@ const ClassProfile = ({ visibleClass, lang }) => {
 
 ClassProfile.propTypes = {
 	visibleClass: PropTypes.any,
+	setVisibleClass: PropTypes.func,
+	showClassProfile: PropTypes.bool,
 };
 
 export default ClassProfile;

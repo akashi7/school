@@ -56,7 +56,7 @@ const Sider = () => {
 	);
 
 	return (
-		<div className="w-[265px] h-[100vh] p-4 flex flex-col justify-between">
+		<div className="w-[265px] h-[100vh] p-4 flex-col justify-between hidden md:hidden lg:flex">
 			<div>
 				<CustomImage src="/icons/logo.png" className="mb-12" width={200} />
 
@@ -88,7 +88,7 @@ const Sider = () => {
 
 export default Sider;
 
-export const SingleMenu = ({ menu }) => {
+export const SingleMenu = ({ menu, width }) => {
 	const router = useRouter();
 
 	const handleNavigation = (url) => {
@@ -106,7 +106,9 @@ export const SingleMenu = ({ menu }) => {
 
 	return (
 		<div
-			className={`flex text-[16px] align-center gap-4 p-2 my-2 cursor-pointer w-[265px] single_menu ${
+			className={`flex text-[16px] align-center gap-4 p-2 my-2 cursor-pointer pr-[24px] lg:pr-2 w-[${
+				width || "265px"
+			}] single_menu ${
 				isActive(menu.url)
 					? "rounded-r-full bg-grey text-dark font-[600]"
 					: "text-gray-500"

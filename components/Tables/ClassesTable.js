@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import Table from "antd/lib/table";
+import Dropdown from "antd/lib/dropdown";
 import { useDeleteClassMutation } from "../../lib/api/Classrooms/classroomsEndpoints";
 import CustomButton from "../Shared/CustomButton";
 import WarningModal from "../Shared/WarningModal";
+import CustomImage from "../Shared/CustomImage";
 
 const { Column } = Table;
 
@@ -16,6 +18,7 @@ const ClassesTable = ({
 	setIsVisible,
 	isFetching,
 	lang,
+	showMoreIcons,
 }) => {
 	const [isWarningVisible, setIsWarningVisible] = useState(false);
 	const [itemToDelete, setItemToDelete] = useState(null);
@@ -55,7 +58,7 @@ const ClassesTable = ({
 			/>
 
 			<Table
-				className="data_table"
+				className="data_table w-[100%]"
 				dataSource={classes}
 				rowKey={(record) => {
 					return record?.id;
@@ -85,29 +88,73 @@ const ClassesTable = ({
 				<Column
 					title="Actions"
 					key="actions"
-					width={200}
-					render={(record) => (
-						<div className="flex gap-4">
-							<CustomButton
-								type="view"
-								onClick={() => setVisibleClass(record)}
-								disabled={record?.id === visibleClass?.id}
-							>
-								{lang?.dashboard_shared?.buttons?.view}
-							</CustomButton>
+					width={showMoreIcons ? 40 : 200}
+					render={(record) =>
+						showMoreIcons ? (
+							<div className="flex gap-4 justify-end">
+								<Dropdown
+									overlay={
+										<div className="flex flex-col bg-white p-6 shadow border border-gray-100 gap-4">
+											<CustomButton
+												type="view"
+												onClick={() => setVisibleClass(record)}
+												disabled={record?.id === visibleClass?.id}
+											>
+												{lang?.dashboard_shared?.buttons?.view}
+											</CustomButton>
 
-							<CustomButton type="edit" onClick={() => handleEditClass(record)}>
-								{lang?.dashboard_shared?.buttons?.edit}
-							</CustomButton>
+											<CustomButton
+												type="edit"
+												onClick={() => handleEditClass(record)}
+											>
+												{lang?.dashboard_shared?.buttons?.edit}
+											</CustomButton>
 
-							<CustomButton
-								type="delete"
-								onClick={() => handleDeleteClass(record)}
-							>
-								{lang?.dashboard_shared?.buttons?.delete}
-							</CustomButton>
-						</div>
-					)}
+											<CustomButton
+												type="delete"
+												onClick={() => handleDeleteClass(record)}
+											>
+												{lang?.dashboard_shared?.buttons?.delete}
+											</CustomButton>
+										</div>
+									}
+									trigger={["click"]}
+									placement="bottomLeft"
+								>
+									<CustomImage
+										className="cursor-pointer"
+										src="/icons/table_see_more.svg"
+										width={16}
+										height={16}
+									/>
+								</Dropdown>
+							</div>
+						) : (
+							<div className="flex gap-4">
+								<CustomButton
+									type="view"
+									onClick={() => setVisibleClass(record)}
+									disabled={record?.id === visibleClass?.id}
+								>
+									{lang?.dashboard_shared?.buttons?.view}
+								</CustomButton>
+
+								<CustomButton
+									type="edit"
+									onClick={() => handleEditClass(record)}
+								>
+									{lang?.dashboard_shared?.buttons?.edit}
+								</CustomButton>
+
+								<CustomButton
+									type="delete"
+									onClick={() => handleDeleteClass(record)}
+								>
+									{lang?.dashboard_shared?.buttons?.delete}
+								</CustomButton>
+							</div>
+						)
+					}
 				/>
 			</Table>
 		</>

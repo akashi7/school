@@ -1,17 +1,42 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Dropdown from "antd/lib/dropdown";
+import Row from "antd/lib/row";
+import Col from "antd/lib/col";
 import CustomImage from "../Shared/CustomImage";
 import { useUserProfileQuery } from "../../lib/api/Auth/authEndpoints";
 import { isTokenValid } from "../../helpers/verifyToken";
 import { logout } from "../../helpers/handleLogout";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { SingleMenu } from "./Sider";
+import {
+	available_langs,
+	menus,
+	_selected_lang_,
+} from "../../config/constants";
+import translate from "../../config/translate";
+import { getTranslation } from "../../lib/redux/translationSlice";
 
 const Profile = () => {
+	const local_saved_lang = localStorage.getItem(_selected_lang_);
+	const dispatch = useDispatch();
+
 	const lang = useSelector((state) => state?.translation?.payload);
+
+	const [selectedLang, setSelectedLang] = useState(local_saved_lang || "");
+	const trans = translate(selectedLang);
+
+	const handleSelectLanguage = (lng) => {
+		localStorage.setItem(_selected_lang_, lng);
+		setSelectedLang(lng);
+	};
 
 	const { error } = useUserProfileQuery();
 
 	const { role } = isTokenValid(error);
+
+	useEffect(() => {
+		dispatch(getTranslation(trans));
+	}, [dispatch, trans]);
 
 	const ProfileDropdown = (
 		<div className="w-[100%] rounded shadow-md z-100 bg-white p-2 mt-6">
@@ -31,28 +56,48 @@ const Profile = () => {
 		</div>
 	);
 
-	return (
-		<div className="flex items-center gap-4">
-			<CustomImage
-				src="/imgs/profile.jpg"
-				width={42}
-				height={42}
-				className="object-cover rounded-full"
-			/>
-
-			<Dropdown overlay={ProfileDropdown} trigger={["click"]}>
-				<div className="flex items-center gap-2 cursor-pointer">
-					<p>Issa Jean Marie </p>
-
-					<CustomImage
-						src="/icons/expand.svg"
-						width={14}
-						height={14}
-						className="object-cover rounded-full"
-					/>
-				</div>
-			</Dropdown>
+	const MenuDropdown = (
+		<div className="w-[fit-content] rounded shadow-md z-100 bg-white p-2 mt-6">
+			{menus({ trans, role }).map((menu) => (
+				<SingleMenu width="fit-content" menu={menu} key={menu.name} />
+			))}
 		</div>
+	);
+
+	return (
+		<Row align="middle" gutter={18}>
+			<Col className="flex items-centers">
+				<Dropdown overlay={MenuDropdown} trigger={["click"]}>
+					<CustomImage
+						src="/icons/mobile_menu_open.svg"
+						width={24}
+						className="pointer"
+					/>
+				</Dropdown>
+			</Col>
+
+			<Col>
+				<Dropdown overlay={ProfileDropdown} trigger={["click"]}>
+					<div className="flex items-center gap-2 lg:gap-4 cursor-pointer hover:bg-gray-200 lg:hover:bg-none p-1 px-2 rounded">
+						<CustomImage
+							src="/imgs/profile.jpg"
+							className="object-cover rounded-full w-[28px] h-[28px] lg:w-[38px] lg:h-[38px]"
+						/>
+
+						<div className="flex items-center gap-2">
+							<p className="hidden lg:block">Issa Jean Marie </p>
+
+							<CustomImage
+								src="/icons/expand.svg"
+								width={14}
+								height={14}
+								className="object-cover rounded-full"
+							/>
+						</div>
+					</div>
+				</Dropdown>
+			</Col>
+		</Row>
 	);
 };
 

@@ -21,6 +21,7 @@ import Paginator from "../../../components/Shared/Paginator";
 import { _pagination_number_ } from "../../../config/constants";
 import ClassesTable from "../../../components/Tables/ClassesTable";
 import { useSelector } from "react-redux";
+import { useWindowSize } from "../../../helpers/useWindowSize";
 
 const Classes = () => {
 	const [isVisible, setIsVisible] = useState(false);
@@ -90,6 +91,10 @@ const Classes = () => {
 		setCurrentPage(0);
 	};
 
+	const { width } = useWindowSize();
+	const showClassProfile = width >= 1024;
+	const showMoreIcons = width <= 660;
+
 	const RightSide = () => (
 		<CustomButton onClick={() => setIsVisible(true)} type="primary">
 			{lang?.classrooms_pg?.new_btn}
@@ -142,12 +147,16 @@ const Classes = () => {
 			{isLoading ? (
 				<GeneralContentLoader />
 			) : (
-				<div className="flex gap-4 mt-8 h-[fit-content] overflow-y-hidden">
+				<div className="flex mt-8 h-[fit-content] overflow-y-hidden">
 					<div
 						style={{ maxHeight: "calc(100vh - 180px)" }}
-						className={`w-[55%] h-[fit-content] mr-12 border p-4 rounded`}
+						className={`${
+							showClassProfile ? "w-[55%]" : "w-[100%]"
+						} h-[fit-content] ${
+							showClassProfile ? "mr-12" : "mr-0"
+						} border-none lg:border p-0 lg:p-4 rounded`}
 					>
-						<div className="w-[350px] mb-8">
+						<div className="w-full md:w-[50%] lg:w-[350px] mb-8">
 							<CustomInput
 								onChange={onSearchChange}
 								placeholder={lang?.dashboard_shared?.messages?.type_to_search}
@@ -170,6 +179,7 @@ const Classes = () => {
 									isFetching={isFetching}
 									setItemToEdit={setItemToEdit}
 									lang={lang}
+									showMoreIcons={showMoreIcons}
 								/>
 							</div>
 						)}
@@ -181,8 +191,23 @@ const Classes = () => {
 						/>
 					</div>
 
-					<div className="w-[45%]">
-						<ClassProfile lang={lang} visibleClass={visibleClass} />
+					<div
+						className={`${
+							showClassProfile
+								? "w-[45%] relative"
+								: !showClassProfile && visibleClass
+								? "w-[100%] absolute right-0"
+								: "w-[0] relative"
+						}`}
+					>
+						{(showClassProfile || (!showClassProfile && visibleClass)) && (
+							<ClassProfile
+								lang={lang}
+								visibleClass={visibleClass}
+								setVisibleClass={setVisibleClass}
+								showClassProfile={showClassProfile}
+							/>
+						)}
 					</div>
 				</div>
 			)}
