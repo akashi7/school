@@ -7,7 +7,7 @@ import CustomButton from "../../Shared/CustomButton";
 import { MobileTableLoader } from "../../Shared/Loaders";
 import { toLocalString } from "../../../helpers/numbers";
 
-const AssignedFeesTableMobile = ({ dataSource, loading, lang }) => {
+const FeesTableMobile = ({ dataSource, loading, lang }) => {
 	return (
 		<div
 			className={`grid grid-cols-1 relative ${
@@ -62,24 +62,20 @@ const AssignedFeesTableMobile = ({ dataSource, loading, lang }) => {
 					</span>
 
 					<span className="text-[14px] block mt-4">
-						{lang?.students_pg?.profile?.table?.amount}:{" "}
-						<span className="text-gray-500">
-							{toLocalString(record.amount)} Rwf
+						{lang?.fees_pg?.table?.classes}:{" "}
+						<span>
+							{record?.classrooms?.map((classroom) => `${classroom?.name}, `)}
 						</span>
 					</span>
 
 					<span className="text-[14px] block mt-1">
-						{lang?.students_pg?.profile?.table?.paid}:{" "}
-						<span className="text-edit_blue font-medium">
-							{toLocalString(record.paid)} Rwf
-						</span>
+						{lang?.fees_pg?.table?.terms}:{" "}
+						<span>{record?.academicTerms?.map((term) => `${term}, `)} </span>
 					</span>
 
 					<span className="text-[14px] block mt-1">
-						{lang?.students_pg?.profile?.table?.remaining}:{" "}
-						<span className="text-red font-medium">
-							{toLocalString(record.remaining)} Rwf
-						</span>
+						{lang?.fees_pg?.table?.year}:{" "}
+						<span>{record?.academicYear?.name}</span>
 					</span>
 				</div>
 			))}
@@ -87,4 +83,4 @@ const AssignedFeesTableMobile = ({ dataSource, loading, lang }) => {
 	);
 };
 
-export default AssignedFeesTableMobile;
+export default FeesTableMobile;

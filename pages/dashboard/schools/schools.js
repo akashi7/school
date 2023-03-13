@@ -91,7 +91,6 @@ const Schools = () => {
 		</p>
 	);
 
-	console.log(lang);
 	return (
 		<>
 			<CustomModal

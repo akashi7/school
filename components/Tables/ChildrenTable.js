@@ -1,17 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import Table from "antd/lib/table";
-import CustomButton from "../Shared/CustomButton";
-import { useRouter } from "next/router";
-import routes from "../../config/routes";
 import CustomImage from "../Shared/CustomImage";
 
 const { Column } = Table;
 
 const ChildrenTable = ({ isFetching, data, lang }) => {
-	const router = useRouter();
-
-	console.log("DATA: ", data);
-
 	return (
 		<>
 			<Table
