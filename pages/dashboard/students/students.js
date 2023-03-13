@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Form from "antd/lib/form";
 import Row from "antd/lib/row";
 import Col from "antd/lib/col";
+import Dropdown from "antd/lib/dropdown";
 import ContentNavbar from "../../../components/Shared/ContentNavbar";
 import CustomButton from "../../../components/Shared/CustomButton";
 import CustomModal from "../../../components/Shared/CustomModal";
@@ -32,6 +33,9 @@ import useHandleNewStudentForm from "../../../components/Forms/useHandleNewStude
 import Notify from "../../../components/Shared/Notification";
 import Paginator from "../../../components/Shared/Paginator";
 import { useSelector } from "react-redux";
+import { useWindowSize } from "../../../helpers/useWindowSize";
+import CustomImage from "../../../components/Shared/CustomImage";
+import { isImageValid } from "../../../helpers/isImageValid";
 
 const Students = () => {
 	const [isVisible, setIsVisible] = useState(false);
@@ -177,11 +181,7 @@ const Students = () => {
 	};
 
 	const handleUploadProfile = (files) => {
-		const isValid =
-			files[0]?.type === "image/png" ||
-			files[0]?.type === "image/jpg" ||
-			files[0]?.type === "image/jpeg" ||
-			files[0]?.type === "image/svg+xml";
+		const isValid = isImageValid(files);
 
 		isValid
 			? uploadFile({
@@ -235,6 +235,9 @@ const Students = () => {
 			  ]
 			: [];
 
+	const { width } = useWindowSize();
+	const isScreenSmall = width <= 1024;
+
 	const RightSide = () => (
 		<CustomButton onClick={() => setIsVisible(true)} type="primary">
 			{lang?.students_pg?.new_btn}
@@ -245,6 +248,58 @@ const Students = () => {
 		<p className="text-[20px] text-dark font-semibold">
 			{students?.payload?.totalItems || ""} {lang?.students_pg?.title}
 		</p>
+	);
+
+	const FiltersDropdown = (
+		<div className="w-[fit-content] rounded shadow-md z-100 bg-white p-4 mt-6 flex flex-col gap-4">
+			<CustomInput
+				onChange={handleAcademicYearChange}
+				value={academicYearId}
+				type="small-select"
+				label={lang?.dashboard_shared?.filters?.year?.name}
+				options={[
+					{
+						key: 0,
+						value: "",
+						label: lang?.dashboard_shared?.filters?.year?.sub_title,
+					},
+					...academicYearsList,
+				]}
+				isLoading={isAcademicYearsLoading}
+			/>
+
+			<CustomInput
+				onChange={handleClassChange}
+				value={classroomId}
+				type="small-select"
+				label={lang?.dashboard_shared?.filters?.class?.name}
+				options={[
+					{
+						key: 0,
+						value: "",
+						label: lang?.dashboard_shared?.filters?.class?.sub_title,
+					},
+					...classesList,
+				]}
+				isLoading={isClassLoading}
+			/>
+
+			<CustomInput
+				onChange={handleStreamChange}
+				value={streamId}
+				type="small-select"
+				label={lang?.dashboard_shared?.filters?.stream?.name}
+				options={[
+					{
+						key: 0,
+						value: "",
+						label: lang?.dashboard_shared?.filters?.stream?.sub_title,
+					},
+					...streamsList,
+				]}
+				isLoading={isStreamLoading}
+			/>
+		</div>
 	);
 
 	return (
@@ -301,78 +356,97 @@ const Students = () => {
 				<GeneralContentLoader />
 			) : (
 				<ContentTableContainer>
-					<Row align="middle" justify="space-between">
-						<Col className="w-[350px]">
-							<CustomInput
-								onChange={onSearchChange}
-								placeholder={lang?.dashboard_shared?.messages?.type_to_search}
-							/>
+					<Row
+						align="middle"
+						justify="space-between"
+						wrap={!isScreenSmall}
+						gutter={12}
+					>
+						<Col>
+							<div className="w-[100%]">
+								<CustomInput
+									onChange={onSearchChange}
+									placeholder={lang?.dashboard_shared?.messages?.type_to_search}
+								/>
+							</div>
 						</Col>
 
-						<Col>
-							<Row align="middle" gutter={24}>
-								<Col>
-									<CustomInput
-										onChange={handleAcademicYearChange}
-										value={academicYearId}
-										type="small-select"
-										label={lang?.dashboard_shared?.filters?.year?.name}
-										options={[
-											{
-												key: 0,
-												value: "",
-												label: lang?.dashboard_shared?.filters?.year?.sub_title,
-											},
-											...academicYearsList,
-										]}
-										isLoading={isAcademicYearsLoading}
-									/>
-								</Col>
+						<Col className="mb-3">
+							{isScreenSmall ? (
+								<Dropdown overlay={FiltersDropdown} trigger={["click"]}>
+									<div className="p-2 bg-gray-200 pointer rounded h-[40px] w-[42px] flex items-center">
+										<CustomImage
+											src="/icons/filter_icon.svg"
+											className="w-full"
+										/>
+									</div>
+								</Dropdown>
+							) : (
+								<Row align="middle" gutter={24}>
+									<Col>
+										<CustomInput
+											onChange={handleAcademicYearChange}
+											value={academicYearId}
+											type="small-select"
+											label={lang?.dashboard_shared?.filters?.year?.name}
+											options={[
+												{
+													key: 0,
+													value: "",
+													label:
+														lang?.dashboard_shared?.filters?.year?.sub_title,
+												},
+												...academicYearsList,
+											]}
+											isLoading={isAcademicYearsLoading}
+										/>
+									</Col>
 
-								<Col>
-									<CustomInput
-										onChange={handleClassChange}
-										value={classroomId}
-										type="small-select"
-										label={lang?.dashboard_shared?.filters?.class?.name}
-										options={[
-											{
-												key: 0,
-												value: "",
-												label:
-													lang?.dashboard_shared?.filters?.class?.sub_title,
-											},
-											...classesList,
-										]}
-										isLoading={isClassLoading}
-									/>
-								</Col>
+									<Col>
+										<CustomInput
+											onChange={handleClassChange}
+											value={classroomId}
+											type="small-select"
+											label={lang?.dashboard_shared?.filters?.class?.name}
+											options={[
+												{
+													key: 0,
+													value: "",
+													label:
+														lang?.dashboard_shared?.filters?.class?.sub_title,
+												},
+												...classesList,
+											]}
+											isLoading={isClassLoading}
+										/>
+									</Col>
 
-								<Col>
-									<CustomInput
-										onChange={handleStreamChange}
-										value={streamId}
-										type="small-select"
-										label={lang?.dashboard_shared?.filters?.stream?.name}
-										options={[
-											{
-												key: 0,
-												value: "",
-												label:
-													lang?.dashboard_shared?.filters?.stream?.sub_title,
-											},
-											...streamsList,
-										]}
-										isLoading={isStreamLoading}
-									/>
-								</Col>
-							</Row>
+									<Col>
+										<CustomInput
+											onChange={handleStreamChange}
+											value={streamId}
+											type="small-select"
+											label={lang?.dashboard_shared?.filters?.stream?.name}
+											options={[
+												{
+													key: 0,
+													value: "",
+													label:
+														lang?.dashboard_shared?.filters?.stream?.sub_title,
+												},
+												...streamsList,
+											]}
+											isLoading={isStreamLoading}
+										/>
+									</Col>
+								</Row>
+							)}
 						</Col>
 					</Row>
 
 					<div
 						style={{ maxHeight: "calc(100vh - 300px)" }}
-						className="mt-5 h-[fit-content] overflow-x-auto"
+						className=" mt-5 h-[fit-content] overflow-x-auto"
 					>
 						{isLoading ? (
 							<AppLoader />

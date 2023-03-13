@@ -34,3 +34,16 @@ export const BeingPromotedLoader = () => {
 		</div>
 	);
 };
+
+export const MobileTableLoader = ({ className }) => {
+	return (
+		<div
+			className={`${className} bg-[rgba(255,255,255,0.8)] h-[100%] w-[100%] absolute top-0 left-0 z-10 grid justify-center items-center`}
+		>
+			<div className="lds-ripple m-auto">
+				<div></div>
+				<div></div>
+			</div>
+		</div>
+	);
+};

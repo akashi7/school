@@ -15,6 +15,7 @@ const StudentProfile = ({
 	setIsPromoteModalVisible = () => null,
 	totalUnpaid,
 	lang,
+	isScreenSmall,
 }) => {
 	const { role } = isTokenValid();
 
@@ -22,8 +23,13 @@ const StudentProfile = ({
 		<div className="bg-white p-6 relative">
 			{isFetching && <BeingPromotedLoader />}
 
-			<Row gutter={32} align="middle" justify="center" wrap={false}>
-				<Col>
+			<Row gutter={32} align="middle" justify="center" wrap={isScreenSmall}>
+				<Col
+					span={isScreenSmall && 24}
+					className={`${
+						isScreenSmall && "flex items-center justify-center mb-4"
+					}`}
+				>
 					<CustomImage
 						src={data?.payload?.passportPhoto}
 						width={120}
@@ -34,50 +40,63 @@ const StudentProfile = ({
 
 				<Col
 					flex={1}
-					className="flex flex-col h-[120px] gap-0 mb-3 justify-between"
+					className={`flex flex-col ${
+						isScreenSmall ? "h-[fit-content]" : "h-[120px]"
+					} gap-0 mb-3 justify-between`}
 				>
 					{/* Names and buttons */}
 					<div>
-						<Row align="top" wrap={false} justify="space-between">
-							<Col>
-								<p className="text-dark text-[32px] font-semibold ">
+						<Row align="top" wrap={isScreenSmall} justify="space-between">
+							<Col span={isScreenSmall && 24}>
+								<p
+									className={`text-dark text-[32px] font-semibold ${
+										isScreenSmall && "text-center w-full"
+									}`}
+								>
 									{data?.payload?.fullName}
 								</p>
 							</Col>
 
-							<Col>
-								{role !== "STUDENT" && (
-									<Col>
-										<div className="flex gap-4">
-											<CustomButton
-												type="view"
-												onClick={() => setIsPromoteModalVisible(true)}
-											>
-												{lang?.dashboard_shared?.buttons?.promote}
-											</CustomButton>
+							{!isScreenSmall && (
+								<Col>
+									{role !== "STUDENT" && (
+										<Col>
+											<div className="flex gap-4">
+												<CustomButton
+													type="view"
+													onClick={() => setIsPromoteModalVisible(true)}
+												>
+													{lang?.dashboard_shared?.buttons?.promote}
+												</CustomButton>
 
-											<CustomButton
-												type="edit"
-												onClick={() => setIsVisible(true)}
-											>
-												{lang?.dashboard_shared?.buttons?.edit}
-											</CustomButton>
+												<CustomButton
+													type="edit"
+													onClick={() => setIsVisible(true)}
+												>
+													{lang?.dashboard_shared?.buttons?.edit}
+												</CustomButton>
 
-											<CustomButton
-												type="delete"
-												onClick={() => setIsWarningVisible(true)}
-											>
-												{lang?.dashboard_shared?.buttons?.delete}
-											</CustomButton>
-										</div>
-									</Col>
-								)}
-							</Col>
+												<CustomButton
+													type="delete"
+													onClick={() => setIsWarningVisible(true)}
+												>
+													{lang?.dashboard_shared?.buttons?.delete}
+												</CustomButton>
+											</div>
+										</Col>
+									)}
+								</Col>
+							)}
 						</Row>
 
-						<Row wrap={false} gutter={12} className="text-black text-[14px]">
-							<Col>
-								<p>
+						<Row
+							wrap={isScreenSmall}
+							justify={isScreenSmall ? "center" : "start"}
+							gutter={12}
+							className="text-black text-[14px]"
+						>
+							<Col span={isScreenSmall && 24}>
+								<p className="text-center">
 									{lang?.students_pg?.modals?.class}:{" "}
 									<span className="text-gray-400">
 										{data?.payload?.stream?.classroom?.name}{" "}
@@ -97,68 +116,20 @@ const StudentProfile = ({
 						</Row>
 					</div>
 
-					<p className="flex gap-4 w-[fit-content] items-center">
+					<p
+						className={`flex gap-4 w-[fit-content] items-center ${
+							isScreenSmall && "justify-center w-full mt-2"
+						}`}
+					>
 						<span>{lang?.students_pg?.profile?.total_unpaid}</span>
 
 						<span className="text-red font-medium">
 							{toLocalString(totalUnpaid || 0)} Rwf
 						</span>
 					</p>
-				</Col>
-			</Row>
 
-			{/* <Row gutter={32} justify="space-between" align="top" wrap={false}>
-				<Col flex={1} className="w-[100%]">
-					<Row wrap={false} align="middle" gutter={32}>
-						<Col>
-							<CustomImage
-								src={data?.payload?.passportPhoto}
-								width={120}
-								height={120}
-								className="object-cover rounded"
-							/>
-						</Col>
-
-						<Col className="flex flex-col h-[120px] gap-0 mb-3 bg-red">
-							<div className="w-[100%] bg-blue">
-								<p className="text-dark text-[32px] font-semibold">
-									{data?.payload?.fullName}
-								</p>
-
-								<div className="text-black text-[14px] grid grid-cols-2 gap-2 w-[100%] bg-dark">
-									<span className="truncate">
-										{lang?.students_pg?.modals?.class}:{" "}
-										<span className="text-gray-400">
-											{data?.payload?.stream?.classroom?.name}{" "}
-											{data?.payload?.stream?.name}
-										</span>
-									</span>
-
-									<span className="block w-[100%]">
-										{lang?.students_pg?.modals?.academic_year}:{" "}
-										<span className="text-gray-400">
-											{data?.payload?.academicYear?.name}
-										</span>
-									</span>
-								</div>
-							</div>
-
-							<div>
-								<p className="flex gap-4 w-[fit-content] items-center">
-									<span>{lang?.students_pg?.profile?.total_unpaid}</span>
-
-									<span className="text-red font-medium">
-										{toLocalString(totalUnpaid || 0)} Rwf
-									</span>
-								</p>
-							</div>
-						</Col>
-					</Row>
-				</Col>
-
-				{role === "STUDENT" && (
-					<Col>
-						<div className="flex gap-4">
+					{role !== "STUDENT" && isScreenSmall && (
+						<div className="flex m-auto w-[210px] my-4 gap-4">
 							<CustomButton
 								type="view"
 								onClick={() => setIsPromoteModalVisible(true)}
@@ -177,9 +148,9 @@ const StudentProfile = ({
 								{lang?.dashboard_shared?.buttons?.delete}
 							</CustomButton>
 						</div>
-					</Col>
-				)}
-			</Row> */}
+					)}
+				</Col>
+			</Row>
 		</div>
 	);
 };
