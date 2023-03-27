@@ -16,7 +16,7 @@ const LoginForm = () => {
 	const lang = useSelector((state) => state?.translation?.payload);
 
 	return (
-		<div className="m-auto bg-white rounded-[12px] p-12  w-[500px] flex flex-col items-center">
+		<div className="m-auto bg-white rounded-[12px] p-12  w-full md:w-[500px] flex flex-col items-center">
 			<CustomImage src="/icons/logo.png" width={240} />
 
 			{school ? (

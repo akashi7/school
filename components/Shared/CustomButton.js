@@ -24,7 +24,7 @@ const CustomButton = ({
 			<Button
 				className={`${className} ${
 					isScreenSmall
-						? "text-[12px] px-4 h-[32px]"
+						? "text-[12px] px-4 h-[36px]"
 						: "text-[14px] px-6 h-[42px]"
 				} bg-primary font-medium text-white rounded-[4px] hover:text-white hover:bg-primary_hover border-none hover:border-none`}
 				disabled={disabled}

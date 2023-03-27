@@ -37,7 +37,7 @@ const CustomModal = ({
 					} pb-0`}
 				>
 					<div>
-						<span className="font-bold block text-[32px] text-dark  mb-2">
+						<span className="font-bold block text-[24px] lg:text-[32px] text-dark  mb-2">
 							{title}
 						</span>
 

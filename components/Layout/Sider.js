@@ -106,9 +106,7 @@ export const SingleMenu = ({ menu, width }) => {
 
 	return (
 		<div
-			className={`flex text-[16px] align-center gap-4 p-2 my-2 cursor-pointer pr-[24px] lg:pr-2 w-[${
-				width || "265px"
-			}] single_menu ${
+			className={`flex text-[16px] align-center gap-4 p-2 my-2 cursor-pointer pr-[24px] lg:pr-2 w-full single_menu ${
 				isActive(menu.url)
 					? "rounded-r-full bg-grey text-dark font-[600]"
 					: "text-gray-500"

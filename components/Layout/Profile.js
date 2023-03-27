@@ -8,13 +8,10 @@ import { isTokenValid } from "../../helpers/verifyToken";
 import { logout } from "../../helpers/handleLogout";
 import { useDispatch, useSelector } from "react-redux";
 import { SingleMenu } from "./Sider";
-import {
-	available_langs,
-	menus,
-	_selected_lang_,
-} from "../../config/constants";
+import { menus, _selected_lang_ } from "../../config/constants";
 import translate from "../../config/translate";
 import { getTranslation } from "../../lib/redux/translationSlice";
+import { useWindowSize } from "../../helpers/useWindowSize";
 
 const Profile = () => {
 	const local_saved_lang = localStorage.getItem(_selected_lang_);
@@ -30,13 +27,17 @@ const Profile = () => {
 		setSelectedLang(lng);
 	};
 
-	const { error } = useUserProfileQuery();
+	const { error, data } = useUserProfileQuery();
 
 	const { role } = isTokenValid(error);
 
 	useEffect(() => {
 		dispatch(getTranslation(trans));
 	}, [dispatch, trans]);
+
+	const { width } = useWindowSize();
+	const isScreenSmall = width <= 1024;
+	console.log("DATA: ", data);
 
 	const ProfileDropdown = (
 		<div className="w-[100%] rounded shadow-md z-100 bg-white p-2 mt-6">
@@ -66,26 +67,28 @@ const Profile = () => {
 
 	return (
 		<Row align="middle" gutter={18}>
-			<Col className="flex items-centers">
-				<Dropdown overlay={MenuDropdown} trigger={["click"]}>
-					<CustomImage
-						src="/icons/mobile_menu_open.svg"
-						width={24}
-						className="pointer"
-					/>
-				</Dropdown>
-			</Col>
+			{isScreenSmall && (
+				<Col className="flex items-centers">
+					<Dropdown overlay={MenuDropdown} trigger={["click"]}>
+						<CustomImage
+							src="/icons/mobile_menu_open.svg"
+							width={24}
+							className="pointer"
+						/>
+					</Dropdown>
+				</Col>
+			)}
 
 			<Col>
 				<Dropdown overlay={ProfileDropdown} trigger={["click"]}>
 					<div className="flex items-center gap-2 lg:gap-4 cursor-pointer hover:bg-gray-200 lg:hover:bg-none p-1 px-2 rounded">
 						<CustomImage
-							src="/imgs/profile.jpg"
-							className="object-cover rounded-full w-[28px] h-[28px] lg:w-[38px] lg:h-[38px]"
+							src={data?.payload?.passportPhoto}
+							className="object-cover rounded-full w-[30px] h-[30px] lg:w-[38px] lg:h-[38px]"
 						/>
 
 						<div className="flex items-center gap-2">
-							<p className="hidden lg:block">Issa Jean Marie </p>
+							<p className="hidden lg:block">{data?.payload?.fullName}</p>
 
 							<CustomImage
 								src="/icons/expand.svg"

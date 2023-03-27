@@ -20,6 +20,7 @@ import uploadFile from "../../../helpers/uploadFile";
 import Notify from "../../../components/Shared/Notification";
 import handleAPIRequests from "../../../helpers/handleAPIRequests";
 import { useSelector } from "react-redux";
+import { useWindowSize } from "../../../helpers/useWindowSize";
 
 const Schools = () => {
 	const [isVisible, setIsVisible] = useState(false);
@@ -79,6 +80,9 @@ const Schools = () => {
 
 	const isPageLoading = isLoading;
 
+	const { width } = useWindowSize();
+	const isScreenSmall = width <= 1024;
+
 	const RightSide = () => (
 		<CustomButton onClick={() => setIsVisible(true)} type="primary">
 			{lang?.schools_pg?.new_btn}
@@ -119,6 +123,7 @@ const Schools = () => {
 					imgURL={imgURL}
 					setSelectedCountry={setSelectedCountry}
 					lang={lang}
+					isScreenSmall={isScreenSmall}
 				/>
 			</CustomModal>
 
@@ -140,6 +145,7 @@ const Schools = () => {
 								schools={schools?.payload}
 								isFetching={isFetching}
 								lang={lang}
+								isScreenSmall={isScreenSmall}
 							/>
 						)}
 					</div>

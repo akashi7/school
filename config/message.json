@@ -102,6 +102,7 @@
 		},
 
 		"navbar": {
+			"dashboard": "Dashboard",
 			"classroom": "Classrooms",
 			"students": "Students",
 			"fees": "Fees",
@@ -109,6 +110,14 @@
 			"academic_years": "Academic years",
 			"children": "Children",
 			"my_profile": "My profile"
+		},
+
+		"analytics_pg": {
+			"cards": {
+				"schools": "Schools",
+				"parents": "Parents",
+				"students": "Students"
+			}
 		},
 
 		"classrooms_pg": {
@@ -370,6 +379,7 @@
 		},
 
 		"navbar": {
+			"dashboard": "Dashboard",
 			"classroom": "Amashuri",
 			"students": "Abanyeshuri",
 			"fees": "Inyishyu",

@@ -20,6 +20,7 @@ import NewAcademicYearForm from "../../../components/Forms/NewAcademicYearForm";
 import handleAPIRequests from "../../../helpers/handleAPIRequests";
 import Paginator from "../../../components/Shared/Paginator";
 import { useSelector } from "react-redux";
+import { useWindowSize } from "../../../helpers/useWindowSize";
 
 const AcademicYears = () => {
 	const [isVisible, setIsVisible] = useState(false);
@@ -88,6 +89,9 @@ const AcademicYears = () => {
 
 	const isPageLoading = isLoading;
 
+	const { width } = useWindowSize();
+	const isScreenSmall = width <= 1024;
+
 	const RightSide = () => (
 		<CustomButton onClick={() => setIsVisible(true)} type="primary">
 			{lang?.academic_years_pg?.new_btn}
@@ -152,6 +156,7 @@ const AcademicYears = () => {
 								setIsEditModalVisible={setIsVisible}
 								isFetching={isFetching}
 								lang={lang}
+								isScreenSmall={isScreenSmall}
 							/>
 						)}
 

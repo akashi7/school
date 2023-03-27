@@ -380,6 +380,7 @@ const Students = () => {
 					classes={classes}
 					academicYears={academicYears}
 					itemToEdit={itemToEdit}
+					isScreenSmall={isScreenSmall}
 				/>
 			</CustomModal>
 
@@ -391,7 +392,7 @@ const Students = () => {
 			) : (
 				<ContentTableContainer>
 					<Row
-						align="middle"
+						align="end"
 						justify="space-between"
 						wrap={!isScreenSmall}
 						gutter={12}

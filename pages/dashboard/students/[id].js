@@ -447,6 +447,7 @@ const SingleStudent = () => {
 					isStreamLoading={isStreamLoading}
 					isAcademicYearsLoading={isAcademicYearsLoading}
 					data={data}
+					isScreenSmall={isScreenSmall}
 				/>
 			</CustomModal>
 

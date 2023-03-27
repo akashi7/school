@@ -445,7 +445,11 @@ const Students = () => {
 					</Row>
 
 					<div
-						style={{ maxHeight: "calc(100vh - 300px)" }}
+						style={{
+							maxHeight: isScreenSmall
+								? "calc(100vh - 260px)"
+								: "calc(100vh - 300px)",
+						}}
 						className=" mt-5 h-[fit-content] overflow-x-auto"
 					>
 						{isLoading ? (

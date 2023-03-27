@@ -12,6 +12,7 @@ import {
 	_selected_lang_,
 } from "../../config/constants";
 import { getTranslation } from "../../lib/redux/translationSlice";
+import { useWindowSize } from "../../helpers/useWindowSize";
 
 const AuthIndex = ({ setActiveLogin }) => {
 	const local_saved_lang = localStorage.getItem(_selected_lang_);
@@ -75,13 +76,13 @@ const AuthIndex = ({ setActiveLogin }) => {
 
 	return (
 		<>
-			<p className="font-medium text-dark text-[24px] mt-8 mb-12">
+			<p className="font-medium text-dark text-[24px] my-12">
 				{globalLanguage?.auth?.title}:
 			</p>
 
 			<Row
 				align="middle"
-				className="w-[100%] m-auto gap-6 mb-8"
+				className="w-[100%] m-auto gap-6 mb-12"
 				justify="center"
 			>
 				{login_cards?.map((card) => (
@@ -119,11 +120,23 @@ AuthIndex.propTypes = {
 
 export default AuthIndex;
 
-export const LoginChoiceCard = ({ card, setActiveLogin }) => (
-	<Col
-		onClick={() => setActiveLogin(card?.activeValue)}
-		className="uppercase p-6 px-4 border border-gray-200 bg-gray-100 hover:bg-gray-200 w-[180px] text-center font-[600] text-gray-600 cursor-pointer"
-	>
-		{card?.name}
-	</Col>
-);
+export const LoginChoiceCard = ({ card, setActiveLogin }) => {
+	const { width } = useWindowSize();
+	const isScreenSmall = width < 500;
+
+	return isScreenSmall ? (
+		<p
+			className="text-sm bg-slate-200 hover:bg-slate-300 p-2 rounded w-[100px] text-center"
+			onClick={() => setActiveLogin(card?.activeValue)}
+		>
+			{card?.name}
+		</p>
+	) : (
+		<Col
+			onClick={() => setActiveLogin(card?.activeValue)}
+			className="uppercase p-4 px-2 rounded border text-[18px] border-gray-200 bg-gray-100 hover:bg-gray-200 w-[180px] text-center font-[400] text-gray-600 cursor-pointer"
+		>
+			{card?.name}
+		</Col>
+	);
+};

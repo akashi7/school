@@ -22,6 +22,7 @@ import { _pagination_number_ } from "../../../config/constants";
 import ClassesTable from "../../../components/Tables/ClassesTable";
 import { useSelector } from "react-redux";
 import { useWindowSize } from "../../../helpers/useWindowSize";
+import Layout from "../../../components/Layout";
 
 const Classes = () => {
 	const [isVisible, setIsVisible] = useState(false);
@@ -108,7 +109,7 @@ const Classes = () => {
 	);
 
 	return (
-		<div>
+		<Layout>
 			<CustomModal
 				isVisible={isVisible}
 				setIsVisible={setIsVisible}
@@ -211,7 +212,7 @@ const Classes = () => {
 					</div>
 				</div>
 			)}
-		</div>
+		</Layout>
 	);
 };
 

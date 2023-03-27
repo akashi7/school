@@ -18,6 +18,7 @@ const NewFeeForm = ({
 	classes,
 	academicYears,
 	itemToEdit,
+	isScreenSmall,
 }) => {
 	const lang = useSelector((state) => state?.translation?.payload);
 
@@ -42,7 +43,7 @@ const NewFeeForm = ({
 	return (
 		<Form form={form} name="add-class" onFinish={onFinish}>
 			<Row gutter={24}>
-				<Col span={12}>
+				<Col span={isScreenSmall ? 24 : 12}>
 					<CustomInput
 						label={lang?.fees_pg?.modals?.fee_name}
 						placeholder={`${lang?.fees_pg?.modals?.fee_name}...`}
@@ -51,7 +52,7 @@ const NewFeeForm = ({
 					/>
 				</Col>
 
-				<Col span={12}>
+				<Col span={isScreenSmall ? 24 : 12}>
 					<CustomInput
 						label={lang?.fees_pg?.modals?.amount}
 						placeholder={`${lang?.fees_pg?.modals?.fee_name}...`}
@@ -80,7 +81,7 @@ const NewFeeForm = ({
 					)}
 				</Col>
 
-				<Col span={12}>
+				<Col span={isScreenSmall ? 24 : 12}>
 					<CustomInput
 						label={lang?.fees_pg?.modals?.terms}
 						name="academicTerms"
@@ -94,7 +95,7 @@ const NewFeeForm = ({
 					/>
 				</Col>
 
-				<Col span={12}>
+				<Col span={isScreenSmall ? 24 : 12}>
 					{academicYears?.payload?.items?.length >= 1 && (
 						<CustomInput
 							type="select"
@@ -114,7 +115,7 @@ const NewFeeForm = ({
 			</Row>
 
 			<Row gutter={24} className="mt-6">
-				<Col span={12}>
+				<Col span={isScreenSmall ? 24 : 12}>
 					<Checkbox
 						name="isOptional"
 						checked={isPaymentAdditional}
@@ -125,7 +126,10 @@ const NewFeeForm = ({
 				</Col>
 
 				{isPaymentAdditional && (
-					<Col span={12}>
+					<Col
+						span={isScreenSmall ? 24 : 12}
+						className={isScreenSmall && "mt-2"}
+					>
 						<Checkbox
 							name="isOptional"
 							checked={isPaymentOPtional}

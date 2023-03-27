@@ -1,10 +1,14 @@
 import React from "react";
 
-const Content = ({ children }) => {
+const Content = ({ children, isScreenSmall }) => {
 	return (
 		<div
-			className="h-[92vh]  bg-grey rounded-tl-[32px] p-[24px]"
-			style={{ height: "calc(100vh - 42px - 40px)" }}
+			className="lg:rounded-tl-[32px] p-[24px] bg-gray-50"
+			style={{
+				height: isScreenSmall
+					? "calc(100vh - 70px)"
+					: "calc(100vh - 42px - 40px)",
+			}}
 		>
 			{children}
 		</div>

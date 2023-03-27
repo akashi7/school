@@ -16,6 +16,7 @@ const NewSchoolForm = ({
 	imgURL,
 	setSelectedCountry,
 	lang,
+	isScreenSmall,
 }) => {
 	const handleCountryChange = (country) => {
 		setSelectedCountry(countries_with_codes?.find((c) => c.name === country));
@@ -23,8 +24,8 @@ const NewSchoolForm = ({
 
 	return (
 		<Form form={form} name="add-school" onFinish={onFinish}>
-			<Row align="middle" wrap={false} gutter={24}>
-				<Col className="w-[50%]">
+			<Row align="middle" wrap={isScreenSmall} gutter={24}>
+				<Col className={`${isScreenSmall ? "w-[100%]" : "w-[50%]"}`}>
 					<CustomInput
 						label={lang?.schools_pg?.modals?.school_name}
 						placeholder={`${lang?.schools_pg?.modals?.school_name}...`}
@@ -33,7 +34,7 @@ const NewSchoolForm = ({
 					/>
 				</Col>
 
-				<Col className="w-[50%]">
+				<Col className={`${isScreenSmall ? "w-[100%]" : "w-[50%]"}`}>
 					<CustomInput
 						label={lang?.schools_pg?.modals?.school_title}
 						placeholder="School title..."
@@ -82,8 +83,8 @@ const NewSchoolForm = ({
 				)}
 			</Row>
 
-			<Row align="middle" wrap={false} gutter={24}>
-				<Col className="w-[50%]">
+			<Row align="middle" wrap={isScreenSmall} gutter={24}>
+				<Col className={`${isScreenSmall ? "w-[100%]" : "w-[50%]"}`}>
 					<CustomInput
 						label={lang?.schools_pg?.modals?.school_type}
 						type="select"
@@ -118,7 +119,7 @@ const NewSchoolForm = ({
 					/>
 				</Col>
 
-				<Col className="w-[50%]">
+				<Col className={`${isScreenSmall ? "w-[100%]" : "w-[50%]"}`}>
 					<CustomInput
 						label={lang?.schools_pg?.modals?.has_student_ids}
 						type="select"
@@ -141,8 +142,8 @@ const NewSchoolForm = ({
 				</Col>
 			</Row>
 
-			<Row align="middle" wrap={false} gutter={24}>
-				<Col className="w-[50%]">
+			<Row align="middle" wrap={isScreenSmall} gutter={24}>
+				<Col className={`${isScreenSmall ? "w-[100%]" : "w-[50%]"}`}>
 					<CustomInput
 						label={lang?.schools_pg?.modals?.country_name}
 						placeholder="Select country"
@@ -160,7 +161,7 @@ const NewSchoolForm = ({
 					/>
 				</Col>
 
-				<Col className="w-[50%]">
+				<Col className={`${isScreenSmall ? "w-[100%]" : "w-[50%]"}`}>
 					<CustomInput
 						label={lang?.schools_pg?.modals?.school_address}
 						placeholder={`${lang?.schools_pg?.modals?.school_address}...`}
@@ -170,8 +171,8 @@ const NewSchoolForm = ({
 				</Col>
 			</Row>
 
-			<Row align="middle" wrap={false} gutter={24}>
-				<Col className="w-[50%]">
+			<Row align="middle" wrap={isScreenSmall} gutter={24}>
+				<Col className={`${isScreenSmall ? "w-[100%]" : "w-[50%]"}`}>
 					<CustomInput
 						label={lang?.schools_pg?.modals?.phone_number}
 						placeholder={`${lang?.schools_pg?.modals?.phone_number}...`}
@@ -180,7 +181,7 @@ const NewSchoolForm = ({
 					/>
 				</Col>
 
-				<Col className="w-[50%]">
+				<Col className={`${isScreenSmall ? "w-[100%]" : "w-[50%]"}`}>
 					<CustomInput
 						label={lang?.schools_pg?.modals?.email}
 						placeholder={`${lang?.schools_pg?.modals?.email}...`}
