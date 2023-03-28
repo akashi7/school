@@ -3,8 +3,6 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import routes from "../../config/routes";
-import { useWindowSize } from "../../helpers/useWindowSize";
-import SmallScreen from "../Shared/SmallScreen";
 
 const Public = (Wrapped) => {
 	return (props) => {
@@ -16,9 +14,7 @@ const Public = (Wrapped) => {
 			return null;
 		}
 
-		const { width } = useWindowSize();
-
-		return width <= 1025 ? <SmallScreen /> : <Wrapped {...props} />;
+		return <Wrapped {...props} />;
 	};
 };
 

@@ -28,6 +28,7 @@ import { Dropdown } from "antd";
 import CustomImage from "../../../components/Shared/CustomImage";
 import handleDownloadFile from "../../../helpers/handleDownloadFile";
 import { useSelector } from "react-redux";
+import { useWindowSize } from "../../../helpers/useWindowSize";
 
 const Students = () => {
 	const [isVisible, setIsVisible] = useState(false);
@@ -177,6 +178,9 @@ const Students = () => {
 		  ]
 		: [];
 
+	const { width } = useWindowSize();
+	const isScreenSmall = width <= 1024;
+
 	const DownloadOverlay = (
 		<div className="p-4 w-[100%] bg-gray-200 rounded shadow-sm">
 			<p
@@ -204,45 +208,56 @@ const Students = () => {
 					}
 					trigger={["click"]}
 				>
-					<div
-						className={`flex items-center gap-6 bg-gray-200 p-4 py-3 rounded ${
-							isDownloadLoading || !academicYearId
-								? "cursor-not-allowed"
-								: " cursor-pointer"
-						}`}
-					>
-						{isDownloadLoading ? (
-							<LoadingOutlined style={{ fontSize: 16 }} spin />
-						) : (
+					{isScreenSmall ? (
+						<div className="w-[32px] h-[32px] rounded hover:bg-gray-500 flex items-center justify-center bg-gray-200">
 							<CustomImage
 								src="/icons/download.svg"
 								width={18}
 								height={18}
 								className={`${!academicYearId ? "opacity-60" : "opacity-1"}`}
 							/>
-						)}
-
-						<span
-							className={`${
+						</div>
+					) : (
+						<div
+							className={`flex items-center gap-6 bg-gray-200 p-4 py-3 rounded ${
 								isDownloadLoading || !academicYearId
-									? "opacity-60"
-									: "opacity-1"
-							}  text-[14px] font-medium ml-2`}
+									? "cursor-not-allowed"
+									: " cursor-pointer"
+							}`}
 						>
-							{lang?.fees_pg?.download_btn?.title}
-						</span>
+							{isDownloadLoading ? (
+								<LoadingOutlined style={{ fontSize: 16 }} spin />
+							) : (
+								<CustomImage
+									src="/icons/download.svg"
+									width={18}
+									height={18}
+									className={`${!academicYearId ? "opacity-60" : "opacity-1"}`}
+								/>
+							)}
 
-						<CustomImage
-							src="/icons/expand.svg"
-							width={14}
-							height={14}
-							className={` ${
-								isDownloadLoading || !academicYearId
-									? "opacity-60"
-									: "opacity-1"
-							}  object-cover rounded-full`}
-						/>
-					</div>
+							<span
+								className={`${
+									isDownloadLoading || !academicYearId
+										? "opacity-60"
+										: "opacity-1"
+								}  text-[14px] font-medium ml-2`}
+							>
+								{lang?.fees_pg?.download_btn?.title}
+							</span>
+
+							<CustomImage
+								src="/icons/expand.svg"
+								width={14}
+								height={14}
+								className={` ${
+									isDownloadLoading || !academicYearId
+										? "opacity-60"
+										: "opacity-1"
+								}  object-cover rounded-full`}
+							/>
+						</div>
+					)}
 				</Dropdown>
 			</Col>
 
@@ -258,6 +273,77 @@ const Students = () => {
 		<p className="text-[20px] text-dark font-semibold">
 			{fees?.payload?.totalItems || ""} {lang?.fees_pg?.title}
 		</p>
+	);
+
+	const FiltersDropdown = (
+		<div className="w-[fit-content] rounded shadow-md z-100 bg-white p-4 mt-6 flex flex-col gap-4">
+			<CustomInput
+				onChange={handleAcademicYearChange}
+				value={academicYearId}
+				type="small-select"
+				label={lang?.dashboard_shared?.filters?.year?.name}
+				options={[
+					{
+						key: 0,
+						value: "",
+						label: lang?.dashboard_shared?.filters?.year?.sub_title,
+					},
+					...academicYearsList,
+				]}
+				isLoading={isAcademicYearsLoading}
+			/>
+
+			<CustomInput
+				onChange={handleClassChange}
+				value={classroomId}
+				type="small-select"
+				label={lang?.dashboard_shared?.filters?.class?.name}
+				options={[
+					{
+						key: 0,
+						value: "",
+						label: lang?.dashboard_shared?.filters?.class?.sub_title,
+					},
+					...classesList,
+				]}
+				isLoading={isClassLoading}
+			/>
+
+			<CustomInput
+				onChange={handleTermChange}
+				value={termId}
+				type="small-select"
+				label={lang?.dashboard_shared?.filters?.term?.name}
+				options={[
+					{
+						key: 0,
+						value: "",
+						label: lang?.dashboard_shared?.filters?.term?.sub_title,
+					},
+					...termOptions,
+				]}
+			/>
+
+			<CustomInput
+				onChange={handleFeeTypeChange}
+				value={feeType}
+				type="small-select"
+				label={lang?.dashboard_shared?.filters?.type?.name}
+				options={[
+					{
+						key: 0,
+						value: "",
+						label: lang?.dashboard_shared?.filters?.type?.sub_title,
+					},
+					{ key: 1, value: "SCHOOL_FEE", label: "School fee" },
+					{
+						key: 2,
+						value: "ADDITIONAL_FEE",
+						label: "Additional fee",
+					},
+				]}
+			/>
+		</div>
 	);
 
 	return (
@@ -294,6 +380,7 @@ const Students = () => {
 					classes={classes}
 					academicYears={academicYears}
 					itemToEdit={itemToEdit}
+					isScreenSmall={isScreenSmall}
 				/>
 			</CustomModal>
 
@@ -304,92 +391,113 @@ const Students = () => {
 				<GeneralContentLoader />
 			) : (
 				<ContentTableContainer>
-					<Row align="middle" justify="space-between">
-						<Col className="w-[150px]">
-							<CustomInput
-								onChange={onSearchChange}
-								placeholder={lang?.dashboard_shared?.messages?.type_to_search}
-							/>
+					<Row
+						align="end"
+						justify="space-between"
+						wrap={!isScreenSmall}
+						gutter={12}
+					>
+						<Col>
+							<div className="w-[100%]">
+								<CustomInput
+									onChange={onSearchChange}
+									placeholder={lang?.dashboard_shared?.messages?.type_to_search}
+								/>
+							</div>
 						</Col>
 
 						<Col>
-							<Row align="middle" gutter={24}>
-								<Col>
-									<CustomInput
-										onChange={handleAcademicYearChange}
-										value={academicYearId}
-										type="small-select"
-										label={lang?.dashboard_shared?.filters?.year?.name}
-										options={[
-											{
-												key: 0,
-												value: "",
-												label: lang?.dashboard_shared?.filters?.year?.sub_title,
-											},
-											...academicYearsList,
-										]}
-										isLoading={isAcademicYearsLoading}
-									/>
-								</Col>
+							{isScreenSmall ? (
+								<Dropdown overlay={FiltersDropdown} trigger={["click"]}>
+									<div className="p-2 bg-gray-200 pointer rounded h-[40px] w-[42px] flex items-center">
+										<CustomImage
+											src="/icons/filter_icon.svg"
+											className="w-full"
+										/>
+									</div>
+								</Dropdown>
+							) : (
+								<Row align="middle" gutter={24}>
+									<Col>
+										<CustomInput
+											onChange={handleAcademicYearChange}
+											value={academicYearId}
+											type="small-select"
+											label={lang?.dashboard_shared?.filters?.year?.name}
+											options={[
+												{
+													key: 0,
+													value: "",
+													label:
+														lang?.dashboard_shared?.filters?.year?.sub_title,
+												},
+												...academicYearsList,
+											]}
+											isLoading={isAcademicYearsLoading}
+										/>
+									</Col>
 
-								<Col>
-									<CustomInput
-										onChange={handleClassChange}
-										value={classroomId}
-										type="small-select"
-										label={lang?.dashboard_shared?.filters?.class?.name}
-										options={[
-											{
-												key: 0,
-												value: "",
-												label:
-													lang?.dashboard_shared?.filters?.class?.sub_title,
-											},
-											...classesList,
-										]}
-										isLoading={isClassLoading}
-									/>
-								</Col>
+									<Col>
+										<CustomInput
+											onChange={handleClassChange}
+											value={classroomId}
+											type="small-select"
+											label={lang?.dashboard_shared?.filters?.class?.name}
+											options={[
+												{
+													key: 0,
+													value: "",
+													label:
+														lang?.dashboard_shared?.filters?.class?.sub_title,
+												},
+												...classesList,
+											]}
+											isLoading={isClassLoading}
+										/>
+									</Col>
 
-								<Col>
-									<CustomInput
-										onChange={handleTermChange}
-										value={termId}
-										type="small-select"
-										label={lang?.dashboard_shared?.filters?.term?.name}
-										options={[
-											{
-												key: 0,
-												value: "",
-												label: lang?.dashboard_shared?.filters?.term?.sub_title,
-											},
-											...termOptions,
-										]}
-									/>
-								</Col>
+									<Col>
+										<CustomInput
+											onChange={handleTermChange}
+											value={termId}
+											type="small-select"
+											label={lang?.dashboard_shared?.filters?.term?.name}
+											options={[
+												{
+													key: 0,
+													value: "",
+													label:
+														lang?.dashboard_shared?.filters?.term?.sub_title,
+												},
+												...termOptions,
+											]}
+										/>
+									</Col>
 
-								<Col>
-									<CustomInput
-										onChange={handleFeeTypeChange}
-										value={feeType}
-										type="small-select"
-										label={lang?.dashboard_shared?.filters?.type?.name}
-										options={[
-											{
-												key: 0,
-												value: "",
-												label: lang?.dashboard_shared?.filters?.type?.sub_title,
-											},
-											{ key: 1, value: "SCHOOL_FEE", label: "School fee" },
-											{
-												key: 2,
-												value: "ADDITIONAL_FEE",
-												label: "Additional fee",
-											},
-										]}
-									/>
-								</Col>
-							</Row>
+									<Col>
+										<CustomInput
+											onChange={handleFeeTypeChange}
+											value={feeType}
+											type="small-select"
+											label={lang?.dashboard_shared?.filters?.type?.name}
+											options={[
+												{
+													key: 0,
+													value: "",
+													label:
+														lang?.dashboard_shared?.filters?.type?.sub_title,
+												},
+												{ key: 1, value: "SCHOOL_FEE", label: "School fee" },
+												{
+													key: 2,
+													value: "ADDITIONAL_FEE",
+													label: "Additional fee",
+												},
+											]}
+										/>
+									</Col>
+								</Row>
+							)}
 						</Col>
 					</Row>
 
@@ -406,6 +514,7 @@ const Students = () => {
 								setItemToEdit={setItemToEdit}
 								setIsVisible={setIsVisible}
 								lang={lang}
+								isScreenSmall={isScreenSmall}
 							/>
 						)}
 

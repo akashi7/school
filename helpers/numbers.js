@@ -1,1 +1,2 @@
-export const toLocalString = (number) => number.toLocaleString("en-US");
+export const toLocalString = (number) =>
+	number ? number.toLocaleString("en-US") : 0;

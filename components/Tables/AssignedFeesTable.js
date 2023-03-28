@@ -2,11 +2,18 @@ import React from "react";
 import Table from "antd/lib/table";
 import CustomButton from "../Shared/CustomButton";
 import { toLocalString } from "../../helpers/numbers";
+import AssignedFeesTableMobile from "./Mobile/AssignedFeesTableMobile";
 
 const { Column } = Table;
 
-const AssignedFeesTable = ({ data, isFetching, lang }) => {
-	return (
+const AssignedFeesTable = ({ data, isFetching, lang, isScreenSmall }) => {
+	return isScreenSmall ? (
+		<AssignedFeesTableMobile
+			dataSource={data?.payload}
+			lang={lang}
+			loading={isFetching}
+		/>
+	) : (
 		<Table
 			className="data_table"
 			dataSource={data?.payload}
@@ -78,7 +85,7 @@ const AssignedFeesTable = ({ data, isFetching, lang }) => {
 				)}
 			/>
 
-			{/* <Column
+			<Column
 				title={lang?.students_pg?.profile?.table?.actions}
 				key="actions"
 				width={100}
@@ -87,7 +94,7 @@ const AssignedFeesTable = ({ data, isFetching, lang }) => {
 						{lang?.dashboard_shared?.buttons?.pay}
 					</CustomButton>
 				)}
-			/> */}
+			/>
 		</Table>
 	);
 };

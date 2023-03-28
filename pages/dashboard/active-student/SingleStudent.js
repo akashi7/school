@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Row from "antd/lib/row";
 import Col from "antd/lib/col";
+import Dropdown from "antd/lib/dropdown";
 import { useRouter } from "next/router";
 import StudentProfile from "../../../components/StudentProfile";
 import ContentTableContainer from "../../../components/Shared/ContentTableContainer";
@@ -20,6 +21,8 @@ import { useGetAcademicYearsQuery } from "../../../lib/api/AcademicYear/academic
 import { termOptions } from "../../../config/constants";
 import { isTokenValid } from "../../../helpers/verifyToken";
 import { useSelector } from "react-redux";
+import { useWindowSize } from "../../../helpers/useWindowSize";
+import CustomImage from "../../../components/Shared/CustomImage";
 
 const SingleStudent = () => {
 	const [academicYearId, setAcademicYearId] = useState("");
@@ -85,12 +88,11 @@ const SingleStudent = () => {
 		0
 	);
 
+	const { width } = useWindowSize();
+	const isScreenSmall = width <= 1024;
+
 	const TableNavLeftSide = () => (
 		<Row align="middle" gutter={20}>
-			<Col>
-				<GoBack onClick={() => router.back()} />
-			</Col>
-
 			<Col>
 				<p className="text-[20px] text-dark font-semibold">
 					{lang?.students_pg?.profile?.table?.title}
@@ -99,64 +101,122 @@ const SingleStudent = () => {
 		</Row>
 	);
 
-	const TableNavRightSide = () => (
-		<>
-			<Row align="middle" gutter={24}>
-				<Col>
-					<CustomInput
-						onChange={handleAcademicYearChange}
-						value={academicYearId}
-						type="small-select"
-						label={lang?.dashboard_shared?.filters?.year?.name}
-						options={[
-							{
-								key: 0,
-								value: "",
-								label: lang?.dashboard_shared?.filters?.year?.sub_title,
-							},
-							...academicYearsList,
-						]}
-						isLoading={isAcademicYearsLoading}
-					/>
-				</Col>
+	const FiltersDropdown = () => (
+		<div className="w-[fit-content] rounded shadow-md z-100 bg-white p-4 mt-6 flex flex-col gap-4">
+			<CustomInput
+				onChange={handleAcademicYearChange}
+				value={academicYearId}
+				type="small-select"
+				label={lang?.dashboard_shared?.filters?.year?.name}
+				options={[
+					{
+						key: 0,
+						value: "",
+						label: lang?.dashboard_shared?.filters?.year?.sub_title,
+					},
+					...academicYearsList,
+				]}
+				isLoading={isAcademicYearsLoading}
+			/>
 
-				<Col>
-					<CustomInput
-						type="small-select"
-						label={lang?.dashboard_shared?.filters?.term?.name}
-						value={academicTerm}
-						onChange={handleTermChange}
-						options={[
-							{
-								key: 1,
-								value: "",
-								label: lang?.dashboard_shared?.filters?.term?.sub_title,
-							},
-							...termOptions,
-						]}
-					/>
-				</Col>
+			<CustomInput
+				type="small-select"
+				label={lang?.dashboard_shared?.filters?.term?.name}
+				value={academicTerm}
+				onChange={handleTermChange}
+				options={[
+					{
+						key: 1,
+						value: "",
+						label: lang?.dashboard_shared?.filters?.term?.sub_title,
+					},
+					...termOptions,
+				]}
+			/>
 
-				<Col>
-					<CustomInput
-						type="small-select"
-						label={lang?.dashboard_shared?.filters?.status?.name}
-						value={feeStatus}
-						onChange={handleFeeStatusChange}
-						options={[
-							{
-								key: 0,
-								value: "",
-								label: lang?.dashboard_shared?.filters?.status?.sub_title,
-							},
-							{ key: 1, value: "UNPAID", name: "Unpaid" },
-							{ key: 2, value: "PAID", name: "Paid" },
-						]}
-					/>
-				</Col>
-			</Row>
-		</>
+			<CustomInput
+				type="small-select"
+				label={lang?.dashboard_shared?.filters?.status?.name}
+				value={feeStatus}
+				onChange={handleFeeStatusChange}
+				options={[
+					{
+						key: 0,
+						value: "",
+						label: lang?.dashboard_shared?.filters?.status?.sub_title,
+					},
+					{ key: 1, value: "UNPAID", name: "Unpaid" },
+					{ key: 2, value: "PAID", name: "Paid" },
+				]}
+			/>
+		</div>
 	);
+
+	const TableNavRightSide = () =>
+		isScreenSmall ? (
+			<Dropdown overlay={FiltersDropdown} trigger={["click"]}>
+				<div className="p-2 bg-gray-200 pointer rounded h-[40px] w-[42px] flex items-center">
+					<CustomImage src="/icons/filter_icon.svg" className="w-full" />
+				</div>
+			</Dropdown>
+		) : (
+			<>
+				<Row align="middle" gutter={24}>
+					<Col>
+						<CustomInput
+							onChange={handleAcademicYearChange}
+							value={academicYearId}
+							type="small-select"
+							label={lang?.dashboard_shared?.filters?.year?.name}
+							options={[
+								{
+									key: 0,
+									value: "",
+									label: lang?.dashboard_shared?.filters?.year?.sub_title,
+								},
+								...academicYearsList,
+							]}
+							isLoading={isAcademicYearsLoading}
+						/>
+					</Col>
+
+					<Col>
+						<CustomInput
+							type="small-select"
+							label={lang?.dashboard_shared?.filters?.term?.name}
+							value={academicTerm}
+							onChange={handleTermChange}
+							options={[
+								{
+									key: 1,
+									value: "",
+									label: lang?.dashboard_shared?.filters?.term?.sub_title,
+								},
+								...termOptions,
+							]}
+						/>
+					</Col>
+
+					<Col>
+						<CustomInput
+							type="small-select"
+							label={lang?.dashboard_shared?.filters?.status?.name}
+							value={feeStatus}
+							onChange={handleFeeStatusChange}
+							options={[
+								{
+									key: 0,
+									value: "",
+									label: lang?.dashboard_shared?.filters?.status?.sub_title,
+								},
+								{ key: 1, value: "UNPAID", name: "Unpaid" },
+								{ key: 2, value: "PAID", name: "Paid" },
+							]}
+						/>
+					</Col>
+				</Row>
+			</>
+		);
 
 	return (
 		<>
@@ -169,8 +229,12 @@ const SingleStudent = () => {
 					<StudentProfile
 						data={data}
 						isFetching={isFetching}
+						setIsVisible={() => null}
+						setIsWarningVisible={() => null}
+						setIsPromoteModalVisible={() => null}
 						totalUnpaid={totalUnpaid}
 						lang={lang}
+						isScreenSmall={isScreenSmall}
 					/>
 
 					<ContentTableContainer>
@@ -179,10 +243,17 @@ const SingleStudent = () => {
 							right={<TableNavRightSide />}
 						/>
 
-						<div className="mt-5 h-[55vh] overflow-x-auto">
+						<div
+							style={{ maxHeight: isScreenSmall ? "" : "calc(100vh - 440px)" }}
+							className={`mt-5 ${
+								!isScreenSmall && "h-[fit-content] overflow-x-auto"
+							}`}
+						>
 							<AssignedFeesTable
 								data={studentFees}
 								isFetching={isStudentFeesFetching}
+								lang={lang}
+								isScreenSmall={isScreenSmall}
 							/>
 						</div>
 					</ContentTableContainer>

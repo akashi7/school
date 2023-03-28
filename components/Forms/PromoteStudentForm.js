@@ -17,6 +17,7 @@ const PromoteStudentForm = ({
 	isStreamLoading,
 	isAcademicYearsLoading,
 	data,
+	isScreenSmall,
 }) => {
 	const [form] = Form.useForm();
 
@@ -112,7 +113,6 @@ const PromoteStudentForm = ({
 			</Row>
 
 			<p className="text-gray-300 my-4">
-				{" "}
 				{lang?.students_pg?.profile?.modals?.promote_student_to}
 			</p>
 
@@ -129,8 +129,8 @@ const PromoteStudentForm = ({
 				</Col>
 			</Row>
 
-			<Row align="middle" wrap={false} gutter={24}>
-				<Col className="w-[50%]">
+			<Row align="middle" wrap={isScreenSmall} gutter={24}>
+				<Col className={isScreenSmall ? "w-full" : "w-[50%]"}>
 					<CustomInput
 						label={lang?.students_pg?.modals?.class}
 						name="classroomId"
@@ -143,7 +143,7 @@ const PromoteStudentForm = ({
 					/>
 				</Col>
 
-				<Col className="w-[50%]">
+				<Col className={isScreenSmall ? "w-full" : "w-[50%]"}>
 					<CustomInput
 						type="select"
 						label={lang?.students_pg?.modals?.stream}

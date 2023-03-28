@@ -4,6 +4,7 @@ import Col from "antd/lib/col";
 import Modal from "antd/lib/modal";
 import PropTypes from "prop-types";
 import CustomImage from "./CustomImage";
+import { useWindowSize } from "../../helpers/useWindowSize";
 
 const CustomModal = ({
 	isVisible,
@@ -23,13 +24,20 @@ const CustomModal = ({
 		setIsVisible(false);
 	};
 
+	const { width: size } = useWindowSize();
+	const isScreenSmall = size <= 1024;
+
 	return (
 		<Modal
 			className="sn-modal my-12"
 			title={
-				<div className="flex justify-between items-center">
+				<div
+					className={`flex justify-between items-center ${
+						isScreenSmall ? "px-2 pt-6" : "px-[42px] pt-12"
+					} pb-0`}
+				>
 					<div>
-						<span className="font-bold block text-[32px] text-dark  mb-2">
+						<span className="font-bold block text-[24px] lg:text-[32px] text-dark  mb-2">
 							{title}
 						</span>
 
@@ -51,7 +59,12 @@ const CustomModal = ({
 			width={width}
 			footer={
 				footerContent ? (
-					<Row justify="end">
+					<Row
+						justify="end"
+						className={`${
+							isScreenSmall ? "px-[18px] pb-6" : "px-[42px] pb-12"
+						}`}
+					>
 						<Col
 							xs={24}
 							sm={24}
@@ -73,7 +86,7 @@ const CustomModal = ({
 			maskClosable={!loading}
 			closable={false}
 			destroyOnClose={destroyOnClose}
-			bodyStyle={{ padding: "64px 64px 32px" }}
+			bodyStyle={{ padding: isScreenSmall ? "24px 32px 2px" : "32px 64px 6px" }}
 		>
 			{children}
 		</Modal>

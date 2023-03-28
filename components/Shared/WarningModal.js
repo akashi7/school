@@ -6,6 +6,7 @@ import Col from "antd/lib/col";
 import CustomButton from "./CustomButton";
 import handleAPIRequests from "../../helpers/handleAPIRequests";
 import { useSelector } from "react-redux";
+import { useWindowSize } from "../../helpers/useWindowSize";
 
 const WarningModal = ({
 	isVisible,
@@ -28,6 +29,9 @@ const WarningModal = ({
 
 	const lang = useSelector((state) => state?.translation?.payload);
 
+	const { width: size } = useWindowSize();
+	const isScreenSmall = size <= 1024;
+
 	const handleDelete = () => {
 		handleAPIRequests({
 			request,
@@ -44,7 +48,12 @@ const WarningModal = ({
 			className="sn-modal"
 			width={width}
 			footer={
-				<Row align="middle" justify="space-between" gutter={12}>
+				<Row
+					align="middle"
+					justify="space-between"
+					gutter={12}
+					className={`${isScreenSmall ? "px-[12px] pb-8" : "px-[42px] pb-12"}`}
+				>
 					<Col>
 						<CustomButton onClick={onCancel} type="view" disabled={loading}>
 							{lang?.dashboard_shared?.buttons?.mistake}
@@ -70,7 +79,9 @@ const WarningModal = ({
 			maskClosable={!loading}
 			closable={false}
 			destroyOnClose={destroyOnClose}
-			bodyStyle={{ padding: "64px 64px 32px" }}
+			bodyStyle={{
+				padding: isScreenSmall ? "32px 24px 12px" : "64px 64px 32px",
+			}}
 		>
 			<p className="text-gray-500 text-[20px] mb-2">
 				{warningMessage}{" "}

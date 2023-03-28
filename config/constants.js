@@ -7,8 +7,15 @@ export const menus = ({ trans, role }) => {
 
 	const schoolMenu = [
 		{
-			name: trans?.navbar?.classroom || "Classrooms",
+			name: trans?.navbar?.dashboard || "Dashboard",
 			url: "/dashboard",
+			icon: "/icons/dashboard",
+			ext: ".svg",
+		},
+
+		{
+			name: trans?.navbar?.classroom || "Classrooms",
+			url: "/dashboard/classes",
 			icon: "/icons/classes",
 			ext: ".svg",
 		},

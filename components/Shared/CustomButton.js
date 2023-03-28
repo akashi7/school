@@ -1,6 +1,7 @@
 import React from "react";
 import Button from "antd/lib/button";
 import PropTypes from "prop-types";
+import { useWindowSize } from "../../helpers/useWindowSize";
 
 const CustomButton = ({
 	disabled,
@@ -15,10 +16,17 @@ const CustomButton = ({
 	loading,
 	form,
 }) => {
+	const { width } = useWindowSize();
+	const isScreenSmall = width <= 1024;
+
 	const PrimaryButton = () => {
 		return (
 			<Button
-				className={`${className} bg-primary font-medium text-white text-[14px] px-6 h-[42px] rounded-[4px] hover:text-white hover:bg-primary_hover border-none hover:border-none`}
+				className={`${className} ${
+					isScreenSmall
+						? "text-[12px] px-4 h-[36px]"
+						: "text-[14px] px-6 h-[42px]"
+				} bg-primary font-medium text-white rounded-[4px] hover:text-white hover:bg-primary_hover border-none hover:border-none`}
 				disabled={disabled}
 				icon={icon}
 				size={size}
@@ -38,7 +46,11 @@ const CustomButton = ({
 		return (
 			<Button
 				style={{ background: "rgba(0, 176, 175, 0.1)", color: "#00B0AF" }}
-				className={`${className} text-white font-medium text-[12px] px-5 h-[38px] rounded-[4px] font-semibold hover:text-edit_blue hover:bg-primary_hover border-none hover:border-none`}
+				className={`${className} ${
+					isScreenSmall
+						? "text-[10px] px-4 h-[32px] "
+						: "text-[12px] px-5 h-[38px]"
+				} text-white font-medium rounded-[4px] font-semibold hover:text-edit_blue hover:bg-primary_hover border-none hover:border-none`}
 				disabled={disabled}
 				icon={icon}
 				size={size}
@@ -57,7 +69,11 @@ const CustomButton = ({
 		return (
 			<Button
 				style={{ background: "rgba(235, 96, 36, 0.1)", color: "#EB6024" }}
-				className={`${className} text-white font-medium text-[12px] px-5 h-[38px] rounded-[4px] font-semibold hover:text-delete_red hover:bg-delete_red border-none hover:border-none`}
+				className={`${className} ${
+					isScreenSmall
+						? "text-[10px] px-4 h-[32px] m-auto"
+						: "text-[12px] px-5 h-[38px]"
+				} text-white font-medium rounded-[4px] font-semibold hover:text-delete_red hover:bg-delete_red border-none hover:border-none`}
 				disabled={disabled}
 				icon={icon}
 				size={size}
@@ -75,7 +91,11 @@ const CustomButton = ({
 	const DangerButton = () => {
 		return (
 			<Button
-				className={`${className} text-white font-bold text-[12px] px-5 h-[38px] w-[100px] rounded-[4px] font-semibold bg-red border-none hover:border-none`}
+				className={`${className} ${
+					isScreenSmall
+						? "text-[10px] px-6 h-[32px] "
+						: "text-[12px] h-[38px]  w-[100px]"
+				} text-white font-bold rounded-[4px] font-semibold bg-red border-none hover:border-none`}
 				disabled={disabled}
 				icon={icon}
 				size={size}
@@ -93,7 +113,11 @@ const CustomButton = ({
 	const ViewButton = () => {
 		return (
 			<Button
-				className={`${className} bg-grey font-medium text-dark font-semibold text-[12px] px-5 h-[38px] rounded-[4px] hover:text-dark hover:bg-grey border-none hover:border-none`}
+				className={`${className} ${
+					isScreenSmall
+						? "text-[10px] px-4 h-[32px] "
+						: "text-[12px] px-5 h-[38px]"
+				} bg-grey font-medium text-dark font-semibold  rounded-[4px] hover:text-dark hover:bg-grey border-none hover:border-none`}
 				disabled={disabled}
 				icon={icon}
 				size={size}

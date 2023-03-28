@@ -6,6 +6,8 @@ import CustomButton from "../Shared/CustomButton";
 import WarningModal from "../Shared/WarningModal";
 import routes from "../../config/routes";
 import { useDeleteStudentMutation } from "../../lib/api/Students/studentsEndpoints";
+import { useWindowSize } from "../../helpers/useWindowSize";
+import StudentsTableMobile from "./Mobile/StudentsTableMobile";
 
 const { Column } = Table;
 
@@ -38,6 +40,9 @@ const StudentsTable = ({
 
 	const router = useRouter();
 
+	const { width } = useWindowSize();
+	const isScreenSmall = width <= 1024;
+
 	return (
 		<>
 			<WarningModal
@@ -52,93 +57,103 @@ const StudentsTable = ({
 				message={lang?.alert_messages?.success?.delete_student}
 			/>
 
-			<Table
-				className="data_table"
-				dataSource={students}
-				rowKey={(record) => {
-					return record?.id;
-				}}
-				rowClassName="shadow"
-				pagination={false}
-				loading={isFetching}
-				bordered={false}
-				scroll={{ x: 0 }}
-			>
-				<Column
-					title="#"
-					key="#"
-					width={24}
-					render={(text, record, index) => (
-						<span className="text-gray-500">{index + 1}.</span>
-					)}
+			{isScreenSmall ? (
+				<StudentsTableMobile
+					dataSource={students}
+					loading={isFetching}
+					handleEditStudent={handleEditStudent}
+					handleDeleteStudents={handleDeleteStudents}
+					lang={lang}
 				/>
+			) : (
+				<Table
+					className="data_table"
+					dataSource={students}
+					rowKey={(record) => {
+						return record?.id;
+					}}
+					rowClassName="shadow"
+					pagination={false}
+					loading={isFetching}
+					bordered={false}
+					scroll={{ x: 0 }}
+				>
+					<Column
+						title="#"
+						key="#"
+						width={24}
+						render={(text, record, index) => (
+							<span className="text-gray-500">{index + 1}.</span>
+						)}
+					/>
 
-				<Column
-					title={lang?.students_pg?.table?.name}
-					key="name"
-					render={(record) => (
-						<span className="font-bold">{record?.fullName}</span>
-					)}
-				/>
+					<Column
+						title={lang?.students_pg?.table?.name}
+						key="name"
+						render={(record) => (
+							<span className="font-bold">{record?.fullName}</span>
+						)}
+					/>
 
-				<Column
-					title={lang?.students_pg?.table?.class}
-					key="class"
-					render={(record) => (
-						<span>
-							{record?.studentPromotions?.length &&
-								record?.studentPromotions[0]?.stream?.classroom?.name}
-						</span>
-					)}
-				/>
+					<Column
+						title={lang?.students_pg?.table?.class}
+						key="class"
+						render={(record) => (
+							<span>
+								{record?.studentPromotions?.length &&
+									record?.studentPromotions[0]?.stream?.classroom?.name}
+							</span>
+						)}
+					/>
 
-				<Column
-					title={lang?.students_pg?.table?.stream}
-					key="stream"
-					render={(record) => (
-						<span>
-							{record?.studentPromotions.length &&
-								record?.studentPromotions[0]?.stream?.name}
-						</span>
-					)}
-				/>
+					<Column
+						title={lang?.students_pg?.table?.stream}
+						key="stream"
+						render={(record) => (
+							<span>
+								{record?.studentPromotions.length &&
+									record?.studentPromotions[0]?.stream?.name}
+							</span>
+						)}
+					/>
 
-				<Column
-					title={lang?.students_pg?.table?.location}
-					key="location"
-					render={(record) => <span>{record?.address}</span>}
-				/>
+					<Column
+						title={lang?.students_pg?.table?.location}
+						key="location"
+						render={(record) => <span>{record?.address}</span>}
+					/>
 
-				<Column
-					title={lang?.students_pg?.table?.actions}
-					key="actions"
-					width={200}
-					render={(record) => (
-						<div className="flex gap-12">
-							<CustomButton
-								type="view"
-								onClick={() =>
-									router.push(`${routes.students.url}/${record?.id}`)
-								}
-							>
-								{lang?.dashboard_shared?.buttons?.view}
-							</CustomButton>
-							<CustomButton
-								type="edit"
-								onClick={() => handleEditStudent(record)}
-							>
-								{lang?.dashboard_shared?.buttons?.edit}
-							</CustomButton>
-							<CustomButton
-								type="delete"
-								onClick={() => handleDeleteStudents(record)}
-							>
-								{lang?.dashboard_shared?.buttons?.delete}
-							</CustomButton>
-						</div>
-					)}
-				/>
-			</Table>
+					<Column
+						title={lang?.students_pg?.table?.actions}
+						key="actions"
+						width={200}
+						render={(record) => (
+							<div className="flex gap-4">
+								<CustomButton
+									type="view"
+									onClick={() =>
+										router.push(`${routes.students.url}/${record?.id}`)
+									}
+								>
+									{lang?.dashboard_shared?.buttons?.view}
+								</CustomButton>
+								<CustomButton
+									type="edit"
+									onClick={() => handleEditStudent(record)}
+								>
+									{lang?.dashboard_shared?.buttons?.edit}
+								</CustomButton>
+								<CustomButton
+									type="delete"
+									onClick={() => handleDeleteStudents(record)}
+								>
+									{lang?.dashboard_shared?.buttons?.delete}
+								</CustomButton>
+							</div>
+						)}
+					/>
+				</Table>
+			)}
 		</>
 	);
 };

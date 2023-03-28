@@ -10,6 +10,7 @@ import ContentTableContainer from "../../../components/Shared/ContentTableContai
 import ChildrenTable from "../../../components/Tables/ChildrenTable";
 import { useGetChildrenQuery } from "../../../lib/api/Parent/childrenEndpoints";
 import { useSelector } from "react-redux";
+import { useWindowSize } from "../../../helpers/useWindowSize";
 
 const Children = () => {
 	const { data: children, isLoading, isFetching } = useGetChildrenQuery();
@@ -17,6 +18,9 @@ const Children = () => {
 	const isPageLoading = isLoading;
 
 	const lang = useSelector((state) => state?.translation?.payload);
+
+	const { width } = useWindowSize();
+	const isScreenSmall = width <= 1024;
 
 	const LeftSide = () => (
 		<p className="text-[20px] text-dark font-semibold">
@@ -44,6 +48,7 @@ const Children = () => {
 								data={children?.payload}
 								isFetching={isFetching}
 								lang={lang}
+								isScreenSmall={isScreenSmall}
 							/>
 						)}
 					</div>

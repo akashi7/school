@@ -7,6 +7,7 @@ import { isTokenValid } from "../../helpers/verifyToken";
 import Schools from "./schools";
 import Children from "./children/children";
 import ActiveStudent from "./active-student";
+import Analytics from "./analytics";
 
 const Dashboard = () => {
 	const { role } = isTokenValid();
@@ -21,7 +22,7 @@ const Dashboard = () => {
 			) : isStudent ? (
 				<ActiveStudent />
 			) : (
-				<Classes />
+				<Analytics />
 			)}
 		</Layout>
 	);
