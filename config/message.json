@@ -160,7 +160,13 @@
 				"term": "Term",
 				"class": "Class",
 				"stream": "Stream",
-				"student_identifier": "Student identifier"
+				"student_identifier": "Student identifier",
+				"pay_manual": "Add payment",
+				"reference_code": "Reference code",
+				"date": "Date",
+				"phone_number": "Phone number",
+				"description": "Description",
+				"amount": "Amount"
 			},
 			"table": {
 				"name": "Name",
@@ -429,7 +435,13 @@
 				"term": "Igihembwe",
 				"class": "Ishuri",
 				"stream": "Igice",
-				"student_identifier": "Umubare wihariye w'umunyeshuri"
+				"student_identifier": "Umubare wihariye w'umunyeshuri",
+				"pay_manual": "Ishyura",
+				"reference_code": "Code",
+				"date": "Itariki",
+				"phone_number": "Nomero",
+				"description": "Ubusobanuro",
+				"amount": "Amafaranga"
 			},
 			"table": {
 				"name": "Amazina",

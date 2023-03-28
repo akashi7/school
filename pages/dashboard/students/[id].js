@@ -488,6 +488,7 @@ const SingleStudent = () => {
 								isFetching={isStudentFeesFetching}
 								lang={lang}
 								isScreenSmall={isScreenSmall}
+								studentId={id}
 							/>
 						</div>
 					</ContentTableContainer>
