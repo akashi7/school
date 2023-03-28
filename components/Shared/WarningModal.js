@@ -5,6 +5,8 @@ import Row from "antd/lib/row";
 import Col from "antd/lib/col";
 import CustomButton from "./CustomButton";
 import handleAPIRequests from "../../helpers/handleAPIRequests";
+import { useSelector } from "react-redux";
+import { useWindowSize } from "../../helpers/useWindowSize";
 
 const WarningModal = ({
 	isVisible,
@@ -19,10 +21,16 @@ const WarningModal = ({
 	streamId,
 	onSuccess,
 	request,
+	message,
 }) => {
 	const onCancel = () => {
 		setIsVisible(false);
 	};
+
+	const lang = useSelector((state) => state?.translation?.payload);
+
+	const { width: size } = useWindowSize();
+	const isScreenSmall = size <= 1024;
 
 	const handleDelete = () => {
 		handleAPIRequests({
@@ -30,6 +38,7 @@ const WarningModal = ({
 			id: itemToDelete,
 			streamId: streamId,
 			notify: true,
+			message,
 			onSuccess: onSuccess || onCancel,
 		});
 	};
@@ -39,10 +48,15 @@ const WarningModal = ({
 			className="sn-modal"
 			width={width}
 			footer={
-				<Row align="middle" justify="space-between" gutter={12}>
+				<Row
+					align="middle"
+					justify="space-between"
+					gutter={12}
+					className={`${isScreenSmall ? "px-[12px] pb-8" : "px-[42px] pb-12"}`}
+				>
 					<Col>
 						<CustomButton onClick={onCancel} type="view" disabled={loading}>
-							No, that was a mistake!
+							{lang?.dashboard_shared?.buttons?.mistake}
 						</CustomButton>
 					</Col>
 
@@ -52,7 +66,9 @@ const WarningModal = ({
 							onClick={handleDelete}
 							loading={loading}
 						>
-							Yes
+							{loading
+								? lang?.dashboard_shared?.buttons?.deleting
+								: lang?.dashboard_shared?.buttons?.yes}
 						</CustomButton>
 					</Col>
 				</Row>
@@ -63,7 +79,9 @@ const WarningModal = ({
 			maskClosable={!loading}
 			closable={false}
 			destroyOnClose={destroyOnClose}
-			bodyStyle={{ padding: "64px 64px 32px" }}
+			bodyStyle={{
+				padding: isScreenSmall ? "32px 24px 12px" : "64px 64px 32px",
+			}}
 		>
 			<p className="text-gray-500 text-[20px] mb-2">
 				{warningMessage}{" "}
@@ -71,7 +89,7 @@ const WarningModal = ({
 			</p>
 
 			<span className="text-[12px] text-gray-400">
-				Know that this action is irreversible!
+				{lang?.dashboard_shared?.modals?.delete_modal?.desc}
 			</span>
 		</Modal>
 	);

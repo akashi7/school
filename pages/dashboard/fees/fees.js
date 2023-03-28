@@ -2,17 +2,14 @@ import React, { useEffect, useState } from "react";
 import Form from "antd/lib/form";
 import Row from "antd/lib/row";
 import Col from "antd/lib/col";
+import { LoadingOutlined } from "@ant-design/icons";
 import ContentNavbar from "../../../components/Shared/ContentNavbar";
 import CustomButton from "../../../components/Shared/CustomButton";
 import CustomModal from "../../../components/Shared/CustomModal";
 import CustomInput from "../../../components/Shared/CustomInput";
 import Private from "../../../components/Routes/Private";
 import { useGetClassesQuery } from "../../../lib/api/Classrooms/classroomsEndpoints";
-import {
-	AppLoader,
-	GeneralContentLoader,
-} from "../../../components/Shared/Loaders";
-import DownloadButton from "../../../components/Shared/DownloadButton";
+import { GeneralContentLoader } from "../../../components/Shared/Loaders";
 import handleAPIRequests from "../../../helpers/handleAPIRequests";
 import FeesTable from "../../../components/Tables/FeesTable";
 import { termOptions, _pagination_number_ } from "../../../config/constants";
@@ -20,12 +17,18 @@ import ContentTableContainer from "../../../components/Shared/ContentTableContai
 import NewFeeForm from "../../../components/Forms/NewFeeForm";
 import {
 	useAddFeeMutation,
+	useDownloadFeesMutation,
 	useEditFeeMutation,
 	useGetFeesQuery,
 } from "../../../lib/api/Fees/FeesEndpoints";
 import Paginator from "../../../components/Shared/Paginator";
 import { Empty } from "../../../components/Shared/Empty";
 import { useGetAcademicYearsQuery } from "../../../lib/api/AcademicYear/academicYearEndpoints";
+import { Dropdown } from "antd";
+import CustomImage from "../../../components/Shared/CustomImage";
+import handleDownloadFile from "../../../helpers/handleDownloadFile";
+import { useSelector } from "react-redux";
+import { useWindowSize } from "../../../helpers/useWindowSize";
 
 const Students = () => {
 	const [isVisible, setIsVisible] = useState(false);
@@ -37,10 +40,16 @@ const Students = () => {
 	const [itemToEdit, setItemToEdit] = useState(null);
 	const [isPaymentOPtional, setIsPaymentOPtional] = useState(false);
 	const [isPaymentAdditional, setIsPaymentAdditional] = useState(false);
+	const [academicYearId, setAcademicYearId] = useState("");
+
+	const lang = useSelector((state) => state?.translation?.payload);
+
+	const [form] = Form.useForm();
 
 	const handleCancelEditModal = () => {
 		setIsVisible(false);
 		setItemToEdit(null);
+		form.resetFields();
 	};
 
 	useEffect(() => {
@@ -59,15 +68,17 @@ const Students = () => {
 		classroomId,
 		term: termId,
 		type: feeType,
+		academicYearId,
 	});
 
-	const { data: classes, isLoading: isClassLoading } = useGetClassesQuery({});
-	const { data: academicYears } = useGetAcademicYearsQuery({});
+	const { data: classes, isFetching: isClassLoading } = useGetClassesQuery({});
+	const { data: academicYears, isFetching: isAcademicYearsLoading } =
+		useGetAcademicYearsQuery({});
 
 	const [addFee, { isLoading: isAddingFee }] = useAddFeeMutation();
 	const [editFee, { isLoading: isEditingFee }] = useEditFeeMutation();
-
-	const [form] = Form.useForm();
+	const [downloadReport, { isLoading: isDownloadLoading }] =
+		useDownloadFeesMutation();
 
 	const onSuccess = () => {
 		setIsVisible(false);
@@ -78,6 +89,7 @@ const Students = () => {
 		setTermId("");
 		setIsPaymentAdditional(false);
 		setIsPaymentOPtional(false);
+		setAcademicYearId("");
 		form.resetFields();
 	};
 
@@ -86,13 +98,15 @@ const Students = () => {
 		form.resetFields();
 	};
 
+	const handleDownloadReportSuccess = (file) => {
+		handleDownloadFile({ name: "Fees-Report", file });
+	};
+
 	const onAddFeeFinish = (values) => {
-		// Needs to be updated when API is updated
 		const data = {
 			...values,
 			optional: !!isPaymentOPtional,
 			type: isPaymentAdditional ? "ADDITIONAL_FEE" : "SCHOOL_FEE",
-			classroomId: values?.classroomIDs[0],
 			amount: +values?.amount,
 		};
 
@@ -122,20 +136,214 @@ const Students = () => {
 		setFeeType(value);
 	};
 
+	const handleDownloadFeeReport = (url) => {
+		handleAPIRequests({
+			request: downloadReport,
+			search,
+			classroomId,
+			term: termId,
+			type: feeType,
+			academicYearId,
+			url,
+			onSuccess: handleDownloadReportSuccess,
+			notify: true,
+		});
+	};
+
 	const showEmpty = fees?.payload?.totalItems <= 0;
 
-	const isPageLoading = isLoading || isClassLoading;
+	const isPageLoading = isLoading;
+
+	const handleAcademicYearChange = (value) => {
+		setAcademicYearId(value);
+	};
+
+	const classesList = classes?.payload?.items?.length
+		? [
+				...classes?.payload?.items?.map((item) => ({
+					key: item?.id,
+					value: item?.id,
+					label: item.name,
+				})),
+		  ]
+		: [];
+
+	const academicYearsList = academicYears?.payload?.totalItems
+		? [
+				...academicYears?.payload?.items?.map((item) => ({
+					key: item?.name,
+					value: item?.id,
+					label: item.name,
+				})),
+		  ]
+		: [];
+
+	const { width } = useWindowSize();
+	const isScreenSmall = width <= 1024;
+
+	const DownloadOverlay = (
+		<div className="p-4 w-[100%] bg-gray-200 rounded shadow-sm">
+			<p
+				className="transition ease-in-out delay-120 mb-2 hover:bg-gray-300 hover:p-2 hover:px-4 hover:rounded pointer"
+				onClick={() => handleDownloadFeeReport("students")}
+			>
+				{lang?.fees_pg?.download_btn?.for_students}
+			</p>
+
+			<p
+				className="transition ease-in-out delay-120 hover:bg-gray-300 hover:p-2 hover:px-4 hover:rounded pointer"
+				onClick={() => handleDownloadFeeReport("classrooms")}
+			>
+				{lang?.fees_pg?.download_btn?.for_classrooms}
+			</p>
+		</div>
+	);
 
 	const RightSide = () => (
-		<CustomButton onClick={() => setIsVisible(true)} type="primary">
-			Add fee
-		</CustomButton>
+		<Row gutter={24} align="middle">
+			<Col>
+				<Dropdown
+					overlay={
+						isDownloadLoading || !academicYearId ? <></> : DownloadOverlay
+					}
+					trigger={["click"]}
+				>
+					{isScreenSmall ? (
+						<div className="w-[32px] h-[32px] rounded hover:bg-gray-500 flex items-center justify-center bg-gray-200">
+							<CustomImage
+								src="/icons/download.svg"
+								width={18}
+								height={18}
+								className={`${!academicYearId ? "opacity-60" : "opacity-1"}`}
+							/>
+						</div>
+					) : (
+						<div
+							className={`flex items-center gap-6 bg-gray-200 p-4 py-3 rounded ${
+								isDownloadLoading || !academicYearId
+									? "cursor-not-allowed"
+									: " cursor-pointer"
+							}`}
+						>
+							{isDownloadLoading ? (
+								<LoadingOutlined style={{ fontSize: 16 }} spin />
+							) : (
+								<CustomImage
+									src="/icons/download.svg"
+									width={18}
+									height={18}
+									className={`${!academicYearId ? "opacity-60" : "opacity-1"}`}
+								/>
+							)}
+
+							<span
+								className={`${
+									isDownloadLoading || !academicYearId
+										? "opacity-60"
+										: "opacity-1"
+								}  text-[14px] font-medium ml-2`}
+							>
+								{lang?.fees_pg?.download_btn?.title}
+							</span>
+
+							<CustomImage
+								src="/icons/expand.svg"
+								width={14}
+								height={14}
+								className={` ${
+									isDownloadLoading || !academicYearId
+										? "opacity-60"
+										: "opacity-1"
+								}  object-cover rounded-full`}
+							/>
+						</div>
+					)}
+				</Dropdown>
+			</Col>
+
+			<Col>
+				<CustomButton onClick={() => setIsVisible(true)} type="primary">
+					{lang?.fees_pg?.new_btn}
+				</CustomButton>
+			</Col>
+		</Row>
 	);
 
 	const LeftSide = () => (
 		<p className="text-[20px] text-dark font-semibold">
-			{fees?.payload?.items?.length || ""} Fees
+			{fees?.payload?.totalItems || ""} {lang?.fees_pg?.title}
 		</p>
+	);
+
+	const FiltersDropdown = (
+		<div className="w-[fit-content] rounded shadow-md z-100 bg-white p-4 mt-6 flex flex-col gap-4">
+			<CustomInput
+				onChange={handleAcademicYearChange}
+				value={academicYearId}
+				type="small-select"
+				label={lang?.dashboard_shared?.filters?.year?.name}
+				options={[
+					{
+						key: 0,
+						value: "",
+						label: lang?.dashboard_shared?.filters?.year?.sub_title,
+					},
+					...academicYearsList,
+				]}
+				isLoading={isAcademicYearsLoading}
+			/>
+
+			<CustomInput
+				onChange={handleClassChange}
+				value={classroomId}
+				type="small-select"
+				label={lang?.dashboard_shared?.filters?.class?.name}
+				options={[
+					{
+						key: 0,
+						value: "",
+						label: lang?.dashboard_shared?.filters?.class?.sub_title,
+					},
+					...classesList,
+				]}
+				isLoading={isClassLoading}
+			/>
+
+			<CustomInput
+				onChange={handleTermChange}
+				value={termId}
+				type="small-select"
+				label={lang?.dashboard_shared?.filters?.term?.name}
+				options={[
+					{
+						key: 0,
+						value: "",
+						label: lang?.dashboard_shared?.filters?.term?.sub_title,
+					},
+					...termOptions,
+				]}
+			/>
+
+			<CustomInput
+				onChange={handleFeeTypeChange}
+				value={feeType}
+				type="small-select"
+				label={lang?.dashboard_shared?.filters?.type?.name}
+				options={[
+					{
+						key: 0,
+						value: "",
+						label: lang?.dashboard_shared?.filters?.type?.sub_title,
+					},
+					{ key: 1, value: "SCHOOL_FEE", label: "School fee" },
+					{
+						key: 2,
+						value: "ADDITIONAL_FEE",
+						label: "Additional fee",
+					},
+				]}
+			/>
+		</div>
 	);
 
 	return (
@@ -145,8 +353,12 @@ const Students = () => {
 				setIsVisible={setIsVisible}
 				loading={isAddingFee || isEditingFee}
 				handleCancel={handleCancelEditModal}
-				width={750}
-				title={itemToEdit ? "Edit fee" : "Add a fee"}
+				width={550}
+				title={
+					itemToEdit
+						? lang?.fees_pg?.modals?.edit_fee_title
+						: lang?.fees_pg?.modals?.add_fee_title
+				}
 				footerContent={
 					<CustomButton
 						loading={isAddingFee || isEditingFee}
@@ -154,7 +366,7 @@ const Students = () => {
 						htmlType="submit"
 						form="add-class"
 					>
-						Save
+						{lang?.dashboard_shared?.buttons?.save}
 					</CustomButton>
 				}
 			>
@@ -168,6 +380,7 @@ const Students = () => {
 					classes={classes}
 					academicYears={academicYears}
 					itemToEdit={itemToEdit}
+					isScreenSmall={isScreenSmall}
 				/>
 			</CustomModal>
 
@@ -178,74 +391,120 @@ const Students = () => {
 				<GeneralContentLoader />
 			) : (
 				<ContentTableContainer>
-					<Row align="middle" justify="space-between">
-						<Col className="w-[150px]">
-							<CustomInput
-								onChange={onSearchChange}
-								placeholder="type to search..."
-							/>
+					<Row
+						align="end"
+						justify="space-between"
+						wrap={!isScreenSmall}
+						gutter={12}
+					>
+						<Col>
+							<div className="w-[100%]">
+								<CustomInput
+									onChange={onSearchChange}
+									placeholder={lang?.dashboard_shared?.messages?.type_to_search}
+								/>
+							</div>
 						</Col>
 
 						<Col>
-							<Row align="middle" gutter={24}>
-								<Col>
-									<CustomInput
-										onChange={handleFeeTypeChange}
-										value={feeType}
-										type="small-select"
-										label="Type"
-										options={[
-											{ key: 0, value: "", label: "Select type" },
-											{ key: 1, value: "SCHOOL_FEE", label: "School fee" },
-											{
-												key: 2,
-												value: "ADDITIONAL_FEE",
-												label: "Additional fee",
-											},
-										]}
-									/>
-								</Col>
+							{isScreenSmall ? (
+								<Dropdown overlay={FiltersDropdown} trigger={["click"]}>
+									<div className="p-2 bg-gray-200 pointer rounded h-[40px] w-[42px] flex items-center">
+										<CustomImage
+											src="/icons/filter_icon.svg"
+											className="w-full"
+										/>
+									</div>
+								</Dropdown>
+							) : (
+								<Row align="middle" gutter={24}>
+									<Col>
+										<CustomInput
+											onChange={handleAcademicYearChange}
+											value={academicYearId}
+											type="small-select"
+											label={lang?.dashboard_shared?.filters?.year?.name}
+											options={[
+												{
+													key: 0,
+													value: "",
+													label:
+														lang?.dashboard_shared?.filters?.year?.sub_title,
+												},
+												...academicYearsList,
+											]}
+											isLoading={isAcademicYearsLoading}
+										/>
+									</Col>
 
-								<Col>
-									{classes?.payload?.items?.length > 1 && (
+									<Col>
 										<CustomInput
 											onChange={handleClassChange}
 											value={classroomId}
 											type="small-select"
-											label="Class"
+											label={lang?.dashboard_shared?.filters?.class?.name}
 											options={[
-												{ key: 0, value: "", label: "Select class" },
-												...classes?.payload?.items?.map((item) => ({
-													key: item?.id,
-													value: item?.id,
-													label: item.name,
-												})),
+												{
+													key: 0,
+													value: "",
+													label:
+														lang?.dashboard_shared?.filters?.class?.sub_title,
+												},
+												...classesList,
+											]}
+											isLoading={isClassLoading}
+										/>
+									</Col>
+
+									<Col>
+										<CustomInput
+											onChange={handleTermChange}
+											value={termId}
+											type="small-select"
+											label={lang?.dashboard_shared?.filters?.term?.name}
+											options={[
+												{
+													key: 0,
+													value: "",
+													label:
+														lang?.dashboard_shared?.filters?.term?.sub_title,
+												},
+												...termOptions,
 											]}
 										/>
-									)}
-								</Col>
+									</Col>
 
-								<Col>
-									<CustomInput
-										onChange={handleTermChange}
-										value={termId}
-										type="small-select"
-										label="Term"
-										options={[
-											{ key: 0, value: "", label: "Select term" },
-											...termOptions,
-										]}
-									/>
-								</Col>
-
-								<Col>
-									<DownloadButton />
-								</Col>
-							</Row>
+									<Col>
+										<CustomInput
+											onChange={handleFeeTypeChange}
+											value={feeType}
+											type="small-select"
+											label={lang?.dashboard_shared?.filters?.type?.name}
+											options={[
+												{
+													key: 0,
+													value: "",
+													label:
+														lang?.dashboard_shared?.filters?.type?.sub_title,
+												},
+												{ key: 1, value: "SCHOOL_FEE", label: "School fee" },
+												{
+													key: 2,
+													value: "ADDITIONAL_FEE",
+													label: "Additional fee",
+												},
+											]}
+										/>
+									</Col>
+								</Row>
+							)}
 						</Col>
 					</Row>
 
-					<div className="mt-5 h-[60vh] 2xl:h-[68vh] overflow-x-auto">
+					<div
+						style={{ maxHeight: "calc(100vh - 310px)" }}
+						className="mt-5 h-[fit-content] overflow-x-auto"
+					>
 						{showEmpty ? (
 							<Empty className="mt-6 h-[62vh]" />
 						) : (
@@ -254,6 +513,8 @@ const Students = () => {
 								isFetching={isFetching}
 								setItemToEdit={setItemToEdit}
 								setIsVisible={setIsVisible}
+								lang={lang}
+								isScreenSmall={isScreenSmall}
 							/>
 						)}
 

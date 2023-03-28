@@ -12,7 +12,7 @@ import {
 import requiredField from "../helpers/requiredField";
 import handleAPIRequests from "../helpers/handleAPIRequests";
 
-const SingleStream = ({ data, index, visibleClass }) => {
+const SingleStream = ({ data, index, visibleClass, lang }) => {
 	const [isVisible, setIsVisible] = useState(false);
 	const [isWarningVisible, setIsWarningVisible] = useState(false);
 
@@ -31,8 +31,9 @@ const SingleStream = ({ data, index, visibleClass }) => {
 			id: visibleClass?.id,
 			streamId: data?.id,
 			notify: true,
-			...values,
+			message: lang?.alert_messages?.success?.edit_stream,
 			onSuccess: onSuccess,
+			...values,
 		});
 	};
 
@@ -52,7 +53,7 @@ const SingleStream = ({ data, index, visibleClass }) => {
 				isVisible={isVisible}
 				setIsVisible={setIsVisible}
 				loading={isEditing}
-				title="Edit stream"
+				title={lang?.classrooms_pg?.modals?.edit_stream_title}
 				footerContent={
 					<CustomButton
 						loading={isEditing}
@@ -60,17 +61,17 @@ const SingleStream = ({ data, index, visibleClass }) => {
 						htmlType="submit"
 						form="edit-stream"
 					>
-						Save
+						{lang?.dashboard_shared?.buttons?.save}
 					</CustomButton>
 				}
-				subTitle="For class"
+				subTitle={lang?.classrooms_pg?.modals?.add_stream_sub_title}
 				subTitleKey={visibleClass?.name}
 			>
 				<Form form={form} name="edit-stream" onFinish={onEditStreamFinish}>
 					<CustomInput
-						label="Stream name"
+						label={lang?.classrooms_pg?.modals?.stream_name}
 						name="name"
-						placeholder="Stream name.."
+						placeholder={`${lang?.classrooms_pg?.modals?.stream_name}...`}
 						rules={requiredField("Stream name")}
 					/>
 				</Form>
@@ -85,21 +86,22 @@ const SingleStream = ({ data, index, visibleClass }) => {
 				request={deleteStream}
 				loading={isDeleting}
 				streamId={data?.id}
+				message={lang?.alert_messages?.success?.delete_stream}
 			/>
 
-			<div className="flex bg-white shadow-sm p-4 items-center rounded-sm mb-4">
-				<div className="flex gap-12">
+			<div className="flex bg-white shadow-sm p-4 items-center rounded-sm mb-4 justify-between">
+				<div className="flex gap-4">
 					<p className="text-semi_grey">{index}.</p>
 					<p className="text-dark">{data.name}</p>
 				</div>
 
-				<div className="flex gap-12">
+				<div className="flex gap-4">
 					<CustomButton type="edit" onClick={() => setIsVisible(true)}>
-						Edit
+						{lang?.dashboard_shared?.buttons?.edit}
 					</CustomButton>
 
 					<CustomButton type="delete" onClick={handleDelete}>
-						Delete
+						{lang?.dashboard_shared?.buttons?.delete}
 					</CustomButton>
 				</div>
 			</div>

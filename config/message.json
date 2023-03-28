@@ -1,4 +1,8 @@
 {
+	"languages": [
+		{ "name": "English", "value": "en_us", "flag": "🇺🇸" },
+		{ "name": "Kinyarwanda", "value": "kinya", "flag": "🇷🇼" }
+	],
 	"en_us": {
 		"name": "English",
 		"flag": "🇺🇸",
@@ -12,24 +16,267 @@
 				"title": "Login as school",
 				"u_name": "Username",
 				"password": "Password",
+				"button": "Login",
+				"country_name": "Country name"
+			},
+			"as_admin": {
+				"title": "Login as admin",
+				"email": "Email",
+				"password": "Password",
+				"button": "Login"
+			},
+			"as_parent": {
+				"title": "Login as parent",
+				"email": "Email",
+				"button": "Login"
+			},
+			"as_student": {
+				"title": "Login as student",
+				"country_name": "Country name",
+				"identifier": "Identifier",
 				"button": "Login"
 			}
 		},
 
+		"alert_messages": {
+			"success": {
+				"create_classroom": "Classroom created successfully!",
+				"edit_classroom": "Classroom updated successfully!",
+				"delete_classroom": "Classroom deleted successfully!",
+				"create_stream": "Stream created successfully!",
+				"edit_stream": "Stream updated successfully!",
+				"delete_stream": "Stream deleted successfully!",
+				"create_student": "Student created successfully!",
+				"edit_student": "Student updated successfully!",
+				"delete_student": "Student deleted successfully!",
+				"promote_student": "Student promoted successfully!",
+				"create_fee": "Fee created successfully!",
+				"edit_fee": "Fee updated successfully!",
+				"delete_fee": "Fee deleted successfully!",
+				"download_report": "Document downloaded successfully!",
+				"create_school": "School created successfully!",
+				"delete_school": "School deleted successfully!",
+				"create_academic_year": "Academic year created successfully!",
+				"edit_academic_year": "Academic year updated successfully!",
+				"delete_academic_year": "Academic year deleted successfully!",
+				"switch_academic_year": "Academic year is set to current!"
+			},
+			"error": "Something went wrong, try again later!"
+		},
+
+		"dashboard_shared": {
+			"profile": {
+				"user_type": "User type:",
+				"logout": "Logout"
+			},
+			"buttons": {
+				"view": "View",
+				"edit": "Edit",
+				"delete": "Delete",
+				"deleting": "Deleting....",
+				"save": "Save",
+				"pay": "Pay",
+				"yes": "Yes",
+				"promote": "Promote",
+				"mistake": "No, that was a mistake!"
+			},
+			"modals": {
+				"delete_modal": {
+					"title": "Do you really want to delete",
+					"desc": "Know that this action is irreversible!"
+				}
+			},
+			"messages": {
+				"select_class_to_view_streams": "Please select a class to view details!",
+				"no_data": "No data!",
+				"type_to_search": "Type to search"
+			},
+			"filters": {
+				"year": { "name": "Year", "sub_title": "Select" },
+				"class": { "name": "Class", "sub_title": "Select" },
+				"stream": { "name": "Stream", "sub_title": "Select" },
+				"term": { "name": "Term", "sub_title": "Select" },
+				"status": { "name": "Status", "sub_title": "Select" },
+				"type": { "name": "Type", "sub_title": "Select" }
+			}
+		},
+
 		"navbar": {
+			"dashboard": "Dashboard",
 			"classroom": "Classrooms",
 			"students": "Students",
-			"fees": "Fees"
+			"fees": "Fees",
+			"schools": "Schools",
+			"academic_years": "Academic years",
+			"children": "Children",
+			"my_profile": "My profile"
+		},
+
+		"analytics_pg": {
+			"cards": {
+				"schools": "Schools",
+				"parents": "Parents",
+				"students": "Students"
+			}
 		},
 
 		"classrooms_pg": {
 			"title": "Classrooms",
-			"new_btn": "New class"
+			"new_btn": "New class",
+			"classroom": "classroom",
+			"modals": {
+				"add_class_title": "New class",
+				"edit_class_title": "Edit class",
+				"add_stream_title": "Add stream",
+				"add_stream_sub_title": "For class",
+				"edit_stream_title": "Edit stream",
+				"class_name": "Class name",
+				"stream_name": "Stream name"
+			},
+			"streams": { "title": "Streams" }
 		},
 
 		"students_pg": {
 			"title": "Students",
-			"new_btn": "New student"
+			"new_btn": "New student",
+			"student": "student",
+			"modals": {
+				"add_student_title": "Create student",
+				"edit_student_title": "Edit student",
+				"personal_info": "Personal info",
+				"full_name": "Full name",
+				"gender": "Gender",
+				"dob": "DOB",
+				"profile": "Profile",
+				"contact_info": "Contact info",
+				"email": "Email",
+				"address": "Address",
+				"country_name": "Country name",
+				"parent_phone_number": "Parent phone number",
+				"first_contact_phone": "First contact phone",
+				"second_contact_phone": "Second contact phone",
+				"academic_info": "Academic info",
+				"academic_year": "Academic year",
+				"term": "Term",
+				"class": "Class",
+				"stream": "Stream",
+				"student_identifier": "Student identifier"
+			},
+			"table": {
+				"name": "Name",
+				"class": "Class",
+				"stream": "Stream",
+				"location": "Location",
+				"actions": "Actions"
+			},
+			"profile": {
+				"class": "Class:",
+				"year": "Year:",
+				"total_unpaid": "Total unpaid:",
+				"not_available_item": "The item you are looking for is not available!",
+				"modals": {
+					"promote_student_title": "Promote student",
+					"current_academic_info": "Current academic info:",
+					"promote_student_to": "Promote student to:"
+				},
+				"table": {
+					"title": "Assigned fees",
+					"fee_name": "Fee name",
+					"fee_type": "Fee type",
+					"amount": "Amount",
+					"paid": "Paid",
+					"remaining": "Remaining",
+					"actions": "Actions"
+				}
+			}
+		},
+
+		"fees_pg": {
+			"title": "Fees",
+			"new_btn": "Add fee",
+			"fee": "fee",
+			"modals": {
+				"add_fee_title": "Add fee",
+				"edit_fee_title": "Edit fee",
+				"fee_name": "Fee name",
+				"amount": "Amount",
+				"classes": "Classes",
+				"terms": "Terms",
+				"academic_year": "Academic year",
+				"additional_payment": "Additional payment",
+				"optional_payment": "Optional payment"
+			},
+			"table": {
+				"name": "Name",
+				"classes": "Classes",
+				"terms": "Terms",
+				"year": "Year",
+				"fee_type": "Fee type",
+				"amount": "Amount",
+				"actions": "Actions"
+			},
+			"download_btn": {
+				"title": "Download report",
+				"for_students": "For students",
+				"for_classrooms": "For classrooms"
+			}
+		},
+
+		"schools_pg": {
+			"title": "Schools",
+			"new_btn": "New school",
+			"school": "school",
+			"modals": {
+				"add_school_title": "Create school",
+				"edit_school_title": "Edit school",
+				"school_name": "School name",
+				"school_title": "School title",
+				"school_logo": "School logo",
+				"school_type": "School type",
+				"has_student_ids": "Has student IDs",
+				"country_name": "Country name",
+				"school_address": "School address",
+				"phone_number": "Phone number",
+				"email": "Email"
+			},
+			"table": {
+				"name": "Name",
+				"title": "Title",
+				"type": "Type",
+				"country": "Country",
+				"actions": "Actions"
+			}
+		},
+
+		"academic_years_pg": {
+			"title": "Academic years",
+			"new_btn": "Add a year ",
+			"academic_year": "academic year",
+			"modals": {
+				"add_year_title": "Add a year",
+				"edit_year_title": "Edit a year",
+				"academic_year": "Academic year",
+				"is_year_current": "Is year current"
+			},
+			"table": {
+				"academic_year": "Academic year",
+				"since": "Since",
+				"is_current": "Is current",
+				"actions": "Actions"
+			}
+		},
+
+		"children_pg": {
+			"title": "Children",
+			"new_btn": "",
+			"children": "child",
+			"modals": "",
+			"table": {
+				"name": "Name",
+				"school": "School",
+				"class": "Class",
+				"actions": "Actions"
+			}
 		}
 	},
 
@@ -43,27 +290,262 @@
 			"parent": "UMUBYEYI",
 			"student": "UMUNYESHURI",
 			"as_school": {
-				"title": "Injira nk'umunyeshuri",
+				"title": "Komeza nk'ishuri",
 				"u_name": "Izina",
 				"password": "Ijambo banga",
+				"button": "Injira",
+				"country_name": "Igihugu"
+			},
+			"as_admin": {
+				"title": "Komeza nk'admin",
+				"email": "Imeyiri",
+				"password": "Ijambo banga",
+				"button": "Injira"
+			},
+			"as_parent": {
+				"title": "Komeza nk'umubyeyi",
+				"email": "Imeyiri",
+				"button": "Injira"
+			},
+			"as_student": {
+				"title": "Komeza nk'umunyeshuri",
+				"country_name": "Igihugu",
+				"identifier": "Ikimuranga",
 				"button": "Injira"
 			}
 		},
 
+		"alert_messages": {
+			"success": {
+				"create_classroom": "Ishuri ryakozwe neza!",
+				"edit_classroom": "Ishuri ryahinduwe neza!",
+				"delete_classroom": "Ishuri ryasibwe neza!",
+				"create_stream": "Igice yakozwe neza!",
+				"edit_stream": "Igice cyahinduwe neza!",
+				"delete_stream": "Igice cyasibwe neza!",
+				"create_student": "Umunyeshuri yakozwe neza!",
+				"edit_student": "Umunyeshuri yahinduwe neza!",
+				"delete_student": "Umunyeshuri yasibwe neza!",
+				"promote_student": "Umunyeshuri yimuwe neza!",
+				"create_fee": "Inyishyu yakozwe neza!",
+				"edit_fee": "Inyishyu yahinduwe neza!",
+				"delete_fee": "Inyishyu yasibwe neza!",
+				"download_report": "Inyandiko yabonetse!",
+				"create_school": "Ishuri ryakowe neza!",
+				"delete_school": "Ishuri ryasibwe neza!",
+				"create_academic_year": "Umwaka wakozwe neza!",
+				"edit_academic_year": "Umwaka wahinduwe neza!",
+				"delete_academic_year": "Umwaka wasibwe neza!",
+				"switch_academic_year": "Umwaka turimo wahinduwe neza!"
+			},
+			"error": "Hari ikibazo, mugerageza mukanya!"
+		},
+
+		"dashboard_shared": {
+			"profile": {
+				"user_type": "Ubwokko:",
+				"logout": "Sohoka"
+			},
+			"buttons": {
+				"view": "Reba",
+				"edit": "Hindura",
+				"delete": "Siba",
+				"deleting": "Gusiba....",
+				"save": "Bika",
+				"pay": "Ishyura",
+				"yes": "Yego",
+				"promote": "Imura",
+				"mistake": "Oya, byari ukwibeshya!"
+			},
+			"modals": {
+				"delete_modal": {
+					"title": "Urashaka koko gusiba",
+					"desc": "Menya ko iki gikorwa kitasubizwa inyuma"
+				}
+			},
+			"messages": {
+				"select_class_to_view_streams": "Hitamo ishuri kureba andi makuru!",
+				"no_data": "Nta makuru ahari!",
+				"type_to_search": "Andika gushakisha"
+			},
+			"filters": {
+				"year": { "name": "Umwaka", "sub_title": "Hitamo" },
+				"class": { "name": "Ishuri", "sub_title": "Hitamo" },
+				"stream": { "name": "Igice", "sub_title": "Hitamo" },
+				"term": { "name": "Igihembwe", "sub_title": "Hitamo" },
+				"status": { "name": "Status", "sub_title": "Hitamo" },
+				"type": { "name": "Ubwoko", "sub_title": "Hitamo" }
+			}
+		},
+
 		"navbar": {
+			"dashboard": "Dashboard",
 			"classroom": "Amashuri",
 			"students": "Abanyeshuri",
-			"fees": "Amafaranga"
+			"fees": "Inyishyu",
+			"schools": "Amashuri",
+			"academic_years": "Imyaka",
+			"children": "Abana",
+			"my_profile": "Njyewe"
 		},
 
 		"classrooms_pg": {
-			"title": "Amahuri",
-			"new_btn": "Ishuri rishya"
+			"title": "Amashuri",
+			"new_btn": "Ishuri rishya",
+			"classroom": "ishuri",
+			"modals": {
+				"add_class_title": "Kora ishuri rishya",
+				"edit_class_title": "Hindura ishuri",
+				"add_stream_title": "Kora igice gishya",
+				"add_stream_sub_title": "Cy'ishuri",
+				"edit_stream_title": "Hindura igice",
+				"class_name": "Izina ry'ishuri",
+				"stream_name": "Izina ry'igice"
+			},
+			"streams": { "title": "Ibice" }
 		},
 
 		"students_pg": {
 			"title": "Abanyeshuri",
-			"new_btn": "Umunyeshuri mushya"
+			"new_btn": "Umunyeshuri mushya",
+			"student": "umunyeshuri",
+			"modals": {
+				"add_student_title": "Kora umunyeshuri mushya",
+				"edit_student_title": "Hindura umunyeshuri",
+				"personal_info": "Amakuru bwite",
+				"full_name": "Amazina",
+				"gender": "Igitsina",
+				"dob": "Itariki y'amavuko",
+				"profile": "Ifoto",
+				"contact_info": "Amakuru yo kumenyesha",
+				"email": "Imeyiri",
+				"address": "Aho atuye",
+				"country_name": "Igihugu",
+				"parent_phone_number": "Nimero y'umubyeyi",
+				"first_contact_phone": "Uwo guhamagara wambere",
+				"second_contact_phone": "Uwo guhamagara wundi",
+				"academic_info": "Amakuru y'ishuri",
+				"academic_year": "Umwaka",
+				"term": "Igihembwe",
+				"class": "Ishuri",
+				"stream": "Igice",
+				"student_identifier": "Umubare wihariye w'umunyeshuri"
+			},
+			"table": {
+				"name": "Amazina",
+				"class": "Ishuri",
+				"stream": "Igice",
+				"location": "Ahantu",
+				"actions": "Ibikorwa"
+			},
+			"profile": {
+				"class": "Ishuri:",
+				"year": "Umwaka:",
+				"total_unpaid": "Igiteranyo cy'atarishyurwa:",
+				"not_available_item": "Icyo wifuzaga ntagihari aka kanya!",
+				"modals": {
+					"promote_student_title": "Imura umunyeshuri",
+					"current_academic_info": "Umwaka asanzwemo:",
+					"promote_student_to": "Mwimurire mu:"
+				},
+				"table": {
+					"title": "Inyishyu zimureba",
+					"fee_name": "Izina",
+					"fee_type": "Ubwoko",
+					"amount": "Umubare",
+					"paid": "Ayishyuwe",
+					"remaining": "Asigaye",
+					"actions": "Ibikorwa"
+				}
+			}
+		},
+
+		"fees_pg": {
+			"title": "Inyishyu",
+			"new_btn": "Inyishyu nshya",
+			"fee": "inyishyu",
+			"modals": {
+				"add_fee_title": "Kora inyishyu nshya",
+				"edit_fee_title": "Hindura inyishyu",
+				"fee_name": "Izina",
+				"amount": "Umubare",
+				"classes": "Amashuri",
+				"terms": "Ibihembwe",
+				"academic_year": "Umwaka",
+				"additional_payment": "Umugereka",
+				"optional_payment": "Kubushake"
+			},
+			"table": {
+				"name": "Izina",
+				"classes": "Amashuri",
+				"terms": "Ibihembwe",
+				"year": "Umwaka",
+				"fee_type": "Ubwoko",
+				"amount": "Umubare",
+				"actions": "Ibikorwa"
+			},
+			"download_btn": {
+				"title": "Bona raporo",
+				"for_students": "Kubanyeshuri",
+				"for_classrooms": "Kumashuri"
+			}
+		},
+
+		"schools_pg": {
+			"title": "Amashuri",
+			"new_btn": "Ishuri rishya",
+			"school": "ishuri",
+			"modals": {
+				"add_school_title": "Kora ishuri rishya",
+				"edit_school_title": "Hindura ishuri",
+				"school_name": "Izina",
+				"school_title": "Impine",
+				"school_logo": "Ikirangantego",
+				"school_type": "Ubwoko",
+				"has_student_ids": "Itanga ikiranga abanyeshuri",
+				"country_name": "Igihugu",
+				"school_address": "Aderesi y'ishuri",
+				"phone_number": "Nimero",
+				"email": "Imeyiri"
+			},
+			"table": {
+				"name": "Izina",
+				"title": "Impine",
+				"type": "Ubwoko",
+				"country": "Igihugu",
+				"actions": "Ibikorwa"
+			}
+		},
+
+		"academic_years_pg": {
+			"title": "Imyaka",
+			"new_btn": "Umwaka mushya",
+			"academic_year": "umwaka",
+			"modals": {
+				"add_year_title": "Kora umwaka mushya",
+				"edit_year_title": "Hindura umwaka",
+				"academic_year": "Umwaka",
+				"is_year_current": "Niwo turimo?"
+			},
+			"table": {
+				"academic_year": "Umwaka",
+				"since": "Kuva",
+				"is_current": "Niwo turimo",
+				"actions": "Ibikorwa"
+			}
+		},
+
+		"children_pg": {
+			"title": "Abana",
+			"new_btn": "",
+			"children": "umwana",
+			"modals": "",
+			"table": {
+				"name": "Amazina",
+				"school": "Ikigo",
+				"class": "Ishuri",
+				"actions": "Ibikorwa"
+			}
 		}
 	}
 }

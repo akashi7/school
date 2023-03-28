@@ -18,7 +18,12 @@ import {
 import requiredField from "../../../helpers/requiredField";
 import { Empty } from "../../../components/Shared/Empty";
 
-const ClassProfile = ({ visibleClass }) => {
+const ClassProfile = ({
+	visibleClass,
+	setVisibleClass,
+	lang,
+	showClassProfile,
+}) => {
 	const [isVisible, setIsVisible] = useState(false);
 
 	const [getStreams, { isFetching, isLoading, data: streams }] =
@@ -37,8 +42,9 @@ const ClassProfile = ({ visibleClass }) => {
 			request: addStream,
 			notify: true,
 			id: visibleClass?.id,
-			...values,
+			message: lang?.alert_messages?.success?.add_stream,
 			onSuccess: onSuccess,
+			...values,
 		});
 	};
 
@@ -57,7 +63,7 @@ const ClassProfile = ({ visibleClass }) => {
 				isVisible={isVisible}
 				setIsVisible={setIsVisible}
 				loading={isAddingStream}
-				title="Add stream"
+				title={lang?.classrooms_pg?.modals?.add_stream_title}
 				footerContent={
 					<CustomButton
 						type="primary"
@@ -68,7 +74,7 @@ const ClassProfile = ({ visibleClass }) => {
 						Save
 					</CustomButton>
 				}
-				subTitle="For class"
+				subTitle={lang?.classrooms_pg?.modals?.add_stream_sub_title}
 				subTitleKey={visibleClass?.name}
 			>
 				<Form form={form} name="add-stream" onFinish={onAddStreamFinish}>
@@ -81,10 +87,12 @@ const ClassProfile = ({ visibleClass }) => {
 				</Form>
 			</CustomModal>
 
-			<div className="w-[100%] bg-white p-8 py-4 rounded-md">
+			<div className="w-[100%] bg-white p-4 lg:p-8 lg:py-4 rounded-md">
 				{!visibleClass ? (
 					<Empty
-						message="Please select a class to view details!"
+						message={
+							lang.dashboard_shared?.messages?.select_class_to_view_streams
+						}
 						className="mt-6"
 						height="73vh"
 					/>
@@ -92,13 +100,24 @@ const ClassProfile = ({ visibleClass }) => {
 					<GeneralContentLoader />
 				) : (
 					<>
-						<h1 className="text-dark font-semibold mb-12 border-b pb-4 text-[32px]">
-							{visibleClass?.name}
-						</h1>
+						<div className="flex gap-4 items-center mb-6 border-b pb-3 px-2">
+							{!showClassProfile && (
+								<CustomImage
+									src="/icons/back.svg"
+									className="cursor-pointer bg-gray-500 hover:bg-gray-600 p-[8px] rounded"
+									onClick={() => setVisibleClass(null)}
+								/>
+							)}
 
-						<div className="flex justify-between items-center bg-grey p-4 rounded-md mb-4">
+							<h1 className="text-dark font-semibold text-[32px]">
+								{visibleClass?.name}
+							</h1>
+						</div>
+
+						<div className="flex justify-between items-center bg-grey p-4 py-2 rounded-md mb-4">
 							<p className="text-[20px] text-dark font-semibold">
-								{streams?.payload?.totalItems} Streams
+								{streams?.payload?.totalItems}{" "}
+								{lang?.classrooms_pg?.streams?.title}
 							</p>
 
 							<CustomImage
@@ -108,11 +127,18 @@ const ClassProfile = ({ visibleClass }) => {
 							/>
 						</div>
 
-						<div className="h-[50vh] overflow-y-auto">
+						<div
+							style={{
+								height: showClassProfile
+									? "calc(100vh - 420px)"
+									: "calc(100vh - 400px)",
+							}}
+							className="overflow-y-auto"
+						>
 							{isFetching ? (
-								<AppLoader height="45vh" className="mt-6" />
+								<AppLoader height="45vh" className="mt-12" />
 							) : streams?.payload?.totalItems <= 0 ? (
-								<Empty className="mt-6" height="45vh" />
+								<Empty className="mt-12" height="45vh" />
 							) : (
 								streams?.payload?.items?.map((stream, index) => (
 									<SingleStream
@@ -120,6 +146,7 @@ const ClassProfile = ({ visibleClass }) => {
 										data={stream}
 										index={index + 1}
 										visibleClass={visibleClass}
+										lang={lang}
 									/>
 								))
 							)}
@@ -133,6 +160,8 @@ const ClassProfile = ({ visibleClass }) => {
 
 ClassProfile.propTypes = {
 	visibleClass: PropTypes.any,
+	setVisibleClass: PropTypes.func,
+	showClassProfile: PropTypes.bool,
 };
 
 export default ClassProfile;

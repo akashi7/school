@@ -17,7 +17,9 @@
 		"chart.js": "^4.0.1",
 		"eslint": "8.31.0",
 		"eslint-config-next": "13.1.1",
+		"js-file-download": "^0.4.12",
 		"jsonwebtoken": "^9.0.0",
+		"moment": "^2.29.4",
 		"next": "13.1.1",
 		"nprogress": "^0.2.0",
 		"prop-types": "^15.8.1",
@@ -31,8 +33,10 @@
 		"sass": "^1.57.1"
 	},
 	"devDependencies": {
+		"@types/node": "18.15.10",
 		"autoprefixer": "^10.4.13",
 		"postcss": "^8.4.21",
-		"tailwindcss": "^3.2.4"
+		"tailwindcss": "^3.2.4",
+		"typescript": "5.0.2"
 	}
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Form from "antd/lib/form";
 import Row from "antd/lib/row";
@@ -12,8 +12,11 @@ import handleAPIRequests from "../../helpers/handleAPIRequests";
 import { useRouter } from "next/router";
 import routes from "../../config/routes";
 import { _ns_token_ } from "../../config/constants";
+import countries_with_codes from "../../config/countries_with_codes";
 
-const SchoolLogin = ({ setActiveLogin }) => {
+const SchoolLogin = ({ setActiveLogin, lang }) => {
+	const [countryCode, setCountryCode] = useState("");
+
 	const [form] = Form.useForm();
 	const router = useRouter();
 
@@ -26,22 +29,32 @@ const SchoolLogin = ({ setActiveLogin }) => {
 		}
 	};
 
+	const handleCountryChange = (country) => {
+		setCountryCode(countries_with_codes?.find((c) => c.name === country));
+	};
+
 	const onFinish = (values) => {
 		handleAPIRequests({
 			request: login,
 			...values,
-			countryCode: "RW",
+			countryCode: countryCode?.code,
 			onSuccess: onSuccess,
 		});
 	};
 
 	return (
-		<Form onFinish={onFinish} name="login-form" form={form}>
+		<Form
+			onFinish={onFinish}
+			name="login-form"
+			form={form}
+			className="w-[100%]"
+		>
 			<Row
 				justify="center"
 				align="middle"
 				gutter={24}
 				className="mt-8 w-[100%] mb-6"
+				wrap={false}
 			>
 				<Col onClick={() => setActiveLogin(null)}>
 					<CustomImage
@@ -50,23 +63,42 @@ const SchoolLogin = ({ setActiveLogin }) => {
 					/>
 				</Col>
 
-				<Col className="font-medium text-dark text-[24px]" flex={1}>
-					Login as school
+				<Col className="font-[500] text-dark text-[24px] truncate" flex={1}>
+					{lang?.auth?.as_school?.title}
 				</Col>
 			</Row>
 
 			<div className="w-[100%]">
 				<CustomInput
-					label="Username"
+					label={lang?.auth?.as_school?.country_name}
+					placeholder="Select country"
+					type="select"
+					name="countryName"
+					showSearch={true}
+					onChange={handleCountryChange}
+					options={countries_with_codes?.map((country) => ({
+						...country,
+						index: country?.name,
+						value: country?.name,
+						key: country?.name,
+					}))}
+					rules={requiredField("Country")}
+				/>
+			</div>
+
+			<div className="w-[100%]">
+				<CustomInput
+					label={lang?.auth?.as_school?.u_name}
 					name="username"
-					placeholder="john@example.domain"
+					inputType="text"
+					placeholder="Type username"
 					rules={requiredField("Username")}
 				/>
 			</div>
 
 			<div className="w-[100%]">
 				<CustomInput
-					label="Password"
+					label={lang?.auth?.as_school?.password}
 					inputType="password"
 					placeholder="*** *** ***"
 					name="password"
@@ -80,7 +112,7 @@ const SchoolLogin = ({ setActiveLogin }) => {
 				htmlType="submit"
 				loading={isLoading}
 			>
-				Login
+				{lang?.auth?.as_school?.button}
 			</CustomButton>
 		</Form>
 	);

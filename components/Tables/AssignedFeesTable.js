@@ -1,129 +1,48 @@
 import React from "react";
 import Table from "antd/lib/table";
 import CustomButton from "../Shared/CustomButton";
+import { toLocalString } from "../../helpers/numbers";
+import AssignedFeesTableMobile from "./Mobile/AssignedFeesTableMobile";
 
 const { Column } = Table;
 
-const dumpData = [
-	{
-		id: 0,
-		name: "Minerivari",
-		type: "School fee",
-		amount: "12, 00 Rwf",
-		paid: "6, 500 Rwf",
-		remaining: "5, 500 Rwf",
-	},
-
-	{
-		id: 1,
-		name: "Food money",
-		type: "Optional",
-		amount: "12, 00 Rwf",
-		paid: "6, 500 Rwf",
-		remaining: "5, 500 Rwf",
-	},
-
-	{
-		id: 2,
-		name: "Uniform money",
-		type: "Mandatory",
-		amount: "12, 00 Rwf",
-		paid: "6, 500 Rwf",
-		remaining: "5, 500 Rwf",
-	},
-
-	{
-		id: 3,
-		name: "Minerivari",
-		type: "School fee",
-		amount: "12, 00 Rwf",
-		paid: "6, 500 Rwf",
-		remaining: "5, 500 Rwf",
-	},
-
-	{
-		id: 4,
-		name: "Food money",
-		type: "Optional",
-		amount: "12, 00 Rwf",
-		paid: "6, 500 Rwf",
-		remaining: "5, 500 Rwf",
-	},
-
-	{
-		id: 5,
-		name: "Uniform money",
-		type: "Mandatory",
-		amount: "12, 00 Rwf",
-		paid: "6, 500 Rwf",
-		remaining: "5, 500 Rwf",
-	},
-
-	{
-		id: 6,
-		name: "Uniform money",
-		type: "Mandatory",
-		amount: "12, 00 Rwf",
-		paid: "6, 500 Rwf",
-		remaining: "5, 500 Rwf",
-	},
-
-	{
-		id: 7,
-		name: "Minerivari",
-		type: "School fee",
-		amount: "12, 00 Rwf",
-		paid: "6, 500 Rwf",
-		remaining: "5, 500 Rwf",
-	},
-
-	{
-		id: 8,
-		name: "Food money",
-		type: "Optional",
-		amount: "12, 00 Rwf",
-		paid: "6, 500 Rwf",
-		remaining: "5, 500 Rwf",
-	},
-
-	{
-		id: 9,
-		name: "Uniform money",
-		type: "Mandatory",
-		amount: "12, 00 Rwf",
-		paid: "6, 500 Rwf",
-		remaining: "5, 500 Rwf",
-	},
-];
-
-const AssignedFeesTable = () => {
-	return (
+const AssignedFeesTable = ({ data, isFetching, lang, isScreenSmall }) => {
+	return isScreenSmall ? (
+		<AssignedFeesTableMobile
+			dataSource={data?.payload}
+			lang={lang}
+			loading={isFetching}
+		/>
+	) : (
 		<Table
 			className="data_table"
-			dataSource={dumpData}
+			dataSource={data?.payload}
 			rowKey={(record) => {
 				return record?.id;
 			}}
 			rowClassName="shadow"
 			pagination={false}
 			bordered={false}
+			loading={isFetching}
 			scroll={{ x: 0 }}
 		>
 			<Column
 				title="#"
 				key="#"
 				width={24}
-				render={(record) => <span>{record.id + 1}</span>}
+				render={(text, record, index) => (
+					<span className="text-gray-500">{index + 1}.</span>
+				)}
 			/>
 
 			<Column
-				title="Fee name"
+				title={lang?.students_pg?.profile?.table?.fee_name}
 				key="name"
-				render={(record) => <span>{record.name}</span>}
+				render={(record) => <span className="font-bold">{record.name}</span>}
 			/>
 
 			<Column
-				title="Fee type"
+				title={lang?.students_pg?.profile?.table?.fee_type}
 				key="type"
 				render={(record) => (
 					<span
@@ -131,40 +50,50 @@ const AssignedFeesTable = () => {
 							record.type === "School fee" && "font-medium bg-edit_bg"
 						} ${record.type === "Optional" && "bg-gray-200 text-gray-400"}`}
 					>
-						{record.type}
+						{record?.type?.replace("_", " ")}
 					</span>
 				)}
 			/>
 
 			<Column
-				title="Amount"
+				title={lang?.students_pg?.profile?.table?.amount}
 				key="amount"
 				render={(record) => (
-					<span className="text-black font-semibold">{record.amount}</span>
+					<span className="text-black font-semibold">
+						{toLocalString(record.amount)} Rwf
+					</span>
 				)}
 			/>
 
 			<Column
-				title="Paid"
+				title={lang?.students_pg?.profile?.table?.paid}
 				key="paid"
 				render={(record) => (
-					<span className="text-edit_blue font-medium">{record.paid}</span>
+					<span className="text-edit_blue font-medium">
+						{toLocalString(record.paid)} Rwf
+					</span>
 				)}
 			/>
 
 			<Column
-				title="Remaining"
+				title={lang?.students_pg?.profile?.table?.remaining}
 				key="remaining"
 				render={(record) => (
-					<span className="text-red font-medium">{record.remaining}</span>
+					<span className="text-red font-medium">
+						{toLocalString(record.remaining)} Rwf
+					</span>
 				)}
 			/>
 
 			<Column
-				title="Actions"
+				title={lang?.students_pg?.profile?.table?.actions}
 				key="actions"
 				width={100}
-				render={() => <CustomButton type="edit">Pay</CustomButton>}
+				render={() => (
+					<CustomButton type="edit">
+						{lang?.dashboard_shared?.buttons?.pay}
+					</CustomButton>
+				)}
 			/>
 		</Table>
 	);

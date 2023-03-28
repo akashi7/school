@@ -12,6 +12,7 @@ const Private = (Wrapped) => {
 			router.replace("/");
 			return null;
 		}
+
 		return <Wrapped {...props} />;
 	};
 };

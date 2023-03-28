@@ -1,5 +1,6 @@
 /* eslint-disable react/display-name */
 /* eslint-disable react-hooks/rules-of-hooks */
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 import routes from "../../config/routes";
 
@@ -12,6 +13,7 @@ const Public = (Wrapped) => {
 			router.replace(routes.dashboard.url);
 			return null;
 		}
+
 		return <Wrapped {...props} />;
 	};
 };

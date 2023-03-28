@@ -21,6 +21,8 @@ import Paginator from "../../../components/Shared/Paginator";
 import { _pagination_number_ } from "../../../config/constants";
 import ClassesTable from "../../../components/Tables/ClassesTable";
 import { useSelector } from "react-redux";
+import { useWindowSize } from "../../../helpers/useWindowSize";
+import Layout from "../../../components/Layout";
 
 const Classes = () => {
 	const [isVisible, setIsVisible] = useState(false);
@@ -43,7 +45,6 @@ const Classes = () => {
 	const [editClass, { isLoading: isEditing }] = useEditClassMutation();
 
 	const lang = useSelector((state) => state?.translation?.payload);
-	console.log("HERE: ", lang?.classrooms_pg?.title);
 
 	const [form] = Form.useForm();
 
@@ -74,6 +75,9 @@ const Classes = () => {
 			onSuccess: itemToEdit ? onEditSuccess : onSuccess,
 			id: itemToEdit?.id,
 			notify: true,
+			message: itemToEdit
+				? lang?.alert_messages?.success?.edit_classroom
+				: lang?.alert_messages?.success?.create_classroom,
 			...values,
 		});
 	};
@@ -88,6 +92,10 @@ const Classes = () => {
 		setCurrentPage(0);
 	};
 
+	const { width } = useWindowSize();
+	const showClassProfile = width >= 1024;
+	const showMoreIcons = width <= 660;
+
 	const RightSide = () => (
 		<CustomButton onClick={() => setIsVisible(true)} type="primary">
 			{lang?.classrooms_pg?.new_btn}
@@ -96,18 +104,22 @@ const Classes = () => {
 
 	const LeftSide = () => (
 		<p className="text-[20px] text-dark font-semibold">
-			{classes?.payload?.items?.length || ""} {lang?.classrooms_pg?.title}
+			{classes?.payload?.totalItems || ""} {lang?.classrooms_pg?.title}
 		</p>
 	);
 
 	return (
-		<div>
+		<Layout>
 			<CustomModal
 				isVisible={isVisible}
 				setIsVisible={setIsVisible}
 				loading={isAddingClass || isEditing}
 				handleCancel={handleCancelEditModal}
-				title={itemToEdit ? "Edit class" : "Add a class"}
+				title={
+					itemToEdit
+						? lang?.classrooms_pg?.modals?.edit_class_title
+						: lang?.classrooms_pg?.modals?.add_class_title
+				}
 				subTitle={itemToEdit?.name || ""}
 				footerContent={
 					<CustomButton
@@ -116,14 +128,14 @@ const Classes = () => {
 						htmlType="submit"
 						form="add-class"
 					>
-						Save
+						{lang?.dashboard_shared?.buttons?.save}
 					</CustomButton>
 				}
 			>
 				<Form form={form} name="add-class" onFinish={onAddClassFinish}>
 					<CustomInput
-						label="Class name"
-						placeholder="Class name..."
+						label={lang?.classrooms_pg?.modals?.class_name}
+						placeholder={`${lang?.classrooms_pg?.modals?.class_name}...`}
 						name="name"
 						rules={requiredField("Class name")}
 					/>
@@ -136,27 +148,41 @@ const Classes = () => {
 			{isLoading ? (
 				<GeneralContentLoader />
 			) : (
-				<div className="flex gap-4 mt-8 h-[73vh] overflow-y-hidden">
-					<div className={`w-[55%] h-[73vh] overflow-y-auto mr-12`}>
-						<div className="w-[350px] mb-8">
+				<div className="flex mt-8 h-[fit-content] overflow-y-hidden">
+					<div
+						style={{ maxHeight: "calc(100vh - 180px)" }}
+						className={`${
+							showClassProfile ? "w-[55%]" : "w-[100%]"
+						} h-[fit-content] ${
+							showClassProfile ? "mr-12" : "mr-0"
+						} border-none lg:border p-0 lg:p-4 rounded`}
+					>
+						<div className="w-full md:w-[50%] lg:w-[350px] mb-8">
 							<CustomInput
 								onChange={onSearchChange}
-								placeholder="type to search..."
+								placeholder={lang?.dashboard_shared?.messages?.type_to_search}
 							/>
 						</div>
 						{isLoading ? (
 							<AppLoader className="h-[60vh]" />
 						) : (
-							<ClassesTable
-								classes={classes?.payload?.items}
-								visibleClass={visibleClass}
-								setVisibleClass={setVisibleClass}
-								setIsVisible={setIsVisible}
-								setSearch={setSearch}
-								setCurrentPage={setCurrentPage}
-								isFetching={isFetching}
-								setItemToEdit={setItemToEdit}
-							/>
+							<div
+								style={{ maxHeight: "calc(100vh - 280px)" }}
+								className="h-[fit-content] overflow-y-auto"
+							>
+								<ClassesTable
+									classes={classes?.payload?.items}
+									visibleClass={visibleClass}
+									setVisibleClass={setVisibleClass}
+									setIsVisible={setIsVisible}
+									setSearch={setSearch}
+									setCurrentPage={setCurrentPage}
+									isFetching={isFetching}
+									setItemToEdit={setItemToEdit}
+									lang={lang}
+									showMoreIcons={showMoreIcons}
+								/>
+							</div>
 						)}
 
 						<Paginator
@@ -166,12 +192,27 @@ const Classes = () => {
 						/>
 					</div>
 
-					<div className="w-[45%]">
-						<ClassProfile visibleClass={visibleClass} />
+					<div
+						className={`${
+							showClassProfile
+								? "w-[45%] relative"
+								: !showClassProfile && visibleClass
+								? "w-[100%] absolute right-0"
+								: "w-[0] relative"
+						}`}
+					>
+						{(showClassProfile || (!showClassProfile && visibleClass)) && (
+							<ClassProfile
+								lang={lang}
+								visibleClass={visibleClass}
+								setVisibleClass={setVisibleClass}
+								showClassProfile={showClassProfile}
+							/>
+						)}
 					</div>
 				</div>
 			)}
-		</div>
+		</Layout>
 	);
 };
 

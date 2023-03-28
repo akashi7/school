@@ -17,13 +17,17 @@ const CustomInput = ({
 	defaultValue,
 	options = [],
 	name,
+	isLoading,
+	disabled,
+	allowClear = false,
+	showSearch = false,
 	rules,
 	onChange = () => null,
 }) => {
 	const NormalInput = (
 		<div className="mb-[-10px]">
 			{label && (
-				<label className="text-[18px] text-black font-medium mb-2 block">
+				<label className="text-[18px] text-black font-[500] mb-2 block">
 					{label}
 				</label>
 			)}
@@ -34,7 +38,10 @@ const CustomInput = ({
 					type={inputType}
 					placeholder={placeholder || "Type"}
 					className="rounded h-[40px]"
-					onChange={({ target }) => onChange(target.value)}
+					disabled={(type == "file" && isLoading) || disabled}
+					onChange={({ target }) =>
+						onChange(type === "file" ? target?.files : target?.value)
+					}
 				/>
 			</Form.Item>
 		</div>
@@ -43,7 +50,7 @@ const CustomInput = ({
 	const SelectInput = (
 		<div className="mb-[-10px]">
 			{label && (
-				<label className="text-[18px] text-black font-medium mb-2 block">
+				<label className="text-[18px] text-black font-[500] mb-2 block">
 					{label}
 				</label>
 			)}
@@ -53,6 +60,10 @@ const CustomInput = ({
 					value={value}
 					onChange={(value) => onChange(value)}
 					className="rounded h-[40px] border border-gray-300 flex items-center"
+					loading={isLoading}
+					allowClear={allowClear}
+					showSearch={showSearch}
+					disabled={disabled}
 					options={options}
 					defaultValue={defaultValue}
 					name={name}
@@ -70,7 +81,7 @@ const CustomInput = ({
 	const SelectMultipleInput = (
 		<div className="mb-[-10px]">
 			{label && (
-				<label className="text-[18px] text-black font-medium mb-2 block">
+				<label className="text-[18px] text-black font-[500] mb-2 block">
 					{label}
 				</label>
 			)}
@@ -80,6 +91,8 @@ const CustomInput = ({
 					className="border border-gray-300 rounded"
 					mode="multiple"
 					size="large"
+					loading={isLoading}
+					disabled={disabled}
 					placeholder="Please select"
 					defaultValue={defaultValue}
 					style={{
@@ -99,6 +112,8 @@ const CustomInput = ({
 				<Select
 					value={value}
 					onChange={(value) => onChange(value)}
+					loading={isLoading}
+					disabled={disabled}
 					className={`border-none mt-5 ${
 						width ? `w-[${width}]` : "w-[100px]"
 					} rounded`}
@@ -119,7 +134,7 @@ const CustomInput = ({
 	const CustomDatePicker = (
 		<div className="mb-[-10px] w-[100%]">
 			{label && (
-				<label className="text-[18px] text-black font-medium mb-2 block">
+				<label className="text-[18px] text-black font-[500] mb-2 block">
 					{label}
 				</label>
 			)}
@@ -128,9 +143,9 @@ const CustomInput = ({
 				<DatePicker
 					value={value}
 					type={inputType}
+					disabled={disabled}
 					placeholder={placeholder || "Type"}
 					className="rounded h-[40px] w-[100%]"
-					onChange={({ target }) => onChange(target.value)}
 				/>
 			</Form.Item>
 		</div>
@@ -168,6 +183,9 @@ CustomInput.propTypes = {
 	label: PropTypes.string,
 	name: PropTypes.string,
 	onChange: PropTypes.func,
+	isLoading: PropTypes.bool,
+	showSearch: PropTypes.bool,
+	allowClear: PropTypes.bool,
 };
 
 export default CustomInput;

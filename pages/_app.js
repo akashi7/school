@@ -8,12 +8,9 @@ import { store } from "../lib/redux/store";
 import "../styles/globals.scss";
 import { AppLoader } from "../components/Shared/Loaders";
 import { _ns_token_ } from "../config/constants";
-import { isTokenValid } from "../helpers/verifyToken";
 
 const App = ({ Component, pageProps }) => {
 	const router = useRouter();
-
-	isTokenValid();
 
 	useEffect(() => {
 		const handleStart = () => {
