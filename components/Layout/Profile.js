@@ -83,7 +83,7 @@ const Profile = () => {
 				<Dropdown overlay={ProfileDropdown} trigger={["click"]}>
 					<div className="flex items-center gap-2 lg:gap-4 cursor-pointer hover:bg-gray-200 lg:hover:bg-none p-1 px-2 rounded">
 						<CustomImage
-							src={data?.payload?.passportPhoto}
+							src={data?.payload?.passportPhoto || ""}
 							className="object-cover rounded-full w-[30px] h-[30px] lg:w-[38px] lg:h-[38px]"
 						/>
 
