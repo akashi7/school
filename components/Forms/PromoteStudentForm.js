@@ -30,7 +30,6 @@ const PromoteStudentForm = ({
 
 	useEffect(() => {
 		form.setFieldsValue({
-			placeHolderAcademicTerm: data?.payload?.academicTerm,
 			placeHolderAcademicYearId: data?.payload?.academicYear?.id,
 			placeHolderClassroomId: data?.payload?.stream?.classroom?.id,
 			placeHolderStreamId: data?.payload?.stream?.id,

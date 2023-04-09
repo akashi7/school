@@ -139,7 +139,6 @@ const NewStudentForm = ({
 						inputType="file"
 						isLoading={uploadLoading}
 						onChange={handleUploadProfile}
-						rules={!imgURL && requiredField("Passport")}
 					/>
 				</Col>
 

@@ -30,7 +30,7 @@ const SingleStudent = () => {
 	const [feeStatus, setFeeStatus] = useState("PAID");
 
 	const router = useRouter();
-	const { id } = isTokenValid("");
+	const { id, role } = isTokenValid("");
 
 	const lang = useSelector((state) => state?.translation?.payload);
 
@@ -254,6 +254,7 @@ const SingleStudent = () => {
 								isFetching={isStudentFeesFetching}
 								lang={lang}
 								isScreenSmall={isScreenSmall}
+								role={role}
 							/>
 						</div>
 					</ContentTableContainer>

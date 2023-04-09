@@ -4,8 +4,26 @@ import Row from "antd/lib/row";
 import Col from "antd/lib/col";
 import CustomInput from "../Shared/CustomInput";
 import requiredField from "../../helpers/requiredField";
+import { useGetAcademicYearsQuery } from "../../lib/api/AcademicYear/academicYearEndpoints";
+import { termOptions } from "../../config/constants";
 
 const ManualPaymentForm = ({ form, onFinish, lang }) => {
+	const { data: academicYears, isFetching: isAcademicYearsLoading } =
+		useGetAcademicYearsQuery({
+			page: 0,
+			size: 100,
+		});
+
+	const academicYearsList = academicYears?.payload?.totalItems
+		? [
+				...academicYears?.payload?.items?.map((item) => ({
+					key: item?.name,
+					value: item?.id,
+					label: item.name,
+				})),
+		  ]
+		: [];
+
 	return (
 		<Form form={form} name="manual-payment" onFinish={onFinish}>
 			<Row align="middle" wrap={false} gutter={24}>
@@ -45,6 +63,36 @@ const ManualPaymentForm = ({ form, onFinish, lang }) => {
 						placeholder={`${lang?.students_pg?.modals?.phone_number}...`}
 						name="phoneNumber"
 						rules={requiredField(lang?.students_pg?.modals?.phone_number)}
+					/>
+				</Col>
+			</Row>
+
+			<Row align="middle" wrap={false} gutter={24}>
+				<Col className="w-[50%]">
+					<CustomInput
+						type="select"
+						name="academicYearId"
+						label={lang?.students_pg?.modals?.academic_year}
+						isLoading={isAcademicYearsLoading}
+						rules={requiredField(lang?.students_pg?.modals?.academic_year)}
+						options={academicYearsList}
+					/>
+				</Col>
+
+				<Col className="w-[50%]">
+					<CustomInput
+						type="select"
+						name="academicTerm"
+						label={lang?.dashboard_shared?.filters?.term?.name}
+						rules={requiredField(lang?.dashboard_shared?.filters?.term?.name)}
+						options={[
+							{
+								key: 1,
+								value: "",
+								label: lang?.dashboard_shared?.filters?.term?.sub_title,
+							},
+							...termOptions,
+						]}
 					/>
 				</Col>
 			</Row>

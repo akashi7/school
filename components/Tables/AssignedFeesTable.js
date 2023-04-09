@@ -8,6 +8,7 @@ import CustomModal from "../Shared/CustomModal";
 import ManualPaymentForm from "../Forms/ManualPaymentForm";
 import { useManualPayMutation } from "../../lib/api/Students/studentsEndpoints";
 import handleAPIRequests from "../../helpers/handleAPIRequests";
+import Notify from "../Shared/Notification";
 
 const { Column } = Table;
 
@@ -17,6 +18,7 @@ const AssignedFeesTable = ({
 	lang,
 	isScreenSmall,
 	studentId,
+	role,
 }) => {
 	const [isPayModalVisible, setIsPayModalVisible] = useState(false);
 	const [activeFee, setActiveFee] = useState(null);
@@ -36,6 +38,14 @@ const AssignedFeesTable = ({
 	};
 
 	const onManualPaymentFinish = (values) => {
+		if (values.amount <= 0) {
+			Notify({
+				type: "error",
+				message: "Error",
+				description: lang?.students_pg?.modals?.valid_err,
+			});
+			return;
+		}
 		const data = { ...values, amount: +values?.amount };
 
 		handleAPIRequests({
@@ -81,6 +91,7 @@ const AssignedFeesTable = ({
 					dataSource={data?.payload}
 					lang={lang}
 					loading={isFetching}
+					handleManualPayment={handleManualPayment}
 				/>
 			) : (
 				<Table
@@ -156,19 +167,21 @@ const AssignedFeesTable = ({
 						)}
 					/>
 
-					<Column
-						title={lang?.students_pg?.profile?.table?.actions}
-						key="actions"
-						width={100}
-						render={(record) => (
-							<CustomButton
-								type="edit"
-								onClick={() => handleManualPayment(record)}
-							>
-								{lang?.dashboard_shared?.buttons?.pay}
-							</CustomButton>
-						)}
-					/>
+					{role !== "STUDENT" && (
+						<Column
+							title={lang?.students_pg?.profile?.table?.actions}
+							key="actions"
+							width={100}
+							render={(record) => (
+								<CustomButton
+									type="edit"
+									onClick={() => handleManualPayment(record)}
+								>
+									{lang?.dashboard_shared?.buttons?.pay}
+								</CustomButton>
+							)}
+						/>
+					)}
 				</Table>
 			)}
 		</>

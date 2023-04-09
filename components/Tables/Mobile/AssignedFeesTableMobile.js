@@ -7,7 +7,12 @@ import CustomButton from "../../Shared/CustomButton";
 import { MobileTableLoader } from "../../Shared/Loaders";
 import { toLocalString } from "../../../helpers/numbers";
 
-const AssignedFeesTableMobile = ({ dataSource, loading, lang }) => {
+const AssignedFeesTableMobile = ({
+	dataSource,
+	loading,
+	lang,
+	handleManualPayment,
+}) => {
 	return (
 		<div
 			className={`grid grid-cols-1 relative ${
@@ -36,7 +41,10 @@ const AssignedFeesTableMobile = ({ dataSource, loading, lang }) => {
 							<Dropdown
 								overlay={
 									<div className="w-[fit-content] rounded shadow-md z-100 bg-white p-4 flex flex-col gap-4">
-										<CustomButton type="edit">
+										<CustomButton
+											type="edit"
+											onClick={() => handleManualPayment(record)}
+										>
 											{lang?.dashboard_shared?.buttons?.pay}
 										</CustomButton>
 									</div>

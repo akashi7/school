@@ -197,11 +197,12 @@ const SingleStudent = () => {
 	const onPromoteStudentFinish = (values) => {
 		handleAPIRequests({
 			request: promoteStudent,
-			id,
 			notify: true,
 			onSuccess: handleCancelPromoteModal,
 			message: lang?.alert_messages?.success?.promote_student,
-			...values,
+			streamId: values?.streamId,
+			academicYearId: values?.academicYearId,
+			studentIds: [id],
 		});
 	};
 
