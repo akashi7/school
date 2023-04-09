@@ -189,3 +189,11 @@ body {
 .ant-modal-footer {
 	border-top: none !important;
 }
+
+.ant-checkbox-inner {
+	padding: 6px !important;
+}
+
+.ant-checkbox-inner::after {
+	display: block !important;
+}

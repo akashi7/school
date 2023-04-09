@@ -75,7 +75,7 @@ const AcademicYears = () => {
 		const data = {
 			...values,
 			name: formattedYear,
-			current: !!(values.current === "YES"),
+			current: itemToEdit ? itemToEdit?.current : !!(values.current === "YES"),
 		};
 
 		handleAPIRequests({
