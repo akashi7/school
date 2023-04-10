@@ -5,9 +5,14 @@ import Dropdown from "antd/lib/dropdown";
 import CustomImage from "../../Shared/CustomImage";
 import CustomButton from "../../Shared/CustomButton";
 import { MobileTableLoader } from "../../Shared/Loaders";
-import { toLocalString } from "../../../helpers/numbers";
 
-const FeesTableMobile = ({ dataSource, loading, lang }) => {
+const FeesTableMobile = ({
+	dataSource,
+	loading,
+	lang,
+	handleEditFee,
+	handleDeleteFee,
+}) => {
 	return (
 		<div
 			className={`grid grid-cols-1 relative ${
@@ -36,8 +41,18 @@ const FeesTableMobile = ({ dataSource, loading, lang }) => {
 							<Dropdown
 								overlay={
 									<div className="w-[fit-content] rounded shadow-md z-100 bg-white p-4 flex flex-col gap-4">
-										<CustomButton type="edit">
-											{lang?.dashboard_shared?.buttons?.pay}
+										<CustomButton
+											type="edit"
+											onClick={() => handleEditFee(record)}
+										>
+											{lang?.dashboard_shared?.buttons?.edit}
+										</CustomButton>
+
+										<CustomButton
+											type="delete"
+											onClick={() => handleDeleteFee(record)}
+										>
+											{lang?.dashboard_shared?.buttons?.delete}
 										</CustomButton>
 									</div>
 								}
