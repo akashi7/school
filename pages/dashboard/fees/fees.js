@@ -29,6 +29,7 @@ import CustomImage from "../../../components/Shared/CustomImage";
 import handleDownloadFile from "../../../helpers/handleDownloadFile";
 import { useSelector } from "react-redux";
 import { useWindowSize } from "../../../helpers/useWindowSize";
+import Notify from "../../../components/Shared/Notification";
 
 const Students = () => {
 	const [isVisible, setIsVisible] = useState(false);
@@ -137,6 +138,14 @@ const Students = () => {
 	};
 
 	const handleDownloadFeeReport = (url) => {
+		if (url === "classrooms" && !termId) {
+			Notify({
+				message: "Error",
+				description: "Please select academic term to download report!",
+				type: "error",
+			});
+			return;
+		}
 		handleAPIRequests({
 			request: downloadReport,
 			search,

@@ -40,6 +40,7 @@ import PromoteStudentForm from "../../../components/Forms/PromoteStudentForm";
 import { useSelector } from "react-redux";
 import { useWindowSize } from "../../../helpers/useWindowSize";
 import CustomImage from "../../../components/Shared/CustomImage";
+import { isTokenValid } from "../../../helpers/verifyToken";
 
 const SingleStudent = () => {
 	const [isVisible, setIsVisible] = useState(false);
@@ -68,6 +69,7 @@ const SingleStudent = () => {
 	const router = useRouter();
 	const { id } = router.query;
 	const [form] = Form.useForm();
+	const { role } = isTokenValid();
 
 	const lang = useSelector((state) => state?.translation?.payload);
 
@@ -490,6 +492,7 @@ const SingleStudent = () => {
 								lang={lang}
 								isScreenSmall={isScreenSmall}
 								studentId={id}
+								role={role}
 							/>
 						</div>
 					</ContentTableContainer>

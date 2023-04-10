@@ -9,6 +9,7 @@ import ManualPaymentForm from "../Forms/ManualPaymentForm";
 import { useManualPayMutation } from "../../lib/api/Students/studentsEndpoints";
 import handleAPIRequests from "../../helpers/handleAPIRequests";
 import Notify from "../Shared/Notification";
+import userType from "../../helpers/userType";
 
 const { Column } = Table;
 
@@ -167,7 +168,7 @@ const AssignedFeesTable = ({
 						)}
 					/>
 
-					{role !== "STUDENT" && (
+					{userType(role).isAdmin && (
 						<Column
 							title={lang?.students_pg?.profile?.table?.actions}
 							key="actions"

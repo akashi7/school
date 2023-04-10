@@ -12,6 +12,7 @@ import { menus, _selected_lang_ } from "../../config/constants";
 import translate from "../../config/translate";
 import { getTranslation } from "../../lib/redux/translationSlice";
 import { useWindowSize } from "../../helpers/useWindowSize";
+import userType from "../../helpers/userType";
 
 const Profile = () => {
 	const local_saved_lang = localStorage.getItem(_selected_lang_);
@@ -37,7 +38,6 @@ const Profile = () => {
 
 	const { width } = useWindowSize();
 	const isScreenSmall = width <= 1024;
-	console.log("DATA: ", data);
 
 	const ProfileDropdown = (
 		<div className="w-[100%] rounded shadow-md z-100 bg-white p-2 mt-6">
@@ -88,7 +88,11 @@ const Profile = () => {
 						/>
 
 						<div className="flex items-center gap-2">
-							<p className="hidden lg:block">{data?.payload?.fullName}</p>
+							<p className="hidden lg:block">
+								{userType(role)?.isParent
+									? `${data?.payload?.fullName?.split(" ")[0]}'s parent`
+									: data?.payload?.fullName}
+							</p>
 
 							<CustomImage
 								src="/icons/expand.svg"

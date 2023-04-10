@@ -5,6 +5,7 @@ import CustomButton from "./Shared/CustomButton";
 import CustomImage from "./Shared/CustomImage";
 import { BeingPromotedLoader } from "./Shared/Loaders";
 import { toLocalString } from "../helpers/numbers";
+import userType from "../helpers/userType";
 import { isTokenValid } from "../helpers/verifyToken";
 
 const StudentProfile = ({
@@ -59,7 +60,7 @@ const StudentProfile = ({
 
 							{!isScreenSmall && (
 								<Col>
-									{role !== "STUDENT" && (
+									{userType(role).isAdmin && (
 										<Col>
 											<div className="flex gap-4">
 												<CustomButton
@@ -128,7 +129,7 @@ const StudentProfile = ({
 						</span>
 					</p>
 
-					{role !== "STUDENT" && isScreenSmall && (
+					{userType(role).isAdmin && isScreenSmall && (
 						<div className="flex m-auto w-[210px] my-4 gap-4">
 							<CustomButton
 								type="view"
