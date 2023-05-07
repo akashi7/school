@@ -176,7 +176,7 @@ const NewSchoolForm = ({
 					<CustomInput
 						label={lang?.schools_pg?.modals?.phone_number}
 						placeholder={`${lang?.schools_pg?.modals?.phone_number}...`}
-						name="phoneNumber"
+						name="phone"
 						rules={requiredField("Phone number")}
 					/>
 				</Col>

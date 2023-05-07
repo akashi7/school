@@ -21,6 +21,7 @@ import Notify from "../../../components/Shared/Notification";
 import handleAPIRequests from "../../../helpers/handleAPIRequests";
 import { useSelector } from "react-redux";
 import { useWindowSize } from "../../../helpers/useWindowSize";
+import { passwordGenerator } from "../../../helpers/passwordGenerator";
 
 const Schools = () => {
 	const [isVisible, setIsVisible] = useState(false);
@@ -68,6 +69,8 @@ const Schools = () => {
 			countryCode: selectedCountry?.code,
 			hasStudentIds: !!(values?.hasStudentIds === "YES"),
 			schoolLogo: imgURL,
+			username: values?.schoolName?.toLowerCase()?.replace(" ", "_"),
+			password: passwordGenerator(),
 		};
 
 		handleAPIRequests({

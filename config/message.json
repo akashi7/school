@@ -160,14 +160,23 @@
 				"term": "Term",
 				"class": "Class",
 				"stream": "Stream",
-				"student_identifier": "Student identifier"
+				"student_identifier": "Student identifier",
+				"pay_manual": "Add payment",
+				"valid_err": "The payment must be positive",
+				"reference_code": "Reference code",
+				"date": "Date",
+				"phone_number": "Phone number",
+				"description": "Description",
+				"amount": "Amount"
 			},
 			"table": {
 				"name": "Name",
 				"class": "Class",
 				"stream": "Stream",
 				"location": "Location",
-				"actions": "Actions"
+				"actions": "Actions",
+				"selected_items": "Selected items",
+				"promote_btn": "Promote"
 			},
 			"profile": {
 				"class": "Class:",
@@ -429,14 +438,23 @@
 				"term": "Igihembwe",
 				"class": "Ishuri",
 				"stream": "Igice",
-				"student_identifier": "Umubare wihariye w'umunyeshuri"
+				"student_identifier": "Umubare wihariye w'umunyeshuri",
+				"pay_manual": "Ishyura",
+				"valid_err": "Amafaranga ntagomba kuba munsi ya 1!",
+				"reference_code": "Code",
+				"date": "Itariki",
+				"phone_number": "Nomero",
+				"description": "Ubusobanuro",
+				"amount": "Amafaranga"
 			},
 			"table": {
 				"name": "Amazina",
 				"class": "Ishuri",
 				"stream": "Igice",
 				"location": "Ahantu",
-				"actions": "Ibikorwa"
+				"actions": "Ibikorwa",
+				"selected_items": "Bose hamwe",
+				"promote_btn": "Imura"
 			},
 			"profile": {
 				"class": "Ishuri:",

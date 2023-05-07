@@ -3,7 +3,6 @@ import Table from "antd/lib/table";
 import CustomButton from "../Shared/CustomButton";
 import WarningModal from "../Shared/WarningModal";
 import { useDeleteFeeMutation } from "../../lib/api/Fees/FeesEndpoints";
-import { useSelector } from "react-redux";
 import { toLocalString } from "../../helpers/numbers";
 import FeesTableMobile from "./Mobile/FeesTableMobile";
 
@@ -55,6 +54,8 @@ const FeesTable = ({
 					dataSource={fees?.payload?.items}
 					loading={isFetching}
 					lang={lang}
+					handleDeleteFee={handleDeleteFee}
+					handleEditFee={handleEditFee}
 				/>
 			) : (
 				<Table
@@ -134,25 +135,25 @@ const FeesTable = ({
 						)}
 					/>
 
-					{/* <Column
-					title={lang?.fees_pg?.table?.actions}
-					key="actions"
-					width={200}
-					render={(record) => (
-						<div className="flex gap-4">
-							<CustomButton type="edit" onClick={() => handleEditFee(record)}>
-								{lang?.dashboard_shared?.buttons?.edit}
-							</CustomButton>
+					<Column
+						title={lang?.fees_pg?.table?.actions}
+						key="actions"
+						width={200}
+						render={(record) => (
+							<div className="flex gap-4">
+								<CustomButton type="edit" onClick={() => handleEditFee(record)}>
+									{lang?.dashboard_shared?.buttons?.edit}
+								</CustomButton>
 
-							<CustomButton
-								type="delete"
-								onClick={() => handleDeleteFee(record)}
-							>
-								{lang?.dashboard_shared?.buttons?.delete}
-							</CustomButton>
-						</div>
-					)}
-				/> */}
+								<CustomButton
+									type="delete"
+									onClick={() => handleDeleteFee(record)}
+								>
+									{lang?.dashboard_shared?.buttons?.delete}
+								</CustomButton>
+							</div>
+						)}
+					/>
 				</Table>
 			)}
 		</>

@@ -2,14 +2,23 @@ import React from "react";
 import Table from "antd/lib/table";
 import CustomImage from "../Shared/CustomImage";
 import ChildrenTableMobile from "./Mobile/ChildrenTableMobile";
+import CustomButton from "../Shared/CustomButton";
+import { useRouter } from "next/router";
+import routes from "../../config/routes";
 
 const { Column } = Table;
 
 const ChildrenTable = ({ isFetching, data, lang, isScreenSmall }) => {
+	const router = useRouter();
+
 	return (
 		<>
 			{isScreenSmall ? (
-				<ChildrenTableMobile dataSource={data} loading={isFetching} lang={lang}  />
+				<ChildrenTableMobile
+					dataSource={data}
+					loading={isFetching}
+					lang={lang}
+				/>
 			) : (
 				<Table
 					className="data_table"
@@ -56,6 +65,24 @@ const ChildrenTable = ({ isFetching, data, lang, isScreenSmall }) => {
 						key="type"
 						render={(record) => (
 							<span>{`${record?.stream?.classroom?.name} ${record?.stream?.name}`}</span>
+						)}
+					/>
+
+					<Column
+						title={lang?.students_pg?.table?.actions}
+						key="actions"
+						width={80}
+						render={(record) => (
+							<div className="flex gap-4">
+								<CustomButton
+									type="view"
+									onClick={() =>
+										router.push(`${routes.children.url}/${record?.id}`)
+									}
+								>
+									{lang?.dashboard_shared?.buttons?.view}
+								</CustomButton>
+							</div>
 						)}
 					/>
 				</Table>

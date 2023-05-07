@@ -40,6 +40,7 @@ import PromoteStudentForm from "../../../components/Forms/PromoteStudentForm";
 import { useSelector } from "react-redux";
 import { useWindowSize } from "../../../helpers/useWindowSize";
 import CustomImage from "../../../components/Shared/CustomImage";
+import { isTokenValid } from "../../../helpers/verifyToken";
 
 const SingleStudent = () => {
 	const [isVisible, setIsVisible] = useState(false);
@@ -68,6 +69,7 @@ const SingleStudent = () => {
 	const router = useRouter();
 	const { id } = router.query;
 	const [form] = Form.useForm();
+	const { role } = isTokenValid();
 
 	const lang = useSelector((state) => state?.translation?.payload);
 
@@ -197,11 +199,12 @@ const SingleStudent = () => {
 	const onPromoteStudentFinish = (values) => {
 		handleAPIRequests({
 			request: promoteStudent,
-			id,
 			notify: true,
 			onSuccess: handleCancelPromoteModal,
 			message: lang?.alert_messages?.success?.promote_student,
-			...values,
+			streamId: values?.streamId,
+			academicYearId: values?.academicYearId,
+			studentIds: [id],
 		});
 	};
 
@@ -488,6 +491,8 @@ const SingleStudent = () => {
 								isFetching={isStudentFeesFetching}
 								lang={lang}
 								isScreenSmall={isScreenSmall}
+								studentId={id}
+								role={role}
 							/>
 						</div>
 					</ContentTableContainer>

@@ -2,12 +2,10 @@ import React, { useEffect, useState } from "react";
 import Row from "antd/lib/row";
 import Col from "antd/lib/col";
 import Dropdown from "antd/lib/dropdown";
-import { useRouter } from "next/router";
 import StudentProfile from "../../../components/StudentProfile";
 import ContentTableContainer from "../../../components/Shared/ContentTableContainer";
 import ContentNavbar from "../../../components/Shared/ContentNavbar";
 import CustomInput from "../../../components/Shared/CustomInput";
-import GoBack from "../../../components/Shared/GoBack";
 import AssignedFeesTable from "../../../components/Tables/AssignedFeesTable";
 import {
 	useGetStudentFeesQuery,
@@ -29,7 +27,6 @@ const SingleStudent = () => {
 	const [academicTerm, setAcademicTerm] = useState("TERM1");
 	const [feeStatus, setFeeStatus] = useState("PAID");
 
-	const router = useRouter();
 	const { id } = isTokenValid("");
 
 	const lang = useSelector((state) => state?.translation?.payload);

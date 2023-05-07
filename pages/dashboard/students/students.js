@@ -202,6 +202,12 @@ const Students = () => {
 		itemToEdit: itemToEdit ? studentData?.payload : null,
 	});
 
+	useEffect(() => {
+		if (academicYears?.payload?.items?.length) {
+			setAcademicYearId(academicYears?.payload?.items[0]?.id);
+		}
+	}, [academicYears]);
+
 	const isPageLoading = isLoading;
 
 	const academicYearsList = academicYears?.payload?.totalItems
@@ -450,7 +456,7 @@ const Students = () => {
 								? "calc(100vh - 260px)"
 								: "calc(100vh - 300px)",
 						}}
-						className=" mt-5 h-[fit-content] overflow-x-auto"
+						className=" mt-1 h-[fit-content] overflow-x-auto"
 					>
 						{isLoading ? (
 							<AppLoader />
@@ -461,6 +467,9 @@ const Students = () => {
 								setItemToEdit={setItemToEdit}
 								setIsEditModalVisible={setIsVisible}
 								lang={lang}
+								currentAcademicYearId={academicYearId}
+								currentClassroomId={classroomId}
+								currentStreamId={streamId}
 							/>
 						)}
 
