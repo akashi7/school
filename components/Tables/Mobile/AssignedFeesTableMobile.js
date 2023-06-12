@@ -39,7 +39,7 @@ const AssignedFeesTableMobile = ({
 
 						<Col>
 							<Dropdown
-								overlay={
+								menu={
 									<div className="w-[fit-content] rounded shadow-md z-100 bg-white p-4 flex flex-col gap-4">
 										<CustomButton
 											type="edit"

@@ -11,5 +11,5 @@ export const isTokenValid = (err) => {
 		window.location.href = "/";
 	}
 
-	return { role: decoded?.role, id: decoded?.id };
+	return { role: decoded?.role, id: decoded?.id,country:decoded?.countryName };
 };

@@ -60,7 +60,7 @@ const StudentProfile = ({
 
 							{!isScreenSmall && (
 								<Col>
-									{userType(role).isAdmin && (
+									{userType(role).isSchool && (
 										<Col>
 											<div className="flex gap-4">
 												<CustomButton

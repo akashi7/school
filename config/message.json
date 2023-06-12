@@ -167,7 +167,9 @@
 				"date": "Date",
 				"phone_number": "Phone number",
 				"description": "Description",
-				"amount": "Amount"
+				"amount": "Amount",
+				"currency":"Currency",
+				"pay_method":"Payment Method"
 			},
 			"table": {
 				"name": "Name",
@@ -445,7 +447,9 @@
 				"date": "Itariki",
 				"phone_number": "Nomero",
 				"description": "Ubusobanuro",
-				"amount": "Amafaranga"
+				"amount": "Amafaranga",
+				"currency":"ifaranga",
+				"pay_method":"Uburyo bwo kwishyura"
 			},
 			"table": {
 				"name": "Amazina",

@@ -56,11 +56,14 @@ const SingleStudent = () => {
 	const [isPromoteModalVisible, setIsPromoteModalVisible] = useState(false);
 	const [academicTerm, setAcademicTerm] = useState("TERM1");
 	const [feeStatus, setFeeStatus] = useState("PAID");
+	
 
 	const handleCancel = () => {
 		setItemToEdit(null);
 		setIsVisible(false);
 	};
+
+	console.log('arrived')
 
 	const handleCancelPromoteModal = () => {
 		setIsPromoteModalVisible(false);
@@ -144,6 +147,8 @@ const SingleStudent = () => {
 		setIsVisible(false);
 		form.resetFields();
 	};
+
+
 
 	const onEditStudentFinish = (values) => {
 		const data = {
@@ -301,7 +306,7 @@ const SingleStudent = () => {
 
 	const TableNavRightSide = () =>
 		isScreenSmall ? (
-			<Dropdown overlay={FiltersDropdown} trigger={["click"]}>
+			<Dropdown menu={FiltersDropdown} trigger={["click"]}>
 				<div className="p-2 bg-gray-200 pointer rounded h-[40px] w-[42px] flex items-center">
 					<CustomImage src="/icons/filter_icon.svg" className="w-full" />
 				</div>

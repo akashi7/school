@@ -22,6 +22,7 @@ const CustomInput = ({
 	allowClear = false,
 	showSearch = false,
 	rules,
+	styles,
 	onChange = () => null,
 }) => {
 	const NormalInput = (
@@ -37,7 +38,7 @@ const CustomInput = ({
 					value={value}
 					type={inputType}
 					placeholder={placeholder || "Type"}
-					className="rounded h-[40px]"
+					className={`rounded h-[40px] ${styles}`}
 					disabled={(type == "file" && isLoading) || disabled}
 					onChange={({ target }) =>
 						onChange(type === "file" ? target?.files : target?.value)

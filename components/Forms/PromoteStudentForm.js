@@ -67,7 +67,7 @@ const PromoteStudentForm = ({
 		: [];
 
 	return (
-		<Form form={form} name="promote-student" onFinish={onFinish}>
+		<Form form={form} name="promote-student" onFinish={onFinish} >
 			<p className="text-gray-300 my-4 mt-0">
 				{lang?.students_pg?.profile?.modals?.current_academic_info}
 			</p>

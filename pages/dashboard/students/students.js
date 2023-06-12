@@ -379,7 +379,7 @@ const Students = () => {
 
 						<Col className="mb-3">
 							{isScreenSmall ? (
-								<Dropdown overlay={FiltersDropdown} trigger={["click"]}>
+								<Dropdown menu={FiltersDropdown} trigger={["click"]}>
 									<div className="p-2 bg-gray-200 pointer rounded h-[40px] w-[42px] flex items-center">
 										<CustomImage
 											src="/icons/filter_icon.svg"

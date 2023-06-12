@@ -27,7 +27,7 @@ const SingleStudent = () => {
 	const [academicTerm, setAcademicTerm] = useState("TERM1");
 	const [feeStatus, setFeeStatus] = useState("PAID");
 
-	const { id } = isTokenValid("");
+	const { id,role,country } = isTokenValid("")
 
 	const lang = useSelector((state) => state?.translation?.payload);
 
@@ -41,6 +41,7 @@ const SingleStudent = () => {
 			academicYearId,
 			status: feeStatus,
 		});
+
 
 	const [getSingleStudent, { data, isLoading, isFetching }] =
 		useLazyGetSingleStudentQuery();
@@ -69,6 +70,12 @@ const SingleStudent = () => {
 	const handleFeeStatusChange = (status) => {
 		setFeeStatus(status);
 	};
+
+	const paymentObject = {
+		academicYearId,
+		academicTerm
+	}
+
 
 	const academicYearsList = academicYears?.payload?.totalItems
 		? [
@@ -151,7 +158,7 @@ const SingleStudent = () => {
 
 	const TableNavRightSide = () =>
 		isScreenSmall ? (
-			<Dropdown overlay={FiltersDropdown} trigger={["click"]}>
+			<Dropdown menu={FiltersDropdown} trigger={["click"]}>
 				<div className="p-2 bg-gray-200 pointer rounded h-[40px] w-[42px] flex items-center">
 					<CustomImage src="/icons/filter_icon.svg" className="w-full" />
 				</div>
@@ -251,6 +258,11 @@ const SingleStudent = () => {
 								isFetching={isStudentFeesFetching}
 								lang={lang}
 								isScreenSmall={isScreenSmall}
+								role={role}
+								country={country}
+								studentId={id}
+								paymentObject={paymentObject}
+								profile={data}
 							/>
 						</div>
 					</ContentTableContainer>
