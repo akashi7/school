@@ -17,6 +17,7 @@ const StudentProfile = ({
 	totalUnpaid,
 	lang,
 	isScreenSmall,
+	showAmount
 }) => {
 	const { role } = isTokenValid();
 
@@ -122,11 +123,12 @@ const StudentProfile = ({
 							isScreenSmall && "justify-center w-full mt-2"
 						}`}
 					>
-						<span>{lang?.students_pg?.profile?.total_unpaid}</span>
+						
+						{showAmount&&totalUnpaid&&<span>{lang?.students_pg?.profile?.total_unpaid}</span>}
 
-						<span className="text-red font-medium">
+						{showAmount&&totalUnpaid&&<span className="text-red font-medium">
 							{toLocalString(totalUnpaid || 0)} Rwf
-						</span>
+						</span>}
 					</p>
 
 					{userType(role).isAdmin && isScreenSmall && (

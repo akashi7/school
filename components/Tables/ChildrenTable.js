@@ -10,7 +10,7 @@ const { Column } = Table;
 
 const ChildrenTable = ({ isFetching, data, lang, isScreenSmall }) => {
 	const router = useRouter();
-
+  console.log({data})
 	return (
 		<>
 			{isScreenSmall ? (

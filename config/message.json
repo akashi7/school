@@ -12,6 +12,7 @@
 			"admin": "ADMIN",
 			"parent": "PARENT",
 			"student": "STUDENT",
+			"employee":"EMPLOYEE",
 			"as_school": {
 				"title": "Login as school",
 				"u_name": "Username",
@@ -32,6 +33,12 @@
 			},
 			"as_student": {
 				"title": "Login as student",
+				"country_name": "Country name",
+				"identifier": "Identifier",
+				"button": "Login"
+			},
+			"as_employee": {
+				"title": "Login as employee",
 				"country_name": "Country name",
 				"identifier": "Identifier",
 				"button": "Login"
@@ -109,7 +116,14 @@
 			"schools": "Schools",
 			"academic_years": "Academic years",
 			"children": "Children",
-			"my_profile": "My profile"
+			"my_profile": "My profile",
+			"payments":"Payments History",
+			"employees":"Employees",
+			"deductibles":"Deductibles",
+			"paynow":"Pay now",
+			"positions":"Positions",
+			"enumarations":"Enumarations",
+			"installments":"Installments"
 		},
 
 		"analytics_pg": {
@@ -169,7 +183,8 @@
 				"description": "Description",
 				"amount": "Amount",
 				"currency":"Currency",
-				"pay_method":"Payment Method"
+				"pay_method":"Payment Method",
+				"big_amount":"Amount entered is greater than what remains"
 			},
 			"table": {
 				"name": "Name",
@@ -198,6 +213,14 @@
 					"paid": "Paid",
 					"remaining": "Remaining",
 					"actions": "Actions"
+				},
+				"paymentTable":{
+					"title":"Payments history",
+					"amount": "Amount",
+					"term":"Term",
+					"method":"Method",
+					"status":"Status",
+					"date":"Date"
 				}
 			}
 		},
@@ -300,6 +323,7 @@
 			"admin": "ADMIN",
 			"parent": "UMUBYEYI",
 			"student": "UMUNYESHURI",
+			"employee": "UMUKOZI",
 			"as_school": {
 				"title": "Komeza nk'ishuri",
 				"u_name": "Izina",
@@ -320,6 +344,12 @@
 			},
 			"as_student": {
 				"title": "Komeza nk'umunyeshuri",
+				"country_name": "Igihugu",
+				"identifier": "Ikimuranga",
+				"button": "Injira"
+			},
+			"as_employee": {
+				"title": "Komeza nk'umukozi",
 				"country_name": "Igihugu",
 				"identifier": "Ikimuranga",
 				"button": "Injira"
@@ -397,7 +427,14 @@
 			"schools": "Amashuri",
 			"academic_years": "Imyaka",
 			"children": "Abana",
-			"my_profile": "Njyewe"
+			"my_profile": "Njyewe",
+			"payments":"Ubwishyu",
+			"employees":"Abakozi",
+			"deductibles":"Ibikatwa",
+			"paynow":"Ishyura",
+			"positions":"Imyanya",
+			"enumarations":"Imishahara",
+			"installments":"Ibyiciro byo kwishyura"
 		},
 
 		"classrooms_pg": {
@@ -449,7 +486,8 @@
 				"description": "Ubusobanuro",
 				"amount": "Amafaranga",
 				"currency":"ifaranga",
-				"pay_method":"Uburyo bwo kwishyura"
+				"pay_method":"Uburyo bwo kwishyura",
+				"big_amount":"Amafaranga aruta ayasigaye kwishyurwa"
 			},
 			"table": {
 				"name": "Amazina",
@@ -478,6 +516,14 @@
 					"paid": "Ayishyuwe",
 					"remaining": "Asigaye",
 					"actions": "Ibikorwa"
+				},
+				"paymentTable":{
+					"title":"Inyishyu zakozwe",
+					"amount": "Umubare",
+					"term":"Igihembwe",
+					"method":"Uburyo",
+					"status":"Imiterere",
+					"date":"Itariki"
 				}
 			}
 		},

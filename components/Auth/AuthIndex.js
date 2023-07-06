@@ -53,6 +53,11 @@ const AuthIndex = ({ setActiveLogin }) => {
 			name: globalLanguage?.auth?.student,
 			activeValue: login_options?.student,
 		},
+		{
+			id: 4,
+			name: globalLanguage?.auth?.employee,
+			activeValue: login_options?.employee,
+		}
 	];
 
 	const dropdownOptions = (

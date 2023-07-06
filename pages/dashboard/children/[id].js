@@ -1,1 +1,1 @@
-export { default } from "../students/[id]";
+export { default } from "../active-student/[id]";
