@@ -1,34 +1,30 @@
-import React, { useState, useEffect } from 'react'
-import ChidrenProfile from '../../../components/ChildrenProfile'
-import { useWindowSize } from '../../../helpers/useWindowSize'
-import { useGetChildrenQuery } from '../../../lib/api/Parent/childrenEndpoints'
-import { useSelector } from 'react-redux'
-import Private from '../../../components/Routes/Private'
-import ContentTableContainer from '../../../components/Shared/ContentTableContainer'
-import Row from 'antd/lib/row'
 import Col from 'antd/lib/col'
 import Dropdown from 'antd/lib/dropdown'
-import {
-  AppLoader,
-  GeneralContentLoader,
-} from '../../../components/Shared/Loaders'
-import { Empty } from '../../../components/Shared/Empty'
-import { isTokenValid } from '../../../helpers/verifyToken'
-import {
-  useGetStudentFeesQuery,
-  useLazyGetSingleStudentQuery,
-  usePaymentHistoryQuery,
-} from '../../../lib/api/Students/studentsEndpoints'
-import AssignedFeesTable from '../../../components/Tables/AssignedFeesTable'
-import { useGetAcademicYearsQuery } from '../../../lib/api/AcademicYear/academicYearEndpoints'
-import CustomInput from '../../../components/Shared/CustomInput'
-import CustomImage from '../../../components/Shared/CustomImage'
+import Row from 'antd/lib/row'
+import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
+import ChidrenProfile from '../../../components/ChildrenProfile'
+import Private from '../../../components/Routes/Private'
 import ContentNavbar from '../../../components/Shared/ContentNavbar'
-import { termOptions } from '../../../config/constants'
-import { _pagination_number_ } from '../../../config/constants'
+import ContentTableContainer from '../../../components/Shared/ContentTableContainer'
+import CustomImage from '../../../components/Shared/CustomImage'
+import CustomInput from '../../../components/Shared/CustomInput'
+import { Empty } from '../../../components/Shared/Empty'
+import {
+  AppLoader
+} from '../../../components/Shared/Loaders'
 import Paginator from '../../../components/Shared/Paginator'
 import PaymentHistoryTable from '../../../components/Tables/PaymentsTable'
+import { _pagination_number_, termOptions } from '../../../config/constants'
 import handleAPIRequests from '../../../helpers/handleAPIRequests'
+import { useWindowSize } from '../../../helpers/useWindowSize'
+import { isTokenValid } from '../../../helpers/verifyToken'
+import { useGetAcademicYearsQuery } from '../../../lib/api/AcademicYear/academicYearEndpoints'
+import { useGetChildrenQuery } from '../../../lib/api/Parent/childrenEndpoints'
+import {
+  useLazyGetSingleStudentQuery,
+  usePaymentHistoryQuery
+} from '../../../lib/api/Students/studentsEndpoints'
 
 const ParentPaymentHistory = () => {
   const [id, setId] = useState('')

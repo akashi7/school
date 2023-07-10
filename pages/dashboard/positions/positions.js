@@ -1,37 +1,28 @@
-import React, { useEffect, useState } from 'react'
-import Row from 'antd/lib/row'
 import Col from 'antd/lib/col'
 import Form from 'antd/lib/form'
-import Dropdown from 'antd/lib/dropdown'
-import StudentProfile from '../../../components/StudentProfile'
-import ContentTableContainer from '../../../components/Shared/ContentTableContainer'
-import ContentNavbar from '../../../components/Shared/ContentNavbar'
-import CustomInput from '../../../components/Shared/CustomInput'
-import CustomButton from '../../../components/Shared/CustomButton'
-import CustomModal from '../../../components/Shared/CustomModal'
+import Row from 'antd/lib/row'
+import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
+import NewPositionForm from '../../../components/Forms/NewPosition'
 import Private from '../../../components/Routes/Private'
-import {
-  useGetPositionsQuery,
-  useLazyGetPositionsQuery,
-  useAddPositionMutation,
-} from '../../../lib/api/positions/positionEndpoints'
-import handleAPIRequests from '../../../helpers/handleAPIRequests'
+import ContentNavbar from '../../../components/Shared/ContentNavbar'
+import ContentTableContainer from '../../../components/Shared/ContentTableContainer'
+import CustomButton from '../../../components/Shared/CustomButton'
+import CustomInput from '../../../components/Shared/CustomInput'
+import CustomModal from '../../../components/Shared/CustomModal'
 import {
   AppLoader,
   GeneralContentLoader,
 } from '../../../components/Shared/Loaders'
-import { Empty } from '../../../components/Shared/Empty'
-import { useGetAcademicYearsQuery } from '../../../lib/api/AcademicYear/academicYearEndpoints'
-import { termOptions } from '../../../config/constants'
-import { isTokenValid } from '../../../helpers/verifyToken'
-import { useSelector } from 'react-redux'
-import { useWindowSize } from '../../../helpers/useWindowSize'
-import CustomImage from '../../../components/Shared/CustomImage'
-import PaymentHistoryTable from '../../../components/Tables/PaymentsTable'
-import { _pagination_number_ } from '../../../config/constants'
 import Paginator from '../../../components/Shared/Paginator'
 import PositionTable from '../../../components/Tables/PositionsTable'
-import NewPositionForm from '../../../components/Forms/NewPosition'
+import { _pagination_number_ } from '../../../config/constants'
+import handleAPIRequests from '../../../helpers/handleAPIRequests'
+import { useWindowSize } from '../../../helpers/useWindowSize'
+import {
+  useAddPositionMutation,
+  useGetPositionsQuery
+} from '../../../lib/api/positions/positionEndpoints'
 
 const Position = () => {
   const [isVisible, setIsVisible] = useState(false)

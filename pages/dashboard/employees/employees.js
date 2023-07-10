@@ -1,29 +1,18 @@
+import { LoadingOutlined } from '@ant-design/icons'
 import Col from 'antd/lib/col'
 import Dropdown from 'antd/lib/dropdown'
 import Form from 'antd/lib/form'
 import Row from 'antd/lib/row'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Private from '../../../components/Routes/Private'
 import ContentNavbar from '../../../components/Shared/ContentNavbar'
 import CustomButton from '../../../components/Shared/CustomButton'
 import CustomInput from '../../../components/Shared/CustomInput'
 import CustomModal from '../../../components/Shared/CustomModal'
-import { LoadingOutlined } from '@ant-design/icons'
-import {
-  useGetClassesQuery,
-  useLazyGetStreamsQuery,
-} from '../../../lib/api/Classrooms/classroomsEndpoints'
-import {
-  useAddStudentMutation,
-  useEditStudentMutation,
-  useGetStudentsQuery,
-  useLazyGetSingleStudentQuery,
-} from '../../../lib/api/Students/studentsEndpoints'
 
 import {
   useAddEmployeeMutation,
-  useGetEmployeesQuery,
-  useLazyGetEmployeesQuery,
+  useGetEmployeesQuery
 } from '../../../lib/api/Employees/employeesEndpoints'
 
 import { useDownloadPayrollMutation } from '../../../lib/api/deductibletypes/DeductibleTypesEndpoints'
@@ -39,13 +28,11 @@ import {
 } from '../../../components/Shared/Loaders'
 import Notify from '../../../components/Shared/Notification'
 import Paginator from '../../../components/Shared/Paginator'
-import StudentsTable from '../../../components/Tables/StudentsTable'
 import { _pagination_number_ } from '../../../config/constants'
 import handleAPIRequests from '../../../helpers/handleAPIRequests'
 import { isImageValid } from '../../../helpers/isImageValid'
 import uploadFile from '../../../helpers/uploadFile'
 import { useWindowSize } from '../../../helpers/useWindowSize'
-import { useGetAcademicYearsQuery } from '../../../lib/api/AcademicYear/academicYearEndpoints'
 import { useGetPositionsQuery } from '../../../lib/api/positions/positionEndpoints'
 
 import EmployeesTable from '../../../components/Tables/EmployeesTable'

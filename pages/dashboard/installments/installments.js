@@ -1,41 +1,28 @@
-import React, { useEffect, useState } from 'react'
+import Col from 'antd/lib/col'
 import Form from 'antd/lib/form'
 import Row from 'antd/lib/row'
-import Col from 'antd/lib/col'
-import { LoadingOutlined } from '@ant-design/icons'
-import ContentNavbar from '../../../components/Shared/ContentNavbar'
-import CustomButton from '../../../components/Shared/CustomButton'
-import CustomModal from '../../../components/Shared/CustomModal'
-import CustomInput from '../../../components/Shared/CustomInput'
-import Private from '../../../components/Routes/Private'
-import { useGetClassesQuery } from '../../../lib/api/Classrooms/classroomsEndpoints'
-import {
-  useGetInstallmentsQuery,
-  useAddInstallmentMutation,
-} from '../../../lib/api/installments/InstallmentEndpoints'
-import { GeneralContentLoader } from '../../../components/Shared/Loaders'
-import handleAPIRequests from '../../../helpers/handleAPIRequests'
-import FeesTable from '../../../components/Tables/FeesTable'
-import { termOptions, _pagination_number_ } from '../../../config/constants'
-import ContentTableContainer from '../../../components/Shared/ContentTableContainer'
-import NewFeeForm from '../../../components/Forms/NewFeeForm'
-import {
-  useAddFeeMutation,
-  useDownloadFeesMutation,
-  useEditFeeMutation,
-  useGetFeesQuery,
-} from '../../../lib/api/Fees/FeesEndpoints'
-import Paginator from '../../../components/Shared/Paginator'
-import { Empty } from '../../../components/Shared/Empty'
-import { useGetAcademicYearsQuery } from '../../../lib/api/AcademicYear/academicYearEndpoints'
-import { Dropdown } from 'antd'
-import CustomImage from '../../../components/Shared/CustomImage'
-import handleDownloadFile from '../../../helpers/handleDownloadFile'
+import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { useWindowSize } from '../../../helpers/useWindowSize'
-import Notify from '../../../components/Shared/Notification'
-import InstallmentTable from '../../../components/Tables/InstallmentTable'
 import NewInstallment from '../../../components/Forms/NewInstallment'
+import Private from '../../../components/Routes/Private'
+import ContentNavbar from '../../../components/Shared/ContentNavbar'
+import ContentTableContainer from '../../../components/Shared/ContentTableContainer'
+import CustomButton from '../../../components/Shared/CustomButton'
+import CustomInput from '../../../components/Shared/CustomInput'
+import CustomModal from '../../../components/Shared/CustomModal'
+import { GeneralContentLoader } from '../../../components/Shared/Loaders'
+import Paginator from '../../../components/Shared/Paginator'
+import InstallmentTable from '../../../components/Tables/InstallmentTable'
+import { _pagination_number_ } from '../../../config/constants'
+import handleAPIRequests from '../../../helpers/handleAPIRequests'
+import { useWindowSize } from '../../../helpers/useWindowSize'
+import {
+  useGetFeesQuery
+} from '../../../lib/api/Fees/FeesEndpoints'
+import {
+  useAddInstallmentMutation,
+  useGetInstallmentsQuery,
+} from '../../../lib/api/installments/InstallmentEndpoints'
 
 const Installments = () => {
   const [isVisible, setIsVisible] = useState(false)

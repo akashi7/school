@@ -1,15 +1,11 @@
-import { LoadingOutlined } from '@ant-design/icons'
 import Col from 'antd/lib/col'
 import Form from 'antd/lib/form'
 import Row from 'antd/lib/row'
 import PropTypes from 'prop-types'
 import React from 'react'
 import { useSelector } from 'react-redux'
-import countries_with_codes from '../../config/countries_with_codes'
 import requiredField from '../../helpers/requiredField'
 import { useWindowSize } from '../../helpers/useWindowSize'
-import { useGetSchoolProfileQuery } from '../../lib/api/Schools/schoolsEndpoints'
-import CustomImage from '../Shared/CustomImage'
 import CustomInput from '../Shared/CustomInput'
 
 const NewPositionForm = ({ onFinish, form }) => {

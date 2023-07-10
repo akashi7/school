@@ -1,7 +1,6 @@
-import React, { useState } from 'react'
 import Table from 'antd/lib/table'
-import CustomButton from '../Shared/CustomButton'
 import moment from 'moment'
+import React from 'react'
 
 const { Column } = Table
 

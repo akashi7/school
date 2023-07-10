@@ -1,17 +1,17 @@
-import React, { useEffect } from "react";
+import { LoadingOutlined } from "@ant-design/icons";
+import Col from "antd/lib/col";
 import Form from "antd/lib/form";
 import Row from "antd/lib/row";
-import Col from "antd/lib/col";
 import PropTypes from "prop-types";
-import { LoadingOutlined } from "@ant-design/icons";
-import CustomInput from "../Shared/CustomInput";
-import requiredField from "../../helpers/requiredField";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 import { termOptions } from "../../config/constants";
 import countries_with_codes from "../../config/countries_with_codes";
-import CustomImage from "../Shared/CustomImage";
-import { useGetSchoolProfileQuery } from "../../lib/api/Schools/schoolsEndpoints";
-import { useSelector } from "react-redux";
+import requiredField from "../../helpers/requiredField";
 import { useWindowSize } from "../../helpers/useWindowSize";
+import { useGetSchoolProfileQuery } from "../../lib/api/Schools/schoolsEndpoints";
+import CustomImage from "../Shared/CustomImage";
+import CustomInput from "../Shared/CustomInput";
 
 const NewStudentForm = ({
 	onFinish,

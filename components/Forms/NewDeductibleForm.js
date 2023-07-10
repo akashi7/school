@@ -1,18 +1,11 @@
-import React, { useEffect, useState } from 'react'
-import Form from 'antd/lib/form'
-import Button from 'antd/lib/button'
-import Row from 'antd/lib/row'
 import Col from 'antd/lib/col'
-import Checkbox from 'antd/lib/checkbox'
-import CustomInput from '../Shared/CustomInput'
-import requiredField from '../../helpers/requiredField'
-import { termOptions } from '../../config/constants'
-import { useSelector } from 'react-redux'
-import PlusOutlined from 'antd/lib/icon/'
-import MinusCircleOutlined from 'antd/lib/icon'
-import Input from 'antd/lib/input'
+import Form from 'antd/lib/form'
+import Row from 'antd/lib/row'
 import Select from 'antd/lib/select'
+import React from 'react'
+import { useSelector } from 'react-redux'
 import { useGetDeductibleTypesQuery } from '../../lib/api/deductibletypes/DeductibleTypesEndpoints'
+import CustomInput from '../Shared/CustomInput'
 
 
 const { Option } = Select

@@ -1,24 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/router";
 import Table from "antd/lib/table";
+import { useRouter } from "next/router";
 import PropTypes from "prop-types";
-import CustomButton from "../Shared/CustomButton";
-import WarningModal from "../Shared/WarningModal";
+import React, { useState } from "react";
 import routes from "../../config/routes";
-import {
-  useDeleteStudentMutation,
-  usePromoteStudentMutation,
-} from "../../lib/api/Students/studentsEndpoints";
 import { useWindowSize } from "../../helpers/useWindowSize";
-import StudentsTableMobile from "./Mobile/StudentsTableMobile";
-import CustomModal from "../Shared/CustomModal";
-import PromoteStudentForm from "../Forms/PromoteStudentForm";
-import { useGetAcademicYearsQuery } from "../../lib/api/AcademicYear/academicYearEndpoints";
-import {
-  useGetClassesQuery,
-  useLazyGetStreamsQuery,
-} from "../../lib/api/Classrooms/classroomsEndpoints";
-import handleAPIRequests from "../../helpers/handleAPIRequests";
+import CustomButton from "../Shared/CustomButton";
 
 const { Column } = Table;
 

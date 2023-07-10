@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
+import Checkbox from "antd/lib/checkbox";
+import Col from "antd/lib/col";
 import Form from "antd/lib/form";
 import Row from "antd/lib/row";
-import Col from "antd/lib/col";
-import Checkbox from "antd/lib/checkbox";
-import CustomInput from "../Shared/CustomInput";
-import requiredField from "../../helpers/requiredField";
-import { termOptions } from "../../config/constants";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
+import { termOptions } from "../../config/constants";
+import requiredField from "../../helpers/requiredField";
+import CustomInput from "../Shared/CustomInput";
 
 const NewFeeForm = ({
 	onFinish,

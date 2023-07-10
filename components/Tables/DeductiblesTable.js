@@ -1,10 +1,7 @@
-import React, { useState } from "react";
 import Table from "antd/lib/table";
-import CustomButton from "../Shared/CustomButton";
-import WarningModal from "../Shared/WarningModal";
+import React, { useState } from "react";
 import { useDeleteFeeMutation } from "../../lib/api/Fees/FeesEndpoints";
-import { toLocalString } from "../../helpers/numbers";
-import FeesTableMobile from "./Mobile/FeesTableMobile";
+import CustomButton from "../Shared/CustomButton";
 
 const { Column } = Table;
 

@@ -1,15 +1,15 @@
 import Table from 'antd/lib/table'
-import moment from 'moment'
-import React,{useState,useRef} from 'react'
-import PaymentsTableMobile from './Mobile/PaymentsTableMobile'
-import { toLocalString } from '../../helpers/numbers'
-import CustomModal from '../Shared/CustomModal'
 import { toPng } from 'html-to-image'
 import { jsPDF } from 'jspdf'
-import QRCode from "qrcode.react";
-import CustomButton from '../Shared/CustomButton'
+import moment from 'moment'
+import QRCode from "qrcode.react"
+import React, { useRef, useState } from 'react'
+import { toLocalString } from '../../helpers/numbers'
 import userType from '../../helpers/userType'
+import CustomButton from '../Shared/CustomButton'
 import CustomImage from '../Shared/CustomImage'
+import CustomModal from '../Shared/CustomModal'
+import PaymentsTableMobile from './Mobile/PaymentsTableMobile'
 
 
 

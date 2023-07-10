@@ -1,12 +1,11 @@
-import React from "react";
-import Row from "antd/lib/row";
 import Col from "antd/lib/col";
+import Row from "antd/lib/row";
+import React from "react";
+import userType from "../helpers/userType";
+import { isTokenValid } from "../helpers/verifyToken";
 import CustomButton from "./Shared/CustomButton";
 import CustomImage from "./Shared/CustomImage";
 import { BeingPromotedLoader } from "./Shared/Loaders";
-import { toLocalString } from "../helpers/numbers";
-import userType from "../helpers/userType";
-import { isTokenValid } from "../helpers/verifyToken";
 
 const EmployeeProfile = ({
 	data,

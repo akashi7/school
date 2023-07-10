@@ -1,8 +1,6 @@
-import React, { useState } from 'react'
 import Table from 'antd/lib/table'
+import React from 'react'
 import CustomButton from '../Shared/CustomButton'
-import { toLocalString } from '../../helpers/numbers'
-import userType from '../../helpers/userType'
 
 const { Column } = Table
 

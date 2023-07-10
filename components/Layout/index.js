@@ -12,7 +12,7 @@ const Layout = ({ children }) => {
 	return (
 		<div className="flex bg-white">
 			<Sider />
-
+			
 			<div className="flex-1">
 				<Navbar />
 				<Content isScreenSmall={isScreenSmall}>{children}</Content>

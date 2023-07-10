@@ -1,28 +1,27 @@
-import React, { useEffect, useState } from 'react'
-import Row from 'antd/lib/row'
 import Col from 'antd/lib/col'
 import Dropdown from 'antd/lib/dropdown'
-import StudentProfile from '../../../components/StudentProfile'
-import ContentTableContainer from '../../../components/Shared/ContentTableContainer'
-import ContentNavbar from '../../../components/Shared/ContentNavbar'
-import CustomInput from '../../../components/Shared/CustomInput'
+import Row from 'antd/lib/row'
+import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import Private from '../../../components/Routes/Private'
+import ContentNavbar from '../../../components/Shared/ContentNavbar'
+import ContentTableContainer from '../../../components/Shared/ContentTableContainer'
+import CustomImage from '../../../components/Shared/CustomImage'
+import CustomInput from '../../../components/Shared/CustomInput'
+import { Empty } from '../../../components/Shared/Empty'
+import { AppLoader } from '../../../components/Shared/Loaders'
+import Paginator from "../../../components/Shared/Paginator"
+import StudentProfile from '../../../components/StudentProfile'
+import PaymentHistoryTable from '../../../components/Tables/PaymentsTable'
+import { _pagination_number_, termOptions } from '../../../config/constants'
+import handleAPIRequests from '../../../helpers/handleAPIRequests'
+import { useWindowSize } from '../../../helpers/useWindowSize'
+import { isTokenValid } from '../../../helpers/verifyToken'
+import { useGetAcademicYearsQuery } from '../../../lib/api/AcademicYear/academicYearEndpoints'
 import {
   useLazyGetSingleStudentQuery,
   usePaymentHistoryQuery
 } from '../../../lib/api/Students/studentsEndpoints'
-import handleAPIRequests from '../../../helpers/handleAPIRequests'
-import { AppLoader } from '../../../components/Shared/Loaders'
-import { Empty } from '../../../components/Shared/Empty'
-import { useGetAcademicYearsQuery } from '../../../lib/api/AcademicYear/academicYearEndpoints'
-import { termOptions } from '../../../config/constants'
-import { isTokenValid } from '../../../helpers/verifyToken'
-import { useSelector } from 'react-redux'
-import { useWindowSize } from '../../../helpers/useWindowSize'
-import CustomImage from '../../../components/Shared/CustomImage'
-import PaymentHistoryTable from '../../../components/Tables/PaymentsTable'
-import { _pagination_number_ } from "../../../config/constants";
-import Paginator from "../../../components/Shared/Paginator";
 
 
 

@@ -1,12 +1,12 @@
-import React from "react";
+import { LoadingOutlined } from "@ant-design/icons";
+import Col from "antd/lib/col";
 import Form from "antd/lib/form";
 import Row from "antd/lib/row";
-import Col from "antd/lib/col";
-import { LoadingOutlined } from "@ant-design/icons";
-import CustomInput from "../Shared/CustomInput";
-import requiredField from "../../helpers/requiredField";
+import React from "react";
 import countries_with_codes from "../../config/countries_with_codes";
+import requiredField from "../../helpers/requiredField";
 import CustomImage from "../Shared/CustomImage";
+import CustomInput from "../Shared/CustomInput";
 
 const NewSchoolForm = ({
 	onFinish,
