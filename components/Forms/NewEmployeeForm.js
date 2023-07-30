@@ -68,8 +68,16 @@ const NewEmployeeForm = ({
           <CustomInput
             label={lang?.students_pg?.modals?.full_name}
             placeholder={`${lang?.students_pg?.modals?.full_name}...`}
-            name='employeeFullName'
+            name='fullName'
             rules={requiredField('Full name')}
+          />
+        </Col>
+        <Col className='w-[100%]'>
+          <CustomInput
+            label={"family name"}
+            placeholder={`family name...`}
+            name='familyName'
+            rules={requiredField('familyName')}
           />
         </Col>
       </Row>
@@ -79,7 +87,7 @@ const NewEmployeeForm = ({
           <CustomInput
             label={lang?.students_pg?.modals?.gender}
             type='select'
-            name='employeeGender'
+            name='gender'
             options={[
               { key: 'null', value: '', label: 'Select gender' },
               { key: 'Male', value: 'MALE', label: 'Male' },
@@ -94,7 +102,7 @@ const NewEmployeeForm = ({
           <CustomInput
             label={lang?.students_pg?.modals?.dob}
             type='date'
-            name='employeeDob'
+            name='dob'
             rules={requiredField('DOB')}
           />
         </Col>
@@ -110,7 +118,7 @@ const NewEmployeeForm = ({
             label={lang?.students_pg?.modals?.profile}
             type='file'
             placeholder='Select to upload'
-            name='employeePassportPhoto'
+            name='passportPhoto'
             inputType='file'
             isLoading={uploadLoading}
             onChange={handleUploadProfile}
@@ -147,7 +155,7 @@ const NewEmployeeForm = ({
           <CustomInput
             label={lang?.students_pg?.modals?.email}
             placeholder='example@company.domain'
-            name='employeeEmail'
+            name='email'
             rules={requiredField('Email')}
           />
         </Col>
@@ -272,8 +280,18 @@ const NewEmployeeForm = ({
           <CustomInput
             placeholder={'amount'}
             name='amount'
-            label={`amount...`}
+            label={`amount`}
             rules={requiredField('amount')}
+          />
+        </Col>
+      </Row>
+      <Row align='middle' wrap={isScreenSmall} gutter={24}>
+        <Col className={`${isScreenSmall ? 'w-[100%]' : 'w-[50%]'}`}>
+          <CustomInput
+            placeholder={'Rssb code'}
+            name='RssbCode'
+            label={`Rssb code`}
+            rules={requiredField('RssbCode')}
           />
         </Col>
       </Row>

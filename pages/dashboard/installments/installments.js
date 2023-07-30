@@ -16,13 +16,16 @@ import InstallmentTable from '../../../components/Tables/InstallmentTable'
 import { _pagination_number_ } from '../../../config/constants'
 import handleAPIRequests from '../../../helpers/handleAPIRequests'
 import { useWindowSize } from '../../../helpers/useWindowSize'
-import {
-  useGetFeesQuery
-} from '../../../lib/api/Fees/FeesEndpoints'
+import { useGetFeesQuery } from '../../../lib/api/Fees/FeesEndpoints'
 import {
   useAddInstallmentMutation,
   useGetInstallmentsQuery,
 } from '../../../lib/api/installments/InstallmentEndpoints'
+
+import ChidrenProfile from '../../../components/ChildrenProfile'
+import { useGetChildrenQuery } from '../../../lib/api/Parent/childrenEndpoints'
+import { isTokenValid } from '../../../helpers/verifyToken'
+import userType from '../../../helpers/userType'
 
 const Installments = () => {
   const [isVisible, setIsVisible] = useState(false)
@@ -32,7 +35,22 @@ const Installments = () => {
   const [academicYearId, setAcademicYearId] = useState('')
   const [search, setSearch] = useState('')
 
+  const [id, setId] = useState('')
+  const handleIsSelected = (Id) => {
+    setId(Id)
+  }
+
+  const [Country, setCountry] = useState('')
+
+  const [installmentNumber, setInstallmentNumber] = useState(0)
+  const { id: Id, role, country } = isTokenValid('')
+
   const lang = useSelector((state) => state?.translation?.payload)
+
+  const onChange = (e) => {
+    setInstallmentNumber(0)
+    setInstallmentNumber(!e ? 0 : installmentNumber + parseInt(e))
+  }
 
   const {
     data: installments,
@@ -42,26 +60,27 @@ const Installments = () => {
     page: currentPage,
     size: _pagination_number_,
     search,
+    studentId: id ? id : '',
   })
 
   const {
     data: fees,
-    isLoading:feesLoading,
-    isFetching:feesFecthing,
+    isLoading: feesLoading,
+    isFetching: feesFecthing,
   } = useGetFeesQuery({
     page: currentPage,
     size: _pagination_number_,
+    installment: true,
   })
+
+  console.log({ fees })
 
   const [addInstallment, { isLoading: isAddingInstallment }] =
     useAddInstallmentMutation()
-  
-
 
   const { width } = useWindowSize()
   const isScreenSmall = width <= 1024
   const [form] = Form.useForm()
-
 
   const isPageLoading = isLoading
 
@@ -76,22 +95,42 @@ const Installments = () => {
   )
 
   const RightSide = () => (
-    <CustomButton onClick={() => setIsVisible(true)} type='primary'>
-      new Installment
-    </CustomButton>
+    <>
+      {(userType(role).isParent ||
+        userType(role).isStudent ||
+        userType(role).isrelative) && (
+        <CustomButton onClick={() => setIsVisible(true)} type='primary'>
+          new Installment
+        </CustomButton>
+      )}
+    </>
   )
-
 
   const onSuccess = () => {
     setIsVisible(false)
     setCurrentPage(0)
+    setInstallmentNumber(0)
     form.resetFields()
   }
 
+  const {
+    data: children,
+    isLoading: Loading,
+    isFetching: Fecthing,
+  } = useGetChildrenQuery()
+
   const onAddInstallmentFinish = (values) => {
+    const newValues = values?.installments?.map((value) => {
+      return {
+        date: value.date,
+        amount: parseInt(value.amount),
+      }
+    })
     const data = {
       ...values,
-      installmentNumber:parseInt(values.installmentNumber)
+      installmentNumber: parseInt(installmentNumber),
+      studentId: id ? id : Id,
+      installments: newValues,
     }
 
     handleAPIRequests({
@@ -109,6 +148,17 @@ const Installments = () => {
 
   return (
     <>
+      {userType(role).isParent && (
+        <ChidrenProfile
+          handleIsSelected={handleIsSelected}
+          isScreenSmall={isScreenSmall}
+          data={children?.payload}
+          setAcademicYearId={setAcademicYearId}
+          setCountry={setCountry}
+          lang={lang}
+        />
+      )}
+
       <CustomModal
         isVisible={isVisible}
         setIsVisible={setIsVisible}
@@ -130,7 +180,10 @@ const Installments = () => {
         <NewInstallment
           form={form}
           fees={fees}
+          setInstallmentNumber={setInstallmentNumber}
+          installmentNumber={installmentNumber}
           onFinish={onAddInstallmentFinish}
+          onChange={onChange}
         />
       </CustomModal>
 
@@ -233,6 +286,7 @@ const Installments = () => {
               lang={lang}
               installments={installments}
               isFetching={isFetching}
+              role={role}
             />
 
             <Paginator

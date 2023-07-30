@@ -29,6 +29,9 @@ const IndexNavBar = () => {
           <Link href='/LoginPage' className='nav__link'>
             Login
           </Link>
+          <Link href='/signup' className='nav__link'>
+            Sign up
+          </Link>
         </div>
       </nav>
     </header>

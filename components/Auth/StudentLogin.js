@@ -1,18 +1,16 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
+import Col from "antd/lib/col";
 import Form from "antd/lib/form";
 import Row from "antd/lib/row";
-import Col from "antd/lib/col";
-import CustomInput from "../Shared/CustomInput";
-import CustomImage from "../Shared/CustomImage";
-import CustomButton from "../Shared/CustomButton";
+import { useRouter } from "next/router";
+import PropTypes from "prop-types";
+import React, { useState } from "react";
+import countries_with_codes from "../../config/countries_with_codes";
+import handleAPIRequests from "../../helpers/handleAPIRequests";
 import requiredField from "../../helpers/requiredField";
 import { useLoginMutation } from "../../lib/api/Auth/authEndpoints";
-import handleAPIRequests from "../../helpers/handleAPIRequests";
-import { useRouter } from "next/router";
-import routes from "../../config/routes";
-import countries_with_codes from "../../config/countries_with_codes";
-import { _ns_token_ } from "../../config/constants";
+import CustomButton from "../Shared/CustomButton";
+import CustomImage from "../Shared/CustomImage";
+import CustomInput from "../Shared/CustomInput";
 
 const StudentLogin = ({ setActiveLogin, lang }) => {
 	const [countryCode, setCountryCode] = useState(null);
@@ -24,8 +22,8 @@ const StudentLogin = ({ setActiveLogin, lang }) => {
 
 	const onSuccess = (res) => {
 		if (res.payload) {
-			localStorage.setItem(_ns_token_, res?.payload?.accessToken || "");
-			router.push(routes.dashboard.url);
+			localStorage.setItem('user','student')
+			router.push('/GoogleLogin')
 		}
 	};
 

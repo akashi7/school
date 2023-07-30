@@ -70,6 +70,7 @@ const Students = () => {
     term: termId,
     type: feeType,
     academicYearId,
+    installment:false
   })
 
   const { data: classes, isFetching: isClassLoading } = useGetClassesQuery({})

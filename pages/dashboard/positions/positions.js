@@ -21,7 +21,7 @@ import handleAPIRequests from '../../../helpers/handleAPIRequests'
 import { useWindowSize } from '../../../helpers/useWindowSize'
 import {
   useAddPositionMutation,
-  useGetPositionsQuery
+  useGetPositionsQuery,
 } from '../../../lib/api/positions/positionEndpoints'
 
 const Position = () => {
@@ -38,8 +38,6 @@ const Position = () => {
     size: _pagination_number_,
     search,
   })
-
-  
 
   const lang = useSelector((state) => state?.translation?.payload)
 

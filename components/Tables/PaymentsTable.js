@@ -2,7 +2,7 @@ import Table from 'antd/lib/table'
 import { toPng } from 'html-to-image'
 import { jsPDF } from 'jspdf'
 import moment from 'moment'
-import QRCode from "qrcode.react"
+import QRCode from 'qrcode.react'
 import React, { useRef, useState } from 'react'
 import { toLocalString } from '../../helpers/numbers'
 import userType from '../../helpers/userType'
@@ -10,8 +10,6 @@ import CustomButton from '../Shared/CustomButton'
 import CustomImage from '../Shared/CustomImage'
 import CustomModal from '../Shared/CustomModal'
 import PaymentsTableMobile from './Mobile/PaymentsTableMobile'
-
-
 
 const { Column } = Table
 
@@ -21,9 +19,8 @@ const PaymentHistoryTable = ({
   lang,
   isScreenSmall,
   profile,
-  role
+  role,
 }) => {
-
   const [receipt, setReceipt] = useState(false)
   const [fee, setFee] = useState(null)
 
@@ -34,7 +31,6 @@ const PaymentHistoryTable = ({
     setFee(fees)
   }
 
-
   const handleDownloadPDF = async () => {
     const image = await toPng(ref.current)
     const pdf = new jsPDF()
@@ -44,7 +40,7 @@ const PaymentHistoryTable = ({
 
   return (
     <>
-    <CustomModal
+      <CustomModal
         isVisible={receipt}
         setIsVisible={setReceipt}
         width={700}
@@ -59,12 +55,15 @@ const PaymentHistoryTable = ({
         }
       >
         <div className='w-100%  border p-5' ref={ref}>
-          <div className='flex justify-center'>
+          <div className='w-[40%] mx-auto'>
             <CustomImage src='/icons/logo.png' className='mb-12' width={200} />
           </div>
-          <div className='mt-3 flex justify-between items-center mb-5 w-[50%] mx-auto' >
+          <div className='mt-3 flex justify-between items-center mb-5 w-[50%] mx-auto'>
             <p className='text-base'>School</p>
-            <p className='font-bold text-base text-dark ' > {profile?.payload?.school?.schoolName} </p>
+            <p className='font-bold text-base text-dark '>
+              {' '}
+              {profile?.payload?.school?.schoolName}{' '}
+            </p>
           </div>
           <div className='mb-9 w-[50%] mx-auto'>
             <h1 className=' font-bold text-xl text-dark  text-center mb-5'>
@@ -112,8 +111,11 @@ const PaymentHistoryTable = ({
             <div className='flex justify-between items-center mb-4'>
               <p>Type</p>
               <p
-                className={`bg-gray-200 px-2 py-[4px] rounded ${fee?.fee?.type === 'School fee' && 'font-medium bg-edit_bg'
-                  } ${fee?.fee?.type === 'Optional' && 'bg-gray-200 text-gray-400'}`}
+                className={`bg-gray-200 px-2 py-[4px] rounded ${
+                  fee?.fee?.type === 'School fee' && 'font-medium bg-edit_bg'
+                } ${
+                  fee?.fee?.type === 'Optional' && 'bg-gray-200 text-gray-400'
+                }`}
               >
                 {fee?.fee?.type}
               </p>
@@ -130,14 +132,19 @@ const PaymentHistoryTable = ({
                 {toLocalString(fee?.amount)} RWf
               </p>
             </div>
-            <div className='mb-4 mt-4 w-[50%] mx-auto' >
-              <QRCode
-                value="https://www.tutorialspoint.com/"  />
+            <div className='mb-4 mt-4 w-[50%] mx-auto'>
+              <QRCode value='https://www.tutorialspoint.com/' />
             </div>
           </div>
         </div>
       </CustomModal>
-      {isScreenSmall ? <PaymentsTableMobile lang={lang} loading={isFetching} dataSource={data?.payload?.items} /> :
+      {isScreenSmall ? (
+        <PaymentsTableMobile
+          lang={lang}
+          loading={isFetching}
+          dataSource={data?.payload?.items}
+        />
+      ) : (
         <Table
           className='data_table'
           dataSource={data?.payload?.items}
@@ -162,7 +169,11 @@ const PaymentHistoryTable = ({
           <Column
             title={lang?.students_pg?.profile?.paymentTable?.date}
             key='date'
-            render={(record) => <span className='font-bold'>{moment(record?.date).format('YYYY-MM-DD')}</span>}
+            render={(record) => (
+              <span className='font-bold'>
+                {moment(record?.date).format('YYYY-MM-DD')}
+              </span>
+            )}
           />
 
           <Column
@@ -193,8 +204,19 @@ const PaymentHistoryTable = ({
           <Column
             title={lang?.students_pg?.profile?.paymentTable?.status}
             key='status'
-            render={(record) => <span className={` p-3 rounded font-medium  ${record?.status==='PENDING' ? "text-black bg-edit_bg ":record?.status==="SUCCESS"?"text-white bg-[#198754] ":"text-white bg-[#ff0000]"}`} >{record?.status}</span>}
-
+            render={(record) => (
+              <span
+                className={` p-3 rounded font-medium  ${
+                  record?.status === 'PENDING'
+                    ? 'text-black bg-edit_bg '
+                    : record?.status === 'SUCCESS'
+                    ? 'text-white bg-[#198754] '
+                    : 'text-white bg-[#ff0000]'
+                }`}
+              >
+                {record?.status}
+              </span>
+            )}
           />
 
           {(userType(role).isStudent || userType(role).isParent) && (
@@ -203,7 +225,7 @@ const PaymentHistoryTable = ({
               key='actions'
               width={10}
               render={(record) =>
-                (record?.status==="SUCCESS") ? (
+                record?.status === 'SUCCESS' ? (
                   <>
                     <CustomButton
                       type='edit'
@@ -216,8 +238,8 @@ const PaymentHistoryTable = ({
               }
             />
           )}
-
-        </Table>}
+        </Table>
+      )}
     </>
   )
 }

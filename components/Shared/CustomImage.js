@@ -18,7 +18,7 @@ const CustomImage = ({
 		<Image
 			onClick={onClick}
 			style={style}
-			src={src}
+			src={src||'https://st.depositphotos.com/2101611/4338/v/600/depositphotos_43381243-stock-illustration-male-avatar-profile-picture.jpg'}
 			alt={alt || ""}
 			width={width}
 			height={height}

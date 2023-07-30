@@ -8,3 +8,4 @@ export default (activeLogin) => ({
   student: activeLogin === login_options.student,
   employee: activeLogin === login_options.employee,
 })
+

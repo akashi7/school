@@ -22,7 +22,6 @@ const EmployeesTable = ({
   const [itemToDelete, setItemToDelete] = useState(null);
   const [selectedItems, setSelectedItems] = useState([]);
 
-  console.log({ employees })
 
 
   const onDeleteStudentSuccess = () => {
@@ -126,7 +125,7 @@ const EmployeesTable = ({
               title={lang?.students_pg?.table?.name}
               key="name"
               render={(record) => (
-                <span className="font-bold">{record?.employeeFullName}</span>
+                <span className="font-bold">{record?.fullName}</span>
               )}
             />
 
@@ -170,18 +169,20 @@ const EmployeesTable = ({
                   <CustomButton
                     type="view"
                     onClick={() =>
-                      router.push(`${routes.students.url}/${record?.id}`)
+                      router.push(`${routes.employees.url}/${record?.id}`)
                     }
                   >
                     {lang?.dashboard_shared?.buttons?.view}
                   </CustomButton>
                   <CustomButton
                     type="edit"
+                    disabled
                   >
                     {lang?.dashboard_shared?.buttons?.edit}
                   </CustomButton>
                   <CustomButton
                     type="delete"
+                    disabled
                   >
                     {lang?.dashboard_shared?.buttons?.delete}
                   </CustomButton>

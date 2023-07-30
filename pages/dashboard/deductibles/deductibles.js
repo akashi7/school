@@ -21,7 +21,6 @@ import { isTokenValid } from '../../../helpers/verifyToken'
 import { useLazyGetSingleEmployeeQuery } from '../../../lib/api/Employees/employeesEndpoints'
 import { useGetDeductibleTypesQuery } from '../../../lib/api/deductibletypes/DeductibleTypesEndpoints'
 
-
 const EmployeeDeductibles = () => {
   const { id, role, country } = isTokenValid('')
 
@@ -46,15 +45,19 @@ const EmployeeDeductibles = () => {
   const { width } = useWindowSize()
   const isScreenSmall = width <= 1024
 
+  
 
-  const { data: types, isFetching: isDeductiblesFetching,isLoading:DeductibleLoding } = 
-    useGetDeductibleTypesQuery({
-      page: currentPage,
-      size: _pagination_number_,
-      search,
-      type,
-      enumaration,
-    })
+  const {
+    data: types,
+    isFetching: isDeductiblesFetching,
+    isLoading: DeductibleLoding,
+  } = useGetDeductibleTypesQuery({
+    page: currentPage,
+    size: _pagination_number_,
+    search,
+    type,
+    enumaration,
+  })
 
   const TableNavLeftSide = () => (
     <Row align='middle' gutter={20}>
@@ -75,7 +78,6 @@ const EmployeeDeductibles = () => {
     setType(value)
     setCurrentPage(0)
   }
-
 
   return (
     <>
@@ -166,11 +168,11 @@ const EmployeeDeductibles = () => {
               }`}
             >
               <DeductibleTypesTable
-                  deductiblesTypes={types}
-                  isFetching={isDeductiblesFetching}
-                  lang={lang}
-                  role={role}
-                />
+                deductiblesTypes={types}
+                isFetching={isDeductiblesFetching}
+                lang={lang}
+                role={role}
+              />
 
               <Paginator
                 total={types?.payload?.totalItems}

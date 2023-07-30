@@ -5,4 +5,5 @@ export default (role) => ({
   isStudent: role === 'STUDENT',
   isParent: role === 'PARENT',
   isEmployee: role === 'EMPLOYEE',
+  isrelative: role === 'RELATIVE',
 })

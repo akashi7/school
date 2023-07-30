@@ -6,7 +6,7 @@ import CustomButton from '../Shared/CustomButton'
 
 const { Column } = Table
 
-const DeductibleTypesTable = ({ deductiblesTypes, isFetching, lang, role }) => {
+const DeductibleTypesTable = ({ deductiblesTypes, isFetching, lang, role,isView }) => {
   return (
     <>
       <Table
@@ -61,7 +61,7 @@ const DeductibleTypesTable = ({ deductiblesTypes, isFetching, lang, role }) => {
             </span>
           )}
         />
-        {(userType(role).isSchool) && (
+        {(userType(role).isSchool) && (isView) &&  (
           <Column
           title={lang?.fees_pg?.table?.actions}
           key='actions'

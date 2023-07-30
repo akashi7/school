@@ -1,5 +1,5 @@
-import React, { useState } from "react";
 import Table from "antd/lib/table";
+import { useState } from "react";
 import { toLocalString } from "../../helpers/numbers";
 
 const { Column } = Table;

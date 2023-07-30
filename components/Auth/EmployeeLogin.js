@@ -24,8 +24,8 @@ const EmployeeLogin = ({ setActiveLogin, lang }) => {
 
 	const onSuccess = (res) => {
 		if (res.payload) {
-			localStorage.setItem(_ns_token_, res?.payload?.accessToken || "");
-			router.push(routes.dashboard.url);
+			localStorage.setItem('user','employee')
+			router.push('/GoogleLogin')
 		}
 	};
 

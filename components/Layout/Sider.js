@@ -57,11 +57,11 @@ const Sider = () => {
 
 	return (
 		<div className="w-[265px] h-[100vh] p-4 flex-col justify-between hidden md:hidden lg:flex">
-			<div>
+			<div className="scroll-container">
 				<CustomImage src="/icons/logo.png" className="mb-12" width={200} />
 
 				{/* Menu */}
-				<div>
+				<div className="menu-container">
 					{menus({ trans, role }).map((menu) => (
 						<SingleMenu menu={menu} key={menu.name} />
 					))}

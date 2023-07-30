@@ -32,7 +32,7 @@ const AssignedFeesTable = ({
   const [isPayMethodModalVisible, setIsPayMethodModalVisible] = useState(false)
   const [secretKey, setSecretKey] = useState('')
   const [hasPayed, setHasPayed] = useState(false)
-  const [Amount,setAmount]=useState('')
+  const [Amount, setAmount] = useState('')
 
   const [form] = Form.useForm()
 
@@ -41,17 +41,15 @@ const AssignedFeesTable = ({
   const handleCancel = (res) => {
     setActiveFee(null)
     setIsPayModalVisible(false)
-    if(paymentMethod==="STRIPE"){
+    if (paymentMethod === 'STRIPE') {
       res && setSecretKey(res.payload)
-      console.log({res})
+      console.log({ res })
     }
     form.resetFields()
-    if(paymentMethod==="SPENN"||paymentMethod==="MTN"){
+    if (paymentMethod === 'SPENN' || paymentMethod === 'MTN') {
       setIsPayMethodModalVisible(false)
     }
   }
-
-
 
   const cancelPayment = () => {
     setIsPayMethodModalVisible(!isPayMethodModalVisible)
@@ -61,8 +59,6 @@ const AssignedFeesTable = ({
     setActiveFee(fee)
     setIsPayModalVisible(true)
   }
-
- 
 
   const onManualPaymentFinish = async (values) => {
     if (values.amount <= 0) {
@@ -101,8 +97,6 @@ const AssignedFeesTable = ({
       ...data,
     })
   }
-
- 
 
   return (
     <>
@@ -157,30 +151,34 @@ const AssignedFeesTable = ({
         setIsVisible={setHasPayed}
         width={700}
         handleCancel={setHasPayed}
-        title={"Payment sucess"}
+        title={'Payment sucess'}
         footerContent={
           <CustomButton
             type='primary'
-            onClick={() => {setActiveFee(null);setHasPayed(false)}}
+            onClick={() => {
+              setActiveFee(null)
+              setHasPayed(false)
+            }}
           >
             Ok
           </CustomButton>
         }
       >
-        <div className='w-full'>
-          <div className='flex justify-center'>
+        <div className='w-[70%] mx-auto text-center'>
+          <div className='grid place-items-center  w-full'>
             <CustomImage
               src='/icons/check_mark.png'
               className='mb-12'
               width={200}
             />
           </div>
-          <div className='flex justify-center'>
-            <h1 className='font-bold text-xl text-dark  text-center mb-5'>Successfull paid {Amount} RWF </h1>
+          <div className='text-center'>
+            <h1 className='font-bold text-xl text-dark mb-5'>
+              Successfully paid {Amount} RWF
+            </h1>
           </div>
         </div>
       </CustomModal>
-      
 
       {isScreenSmall ? (
         <AssignedFeesTableMobile
@@ -224,8 +222,9 @@ const AssignedFeesTable = ({
             key='type'
             render={(record) => (
               <span
-                className={`bg-gray-200 px-2 py-[4px] rounded ${record.type === 'School fee' && 'font-medium bg-edit_bg'
-                  } ${record.type === 'Optional' && 'bg-gray-200 text-gray-400'}`}
+                className={`bg-gray-200 px-2 py-[4px] rounded ${
+                  record.type === 'School fee' && 'font-medium bg-edit_bg'
+                } ${record.type === 'Optional' && 'bg-gray-200 text-gray-400'}`}
               >
                 {record?.type?.replace('_', ' ')}
               </span>
@@ -262,20 +261,23 @@ const AssignedFeesTable = ({
             )}
           />
 
-          {(userType(role).isStudent || userType(role).isParent) && (
+          {(userType(role).isStudent ||
+            userType(role).isParent ||
+            userType(role).isrelative) && (
             <Column
               title={lang?.students_pg?.profile?.table?.actions}
               key='actions'
               width={100}
               render={(record) => (
                 <>
-                  {parseInt(record?.amount) > parseInt(record?.paid) ?
+                  {parseInt(record?.amount) > parseInt(record?.paid) ? (
                     <CustomButton
                       type='edit'
                       onClick={() => handleManualPayment(record)}
                     >
                       {lang?.dashboard_shared?.buttons?.pay}
-                    </CustomButton> : null}
+                    </CustomButton>
+                  ) : null}
                 </>
               )}
             />

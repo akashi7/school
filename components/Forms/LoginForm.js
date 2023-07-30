@@ -1,19 +1,18 @@
+import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import activeForm from '../../helpers/activeForm'
+import activeGoogleForm from '../../helpers/activeGoogleForm'
 import AdminLogin from '../Auth/AdminLogin'
-import AuthIndex from '../Auth/AuthIndex'
-import EmployeeLogin from '../Auth/EmployeeLogin'
-import ParentLogin from '../Auth/ParentLogin'
-import SchoolLogin from '../Auth/SchoolLogin'
-import StudentLogin from '../Auth/StudentLogin'
 import CustomImage from '../Shared/CustomImage'
-import { useRouter } from 'next/router'
 
 const LoginForm = () => {
   const [activeLogin, setActiveLogin] = useState(null)
+  const [activeGoogleLogin, setActiveGoogleLogin] = useState(null)
 
   const { school, admin, parent, student, employee } = activeForm(activeLogin)
+  const { parent: Parent, student: Student } =
+    activeGoogleForm(activeGoogleLogin)
 
   const router = useRouter()
 
@@ -37,19 +36,7 @@ const LoginForm = () => {
         </div>
       )}
       <CustomImage src='/icons/logo.png' width={240} />
-      {school ? (
-        <SchoolLogin lang={lang} setActiveLogin={setActiveLogin} />
-      ) : admin ? (
-        <AdminLogin lang={lang} setActiveLogin={setActiveLogin} />
-      ) : parent ? (
-        <ParentLogin lang={lang} setActiveLogin={setActiveLogin} />
-      ) : student ? (
-        <StudentLogin lang={lang} setActiveLogin={setActiveLogin} />
-      ) : employee ? (
-        <EmployeeLogin lang={lang} setActiveLogin={setActiveLogin} />
-      ) : (
-        <AuthIndex setActiveLogin={setActiveLogin} />
-      )}
+      <AdminLogin lang={lang} setActiveLogin={setActiveLogin} />
     </div>
   )
 }

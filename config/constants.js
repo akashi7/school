@@ -3,7 +3,8 @@ import message from '../config/message.json'
 import userType from '../helpers/userType'
 
 export const menus = ({ trans, role }) => {
-  const { isAdmin, isSchool, isParent, isStudent, isEmployee } = userType(role)
+  const { isAdmin, isSchool, isParent, isStudent, isEmployee, isrelative } =
+    userType(role)
 
   const schoolMenu = [
     {
@@ -45,25 +46,44 @@ export const menus = ({ trans, role }) => {
       icon: '/icons/position',
       ext: '.svg',
     },
-		
-		{
-      name: trans?.navbar?.a|| 'Deductibles',
+
+    {
+      name: trans?.navbar?.a || 'Deductibles',
       url: '/dashboard/deductible-types',
       icon: '/icons/enumarations',
       ext: '.svg',
     },
+
     {
-      name: trans?.navbar?.installments|| 'installments',
-      url: '/dashboard/installments',
+      name: trans?.navbar?.installments || 'installments',
+      url: '/dashboard/school-installment',
       icon: '/icons/installment',
+      ext: '.svg',
+    },
+    {
+      name: trans?.navbar?.payments || 'Payments history',
+      url: '/dashboard/payments-history',
+      icon: '/icons/payment',
+      ext: '.svg',
+    },
+    {
+      name: trans?.navbar?.paymentss || 'Messages',
+      url: '/dashboard/messages',
+      icon: '/icons/message',
       ext: '.svg',
     },
   ]
 
   const adminMenu = [
     {
-      name: trans?.navbar?.schools || 'Schools',
+      name: trans?.navbar?.dashboard || 'Dashboard',
       url: '/dashboard',
+      icon: '/icons/dashboard',
+      ext: '.svg',
+    },
+    {
+      name: trans?.navbar?.schools || 'Schools',
+      url: '/dashboard/schools',
       icon: '/icons/schools',
       ext: '.svg',
     },
@@ -72,6 +92,18 @@ export const menus = ({ trans, role }) => {
       name: trans?.navbar?.academic_years || 'Academic years',
       url: '/dashboard/academic-years',
       icon: '/icons/academic',
+      ext: '.svg',
+    },
+    {
+      name: trans?.navbar?.payments || 'Payments history',
+      url: '/dashboard/payments-history',
+      icon: '/icons/payment',
+      ext: '.svg',
+    },
+    {
+      name: trans?.navbar?.paymentss || 'Messages',
+      url: '/dashboard/messages',
+      icon: '/icons/message',
       ext: '.svg',
     },
   ]
@@ -95,6 +127,21 @@ export const menus = ({ trans, role }) => {
       icon: '/icons/payment',
       ext: '.svg',
     },
+
+    {
+      name: trans?.navbar?.installments || 'installments',
+      url: '/dashboard/installments',
+      icon: '/icons/installment',
+      ext: '.svg',
+    },
+
+    isrelative&&{
+      name: trans?.navbar?.students || 'Students',
+        url: '/dashboard/students',
+        icon: '/icons/students',
+        ext: '.svg',
+    }
+
   ]
 
   const studentMenu = [
@@ -117,7 +164,13 @@ export const menus = ({ trans, role }) => {
       icon: '/icons/payment',
       ext: '.svg',
     },
-    
+
+    {
+      name: trans?.navbar?.installments || 'installments',
+      url: '/dashboard/installments',
+      icon: '/icons/installment',
+      ext: '.svg',
+    },
   ]
 
   const employeeMenu = [
@@ -127,7 +180,7 @@ export const menus = ({ trans, role }) => {
       icon: '/icons/student-profile',
       ext: '.svg',
     },
-		{
+    {
       name: trans?.navbar?.enumarations || 'Enumarations',
       url: '/dashboard/enumarations',
       icon: '/icons/enumarations',
@@ -143,7 +196,7 @@ export const menus = ({ trans, role }) => {
 
   return isAdmin
     ? adminMenu
-    : isParent
+    : isParent || isrelative
     ? parentMenu
     : isStudent
     ? studentMenu

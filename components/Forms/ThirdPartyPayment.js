@@ -4,7 +4,7 @@ const ThirdPartyPayment = ({
   setPaymentMethod,
   setIsPayModalVisible,
   setIsPayMethodModalVisible,
-  country
+  country,
 }) => {
   function OnClick(method) {
     setPaymentMethod(method)
@@ -12,11 +12,13 @@ const ThirdPartyPayment = ({
     setIsPayMethodModalVisible(true)
   }
 
+  console.log({country})
+
   return (
     <div className={`mx-auto w-[90%]`}>
       <div className='flex justify-between items-center'>
         <div className={`flex flex-col items-center`}>
-          <p className=' text-lg font-bold' >Mtn</p>
+          <p className=' text-lg font-bold'>Mtn</p>
           <CustomImage
             src={'/imgs/mtn.png'}
             width={200}
@@ -34,10 +36,14 @@ const ThirdPartyPayment = ({
             onClick={() => OnClick('SPENN')}
             className={'p-4 cursor-pointer'}
           />
-        </div> 
+        </div>
       </div>
       <div className={`flex justify-between items-center`}>
-        <div className={`flex flex-col items-center  m-4 ${country==='Rwanda'?'hidden':"block"} `}>
+        {country !=='Rwanda'&& <div
+          className={`flex flex-col items-center  m-4 ${
+            country === 'Rwanda'? 'hidden' : 'block'
+          } `}
+        >
           <p className=' text-lg font-bold'>Mpessa</p>
           <CustomImage
             src={'/imgs/mpessa.png'}
@@ -46,8 +52,9 @@ const ThirdPartyPayment = ({
             onClick={() => OnClick('MPESSA')}
             className={'p-4 object-cover cursor-pointer'}
           />
-        </div>
-        <div className='flex flex-col items-center  m-4' >
+        </div>}
+        
+        <div className='flex flex-col items-center  m-4'>
           <p className=' text-lg font-bold'>Stripe</p>
           <CustomImage
             src={'/imgs/stripe.png'}

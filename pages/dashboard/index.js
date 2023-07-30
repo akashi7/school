@@ -12,20 +12,21 @@ import ActiveEmployee from './active-employee'
 
 const Dashboard = () => {
   const { role } = isTokenValid()
-  const { isAdmin, isSchool, isParent, isStudent, isEmployee } = userType(role)
+  const { isAdmin, isSchool, isParent, isStudent, isEmployee, isrelative } =
+    userType(role)
 
   return (
     <Layout>
       {isAdmin ? (
-        <Schools />
+        <Analytics isAdmin={isAdmin} />
       ) : isParent ? (
         <Children />
       ) : isStudent ? (
         <ActiveStudent />
       ) : isEmployee ? (
         <ActiveEmployee />
-      ) : (
-        <Analytics />
+      ) : isrelative? <Children />: (
+        <Analytics isAdmin={isAdmin} />
       )}
     </Layout>
   )

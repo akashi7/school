@@ -63,8 +63,6 @@ const SingleStudent = () => {
 		setIsVisible(false);
 	};
 
-	console.log('arrived')
-
 	const handleCancelPromoteModal = () => {
 		setIsPromoteModalVisible(false);
 	};

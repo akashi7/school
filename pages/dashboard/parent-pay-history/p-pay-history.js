@@ -43,6 +43,8 @@ const ParentPaymentHistory = () => {
 
   const isPageLoading = isLoading
 
+  console.log({id})
+
   const lang = useSelector((state) => state?.translation?.payload)
 
   const { width } = useWindowSize()
