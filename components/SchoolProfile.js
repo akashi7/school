@@ -1,9 +1,7 @@
 import Col from 'antd/lib/col'
 import Row from 'antd/lib/row'
 import React from 'react'
-import userType from '../helpers/userType'
 import { isTokenValid } from '../helpers/verifyToken'
-import CustomButton from './Shared/CustomButton'
 import CustomImage from './Shared/CustomImage'
 import { BeingPromotedLoader } from './Shared/Loaders'
 
