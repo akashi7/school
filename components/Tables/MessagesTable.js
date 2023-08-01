@@ -29,7 +29,7 @@ const MessagesTable = ({ messages, isFetching, lang }) => {
         />
 
         <Column
-          title={'Date'}
+          title={lang?.message_pg?.table?.Date}
           key='createdAt'
           render={(record) => (
             <span className='font-bold'>
@@ -39,14 +39,14 @@ const MessagesTable = ({ messages, isFetching, lang }) => {
         />
 
         <Column
-          title={'Sent to'}
+          title={lang?.message_pg?.table?.SentTo}
           key='to'
           render={(record) => (
             <span>{record?.to?.map((role) => `${role},`)}</span>
           )}
         />
         <Column
-          title={'Type'}
+          title={lang?.message_pg?.table?.type}
           key='messageType'
           render={(record) => (
             <span>{record?.messageType?.map((type) => `${type},`)}</span>
@@ -54,7 +54,7 @@ const MessagesTable = ({ messages, isFetching, lang }) => {
         />
 
         <Column
-          title={'Message'}
+          title={lang?.message_pg?.table?.Message}
           key='message'
           render={(record) => <span>{record?.message}</span>}
         />

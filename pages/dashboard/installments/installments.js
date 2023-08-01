@@ -88,7 +88,7 @@ const Installments = () => {
     <Row align='middle' gutter={20}>
       <Col>
         <p className='text-[20px] text-dark font-semibold'>
-          {installments?.payload?.totalItems || ''} {'installment(s)'}
+          {installments?.payload?.totalItems || ''} {lang?.installment_pg?.title}
         </p>
       </Col>
     </Row>
@@ -100,7 +100,7 @@ const Installments = () => {
         userType(role).isStudent ||
         userType(role).isrelative) && (
         <CustomButton onClick={() => setIsVisible(true)} type='primary'>
-          new Installment
+          {lang?.installment_pg?.new_btn}
         </CustomButton>
       )}
     </>
@@ -165,7 +165,7 @@ const Installments = () => {
         loading={isAddingInstallment}
         handleCancel={onSuccess}
         width={550}
-        title={'Add installment'}
+        title={lang?.installment_pg?.new_btn}
         footerContent={
           <CustomButton
             loading={isAddingInstallment}
@@ -184,6 +184,7 @@ const Installments = () => {
           installmentNumber={installmentNumber}
           onFinish={onAddInstallmentFinish}
           onChange={onChange}
+          lang={lang}
         />
       </CustomModal>
 

@@ -40,7 +40,7 @@ const NewMessageForm = ({ onFinish, form }) => {
       <Row wrap={false} gutter={24}>
         <Col span={isScreenSmall ? 24 : 12}>
           <CustomInput
-            label={'To'}
+            label={lang?.message_pg?.modals?.to}
             name='to'
             type='select-multiple'
             rules={requiredField('user')}
@@ -53,7 +53,7 @@ const NewMessageForm = ({ onFinish, form }) => {
         </Col>
         <Col span={isScreenSmall ? 24 : 12}>
           <CustomInput
-            label={'Message Type'}
+            label={lang?.message_pg?.modals?.messageType}
             name='messageType'
             type='select-multiple'
             rules={requiredField('Type')}
@@ -68,8 +68,8 @@ const NewMessageForm = ({ onFinish, form }) => {
       <Row wrap={false} gutter={24}>
         <Col className='w-[100%]'>
           <CustomInput
-            label={'Subject'}
-            placeholder={`Subject...`}
+            label={lang?.message_pg?.modals?.subject}
+            placeholder={`${lang?.message_pg?.modals?.subject}...`}
             name='subject'
             rules={requiredField('subject')}
           />
@@ -78,8 +78,8 @@ const NewMessageForm = ({ onFinish, form }) => {
       <Row wrap={false} gutter={24}>
         <Col className='w-[100%]'>
         <CustomInput
-          label={'Message'}
-          placeholder={`message`}
+          label={lang?.message_pg?.modals?.message}
+          placeholder={`${lang?.message_pg?.modals?.message}`}
           name='content'
           type='text-area'
           rules={requiredField('message')}

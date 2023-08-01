@@ -109,35 +109,35 @@ const InstallmentTable = ({ installments, isFetching, lang, role }) => {
         <div className='mb-8'>
           <div className='mb-5'>
             <h3 className=' text-lg font-semibold text-center'>
-              Installment Details
+              {lang?.installment_pg?.details?.details}
             </h3>
           </div>
           <div className='w-[80%] mx-auto'>
             <div>
               <div className='mb-3'>
-                <p className='font-bold  text-dark text-base'>Student</p>
+                <p className='font-bold  text-dark text-base'>{lang?.installment_pg?.table?.student}</p>
               </div>
               <div className='flex justify-between items-center'>
-                <p>Name</p>
+                <p>{lang?.installment_pg?.details?.name}</p>
                 <p className='font-semibold'> {oneItem?.student?.fullName} </p>
               </div>
             </div>
             <div>
               <div>
-                <p className=' font-bold mb-4 mt-4 text-dark text-base'>Fee</p>
+                <p className=' font-bold mb-4 mt-4 text-dark text-base'>{lang?.installment_pg?.details?.fee}</p>
               </div>
               <div className='flex justify-between items-center'>
-                <p>Name</p>
+                <p>{lang?.installment_pg?.details?.name}</p>
                 <p className='font-semibold'>{oneItem?.fee?.name}</p>
               </div>
               <div className='flex justify-between items-center mt-4'>
-                <p>Term</p>
+                <p>{lang?.installment_pg?.details?.term}</p>
                 <p className='font-semibold'>{oneItem?.term}</p>
               </div>
             </div>
             <div>
               <div className='font-bold mb-4 mt-4 text-dark text-base'>
-                Installment
+                {lang?.installment_pg?.details?.installment}
               </div>
               <div className='flex justify-between items-center'>
                 <p>Number</p>
@@ -149,7 +149,7 @@ const InstallmentTable = ({ installments, isFetching, lang, role }) => {
               </div>
               <div>
                 <p className=' font-bold border-b-2 mt-4 mb-4 text-dark text-base'>
-                  Payment Details
+                {lang?.installment_pg?.details?.details}
                 </p>
                 <div>
                   <div className='mb-5 flex justify-between items-center font-semibold'>
@@ -217,14 +217,14 @@ const InstallmentTable = ({ installments, isFetching, lang, role }) => {
           )}
         />
         <Column
-          title='student'
+          title={lang?.installment_pg?.table?.student}
           key='student'
           render={(text, record, index) => (
             <span className=' font-bold'>{record?.student?.fullName}</span>
           )}
         />
         <Column
-          title='fee'
+          title={lang?.installment_pg?.table?.fee}
           key='fee'
           render={(text, record, index) => (
             <span className='text-gray-500'>{record?.fee?.name}</span>
@@ -256,16 +256,7 @@ const InstallmentTable = ({ installments, isFetching, lang, role }) => {
           )}
         /> */}
         <Column
-          title='approved'
-          key='approveStatus'
-          render={(text, record, index) => (
-            <span className='text-gray-500'>
-              {String(record?.approveStatus)}
-            </span>
-          )}
-        />
-        <Column
-          title='response'
+          title={lang?.installment_pg?.table?.response}
           key='response'
           render={(text, record, index) => (
             <span className='text-gray-500'>
@@ -274,7 +265,7 @@ const InstallmentTable = ({ installments, isFetching, lang, role }) => {
           )}
         />
         <Column
-          title='status'
+          title={lang?.installment_pg?.table?.status}
           key='status'
           render={(text, record, index) => (
             <span

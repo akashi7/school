@@ -130,7 +130,7 @@ const EmployeesTable = ({
             />
 
             <Column
-              title={"position"}
+              title={lang?.employee_pg?.table?.position}
               key="Position"
               render={(record) => (
                 <span className="font-bold">{record?.Position?.name}</span>
@@ -145,7 +145,7 @@ const EmployeesTable = ({
             />
 
             <Column
-              title={"type"}
+              title={lang?.employee_pg?.table?.type}
               key="employeeSalary"
               render={(record) => (
                 <span className="font-bold">{record?.employeeSalary?.map((enu) => enu?.name)}</span>
@@ -153,7 +153,7 @@ const EmployeesTable = ({
             />
 
             <Column
-              title={"amount"}
+              title={lang?.employee_pg?.table?.amount}
               key="employeeSalary"
               render={(record) => (
                 <span className="font-bold">{record?.employeeSalary?.map((enu) => enu?.amount)} RWF </span>

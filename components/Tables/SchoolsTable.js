@@ -5,12 +5,16 @@ import CustomImage from "../Shared/CustomImage";
 import { useDeleteSchoolMutation } from "../../lib/api/Schools/schoolsEndpoints";
 import WarningModal from "../Shared/WarningModal";
 import SchoolsTableMobile from "./Mobile/SchoolsTableMobile";
+import routes from "../../config/routes";
+import { useRouter } from "next/router";
 
 const { Column } = Table;
 
 const SchoolsTable = ({ schools, isFetching, lang, isScreenSmall }) => {
 	const [isWarningVisible, setIsWarningVisible] = useState(false);
 	const [itemToDelete, setItemToDelete] = useState(null);
+
+	const router = useRouter()
 
 	const [deleteSchool, { isLoading: isDeleting }] = useDeleteSchoolMutation();
 
@@ -103,6 +107,14 @@ const SchoolsTable = ({ schools, isFetching, lang, isScreenSmall }) => {
 						width={100}
 						render={(record) => (
 							<div className="flex gap-4">
+								<CustomButton
+									type="view"
+									onClick={() =>
+										router.push(`${routes.school.url}/${record?.id}`)
+									}
+								>
+									{lang?.dashboard_shared?.buttons?.view}
+								</CustomButton>
 								<CustomButton
 									type="delete"
 									onClick={() => handleDeleteSchool(record)}

@@ -83,15 +83,16 @@ const Position = () => {
   const { width } = useWindowSize()
   const isScreenSmall = width <= 1024
 
+
   const RightSide = () => (
     <CustomButton onClick={() => setIsVisible(true)} type='primary'>
-      new position
+      {lang?.position_pg?.new_btn}
     </CustomButton>
   )
 
   const LeftSide = () => (
     <p className='text-[20px] text-dark font-semibold'>
-      {positions?.payload?.totalItems || ''} {'positions'}
+      {positions?.payload?.totalItems || ''} {lang?.position_pg?.title}
     </p>
   )
 

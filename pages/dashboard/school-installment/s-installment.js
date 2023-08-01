@@ -54,7 +54,7 @@ const SchoolInstallments = () => {
     <Row align='middle' gutter={20}>
       <Col>
         <p className='text-[20px] text-dark font-semibold'>
-          {installments?.payload?.totalItems || ''} {'installment(s)'}
+          {installments?.payload?.totalItems || ''} {lang?.installment_pg?.title}
         </p>
       </Col>
     </Row>

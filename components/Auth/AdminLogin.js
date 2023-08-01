@@ -152,7 +152,7 @@ const AdminLogin = ({ setActiveLogin, lang }) => {
           {lang?.auth?.as_admin?.button}
         </CustomButton>
       </Form>
-      <p className=' mt-[-40px] mb-[-20px]'>OR</p>
+      <p className=' mt-[-40px] mb-[-20px]'>{lang?.auth?.or}</p>
       <div className=' mx-auto w-[60%]'>
         <GoogleOAuthProvider clientId={clientId}  >
           <GoogleLogin

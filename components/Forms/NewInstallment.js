@@ -23,7 +23,6 @@ const NewInstallment = ({
 }) => {
   const lang = useSelector((state) => state?.translation?.payload)
 
-  console.log({ installmentNumber })
 
   return (
     <Form form={form} name='add-installment' onFinish={onFinish}>
@@ -32,7 +31,7 @@ const NewInstallment = ({
           <CustomInput
             type='select'
             name='feeId'
-            label={'Choose Fee'}
+            label={lang?.installment_pg?.modals?.fee}
             rules={requiredField('Fee')}
             options={[
               ...fees?.payload?.items?.map((item, idx) => ({
@@ -56,8 +55,8 @@ const NewInstallment = ({
       </Col>
       <Col className={`${!isScreenSmall ? 'w-[100%]' : 'w-[50%]'}`}>
         <CustomInput
-          label={'Installment number'}
-          placeholder={`Number...`}
+          label={lang?.installment_pg?.modals?.number}
+          placeholder={`${lang?.installment_pg?.modals?.number}...`}
           name='installmentNumber'
           inputType='number'
           rules={requiredField('Installment number')}
@@ -68,8 +67,8 @@ const NewInstallment = ({
       </Col>
       <Col className={`${!isScreenSmall ? 'w-[100%]' : 'w-[50%]'}`}>
         <CustomInput
-          label={'Reason'}
-          placeholder={`reason`}
+          label={lang?.installment_pg?.modals?.reason}
+          placeholder={`${lang?.installment_pg?.modals?.reason}`}
           name='reason'
           type='text-area'
           rules={requiredField('reason')}
@@ -101,7 +100,7 @@ const NewInstallment = ({
                       >
                         <DatePicker
                           type={'date'}
-                          placeholder={'Date'}
+                          placeholder={lang?.installment_pg?.modals?.date}
                           className='rounded h-[40px] w-[100%] mt-3'
                         />
                       </Form.Item>
@@ -114,7 +113,7 @@ const NewInstallment = ({
                         className='w-full'
                       >
                         <Input
-                          placeholder={'amount'}
+                          placeholder={lang?.installment_pg?.modals?.amount}
                           className={`rounded h-[40px] w-[100%] mt-3`}
                           type='number'
                         />
@@ -139,7 +138,7 @@ const NewInstallment = ({
                   block
                   icon={<PlusOutlined />}
                 >
-                  Add installment
+                  {lang?.installment_pg?.add_btn}
                 </Button>
               )}
             </Form.Item>

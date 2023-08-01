@@ -32,7 +32,7 @@ const LoginForm = () => {
             src='/icons/back.svg'
             className='cursor-pointer bg-gray-500 hover:bg-gray-600 p-[6px] mt-1 rounded'
           />
-          <p>Go to home page</p>
+          <p>{lang?.auth?.goback}</p>
         </div>
       )}
       <CustomImage src='/icons/logo.png' width={240} />

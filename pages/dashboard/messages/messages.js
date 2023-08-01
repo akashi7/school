@@ -77,13 +77,13 @@ const Messages = () => {
 
   const RightSide = () => (
     <CustomButton onClick={() => setIsVisible(true)} type='primary'>
-      new Message
+      {lang?.message_pg?.new_btn}
     </CustomButton>
   )
 
   const LeftSide = () => (
     <p className='text-[20px] text-dark font-semibold'>
-      {messages?.payload?.totalItems || ''} {'message (s)'}
+      {messages?.payload?.totalItems || ''} {lang?.message_pg?.title}
     </p>
   )
 
@@ -107,7 +107,7 @@ const Messages = () => {
           </CustomButton>
         }
       >
-        <NewMessageForm form={form} onFinish={onAddPositionFinish} />
+        <NewMessageForm form={form} onFinish={onAddPositionFinish} lang={lang} />
       </CustomModal>
 
       <ContentNavbar left={<LeftSide />} right={<RightSide />} />

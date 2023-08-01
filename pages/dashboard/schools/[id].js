@@ -1,40 +1,35 @@
 import Col from 'antd/lib/col'
 import Row from 'antd/lib/row'
 import moment from 'moment'
+import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import EmployeeProfile from '../../../components/EmployeeProfile'
 import Private from '../../../components/Routes/Private'
+import SchoolProfile from '../../../components/SchoolProfile'
 import ContentNavbar from '../../../components/Shared/ContentNavbar'
 import ContentTableContainer from '../../../components/Shared/ContentTableContainer'
 import { Empty } from '../../../components/Shared/Empty'
 import { AppLoader } from '../../../components/Shared/Loaders'
 import handleAPIRequests from '../../../helpers/handleAPIRequests'
 import { useWindowSize } from '../../../helpers/useWindowSize'
-import { isTokenValid } from '../../../helpers/verifyToken'
-import { useLazyGetSingleEmployeeQuery } from '../../../lib/api/Employees/employeesEndpoints'
+import { useLazyGetOneSchoolQuery } from '../../../lib/api/Schools/schoolsEndpoints'
+import Layout from '../../../components/Layout'
 
-const SingleEmployee = () => {
-  const { id, role, country } = isTokenValid('')
+const SingleSchool = () => {
+  const router = useRouter()
+  const { id } = router.query
 
   const lang = useSelector((state) => state?.translation?.payload)
 
-  const [getSingleEmployee, { data, isLoading, isFetching }] =
-    useLazyGetSingleEmployeeQuery()
+  const [getOneSchool, { data, isLoading, isFetching }] =
+    useLazyGetOneSchoolQuery()
 
   useEffect(() => {
     handleAPIRequests({
-      request: getSingleEmployee,
+      request: getOneSchool,
       id,
     })
-  }, [getSingleEmployee, id])
-
-  useEffect(() => {
-    if (data) {
-      let es = data?.payload?.employeeSalary?.map((arr) => arr?.name)
-      localStorage.setItem('enu',(es?.toString()))
-    }
-  }, [data])
+  }, [getOneSchool, id])
 
   const { width } = useWindowSize()
   const isScreenSmall = width <= 1024
@@ -43,22 +38,21 @@ const SingleEmployee = () => {
     <Row align='middle' gutter={20}>
       <Col>
         <p className='text-[20px] text-dark font-semibold'>
-          {/* {lang?.students_pg?.profile?.table?.title} */} Employee Info
+          {/* {lang?.students_pg?.profile?.table?.title} */} School Info
         </p>
       </Col>
     </Row>
   )
 
-
   return (
-    <>
+    <Layout>
       {isLoading ? (
         <AppLoader />
       ) : !data ? (
         <Empty message='The item you are looking for is not available!' />
       ) : (
         <>
-          <EmployeeProfile
+          <SchoolProfile
             data={data}
             isFetching={isFetching}
             setIsVisible={() => null}
@@ -83,47 +77,37 @@ const SingleEmployee = () => {
             >
               <div className='w-[50%] '>
                 <div className='flex justify-between mt-5'>
-                  <p className='text-dark'>Address</p>
+                  <p className='text-dark'>
+                    {lang?.schools_pg?.modals?.school_name}
+                  </p>
+                  <p className='text-gray-400 '>{data?.payload?.schoolName}</p>
+                </div>
+                <div className='flex justify-between mt-5'>
+                  <p className='text-dark'>
+                    {lang?.schools_pg?.modals?.school_address}
+                  </p>
                   <p className='text-gray-400 '>{data?.payload?.address}</p>
                 </div>
+
                 <div className='flex justify-between mt-5'>
-                  <p className='text-dark'>Dob</p>
+                  <p className='text-dark'>Registered</p>
                   <p className='text-gray-400 '>
-                    {moment(data?.payload?.dob).format('YYYY-MM-DD')}
+                    {moment(data?.payload?.createdAt).format('YYYY-MM-DD')}
                   </p>
                 </div>
                 <div className='flex justify-between mt-5'>
-                  <p className='text-dark'>Email</p>
-                  <p className='text-gray-400 '>
-                    {data?.payload?.email}
+                  <p className='text-dark'>
+                    {lang?.schools_pg?.modals?.school_type}
                   </p>
-                </div>
-                <div className='flex justify-between mt-5'>
-                  <p className='text-dark'>Gender</p>
-                  <p className='text-gray-400 '>
-                    {data?.payload?.gender}
-                  </p>
-                </div>
-                <div className='flex justify-between mt-5'>
-                  <p className='text-dark'>contact</p>
-                  <p className='text-gray-400 '>
-                    {data?.payload?.employeeContactPhone}
-                  </p>
-                </div>
-                <div className='flex justify-between mt-5'>
-                  <p className='text-dark'>School</p>
-                  <p className='text-gray-400 '>
-                    {' '}
-                    {data?.payload?.school?.schoolName}{' '}
-                  </p>
+                  <p className='text-gray-400 '>{data?.payload?.schoolType}</p>
                 </div>
               </div>
             </div>
           </ContentTableContainer>
         </>
       )}
-    </>
+    </Layout>
   )
 }
 
-export default Private(SingleEmployee)
+export default Private(SingleSchool)

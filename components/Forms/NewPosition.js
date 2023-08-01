@@ -17,8 +17,8 @@ const NewPositionForm = ({ onFinish, form }) => {
       <Row wrap={false} gutter={24}>
         <Col className='w-[100%]'>
           <CustomInput
-            label={'Position name'}
-            placeholder={`Position name...`}
+            label={lang?.position_pg?.modals?.position}
+            placeholder={`${lang?.position_pg?.modals?.position}...`}
             name='positionName'
             rules={requiredField('position name')}
           />

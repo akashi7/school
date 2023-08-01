@@ -260,7 +260,7 @@ const Employees = () => {
       </Col>
       <Col>
         <CustomButton onClick={() => setIsVisible(true)} type='primary'>
-          new employee
+        {lang?.employee_pg?.new_btn}
         </CustomButton>
       </Col>
     </Row>
@@ -268,7 +268,7 @@ const Employees = () => {
 
   const LeftSide = () => (
     <p className='text-[20px] text-dark font-semibold'>
-      {employees?.payload?.totalItems || ''} {'employees'}
+      {employees?.payload?.totalItems || ''} {lang?.employee_pg?.title}
     </p>
   )
 

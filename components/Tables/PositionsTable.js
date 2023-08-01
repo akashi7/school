@@ -41,7 +41,7 @@ const PositionTable = ({
       />
 
       <Column
-        title={"total employees with position"}
+        title={lang?.position_pg?.table?.total}
         key="User"
         render={(record) => (
           <span>

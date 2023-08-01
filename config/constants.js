@@ -67,7 +67,7 @@ export const menus = ({ trans, role }) => {
       ext: '.svg',
     },
     {
-      name: trans?.navbar?.paymentss || 'Messages',
+      name: trans?.navbar?.messages || 'Messages',
       url: '/dashboard/messages',
       icon: '/icons/message',
       ext: '.svg',
@@ -101,7 +101,7 @@ export const menus = ({ trans, role }) => {
       ext: '.svg',
     },
     {
-      name: trans?.navbar?.paymentss || 'Messages',
+      name: trans?.navbar?.messages || 'Messages',
       url: '/dashboard/messages',
       icon: '/icons/message',
       ext: '.svg',
