@@ -120,6 +120,9 @@ const CustomInput = ({
           disabled={disabled}
           placeholder='Please select'
           defaultValue={defaultValue}
+          onChange={(e) =>
+            onChange(e)
+          }
           style={{
             width: '100%',
           }}

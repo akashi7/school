@@ -1,12 +1,23 @@
+import {
+  Document,
+  Font,
+  Page,
+  StyleSheet,
+  Text,
+  View,
+  pdf
+} from '@react-pdf/renderer'
 import Col from 'antd/lib/col'
-import Table from 'antd/lib/table'
 import Dropdown from 'antd/lib/dropdown'
 import Row from 'antd/lib/row'
-import React, { useEffect, useState, useRef } from 'react'
+import { saveAs } from 'file-saver'
+import moment from 'moment'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import Private from '../../../components/Routes/Private'
 import ContentNavbar from '../../../components/Shared/ContentNavbar'
 import ContentTableContainer from '../../../components/Shared/ContentTableContainer'
+import CustomButton from '../../../components/Shared/CustomButton'
 import CustomImage from '../../../components/Shared/CustomImage'
 import CustomInput from '../../../components/Shared/CustomInput'
 import { Empty } from '../../../components/Shared/Empty'
@@ -23,24 +34,7 @@ import {
   useLazyGetSingleStudentQuery,
   usePaymentHistoryQuery,
 } from '../../../lib/api/Students/studentsEndpoints'
-import CustomButton from '../../../components/Shared/CustomButton'
-import CustomModal from '../../../components/Shared/CustomModal'
-import moment from 'moment'
-import { toLocalString } from '../../../helpers/numbers'
-import { jsPDF } from 'jspdf'
-import { saveAs } from 'file-saver'
-import {
-  PDFViewer,
-  Page,
-  Text,
-  View,
-  Document,
-  StyleSheet,
-  pdf,
-  Font,
-} from '@react-pdf/renderer'
 
-const { Column } = Table
 
 Font.register({
   family: 'Poppins',
@@ -138,10 +132,8 @@ const Payments = () => {
     </Row>
   )
 
-  const ref = useRef()
 
   const handleDownloadPDF = async () => {
-    console.log({studentPayments})
     try {
       const pdfBlob = await new Promise((resolve) => {
         const pdfDocument = (
@@ -215,7 +207,6 @@ const Payments = () => {
         const pdfAsBlob = pdf(pdfDocument).toBlob()
         resolve(pdfAsBlob)
       })
-
       saveAs(pdfBlob, 'TableData.pdf')
     } catch (error) {
       console.error('Error generating PDF:', error)

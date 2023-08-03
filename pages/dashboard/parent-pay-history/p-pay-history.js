@@ -1,5 +1,6 @@
 import Col from 'antd/lib/col'
 import Dropdown from 'antd/lib/dropdown'
+import moment from 'moment'
 import Row from 'antd/lib/row'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
@@ -10,9 +11,7 @@ import ContentTableContainer from '../../../components/Shared/ContentTableContai
 import CustomImage from '../../../components/Shared/CustomImage'
 import CustomInput from '../../../components/Shared/CustomInput'
 import { Empty } from '../../../components/Shared/Empty'
-import {
-  AppLoader
-} from '../../../components/Shared/Loaders'
+import { AppLoader } from '../../../components/Shared/Loaders'
 import Paginator from '../../../components/Shared/Paginator'
 import PaymentHistoryTable from '../../../components/Tables/PaymentsTable'
 import { _pagination_number_, termOptions } from '../../../config/constants'
@@ -23,14 +22,43 @@ import { useGetAcademicYearsQuery } from '../../../lib/api/AcademicYear/academic
 import { useGetChildrenQuery } from '../../../lib/api/Parent/childrenEndpoints'
 import {
   useLazyGetSingleStudentQuery,
-  usePaymentHistoryQuery
+  usePaymentHistoryQuery,
 } from '../../../lib/api/Students/studentsEndpoints'
+import CustomButton from '../../../components/Shared/CustomButton'
+import {
+  Document,
+  Font,
+  Page,
+  StyleSheet,
+  Text,
+  View,
+  pdf,
+} from '@react-pdf/renderer'
+import { saveAs } from 'file-saver'
+
+Font.register({
+  family: 'Poppins',
+  fonts: [
+    {
+      src: '/fonts/Poppins/Poppins-ExtraLightItalic.ttf',
+      fontStyle: 'italic',
+      fontWeight: 'bold',
+    },
+    { src: '/fonts/Poppins/Poppins-Bold.ttf', fontWeight: 'bold' },
+    {
+      src: '/fonts/Poppins/Poppins-Regular.ttf',
+      fontWeight: 'light',
+    },
+  ],
+})
 
 const ParentPaymentHistory = () => {
   const [id, setId] = useState('')
   const handleIsSelected = (Id) => {
     setId(Id)
   }
+
+  const [size, setSize] = useState(10)
 
   const [academicYearId, setAcademicYearId] = useState('')
   const [academicTerm, setAcademicTerm] = useState('TERM1')
@@ -42,8 +70,6 @@ const ParentPaymentHistory = () => {
   const { data: children, isLoading, isFetching } = useGetChildrenQuery()
 
   const isPageLoading = isLoading
-
-  console.log({id})
 
   const lang = useSelector((state) => state?.translation?.payload)
 
@@ -59,7 +85,7 @@ const ParentPaymentHistory = () => {
       academicTerm,
       academicYearId,
       page: currentPage,
-      size: _pagination_number_,
+      size: size,
     })
 
   const academicYearsList = academicYears?.payload?.totalItems
@@ -96,6 +122,8 @@ const ParentPaymentHistory = () => {
     setAcademicTerm(term)
   }
 
+  const [downloadPending, setDownloadPending] = useState(false)
+
   const TableNavLeftSide = () => (
     <Row align='middle' gutter={20}>
       <Col>
@@ -105,6 +133,14 @@ const ParentPaymentHistory = () => {
       </Col>
     </Row>
   )
+
+  useEffect(() => {
+    // Trigger handleDownloadPDF when studentPayments or size changes
+    if (downloadPending && studentPayments && !isStudentsPaymentFetching) {
+      handleDownloadPDF()
+    }
+    //eslint-disable-next-line
+  }, [downloadPending, studentPayments, isStudentsPaymentFetching])
 
   const TableNavRightSide = () =>
     isScreenSmall ? (
@@ -189,6 +225,159 @@ const ParentPaymentHistory = () => {
     </div>
   )
 
+  const handleDownloadPDF = async () => {
+    try {
+      setDownloadPending(true)
+      const pdfBlob = await new Promise((resolve) => {
+        const pdfDocument = (
+          <Document>
+            <Page size='A4' style={styles.page}>
+              <View style={styles.centeredView}>
+                <Text>NEST INTERNATIONAL ACADEMY</Text>
+                <Text style={styles.centerStyle}>
+                  Kigali City, Gasabo District, Kimironko Sector
+                </Text>
+                <Text style={styles.centerStyle}>
+                  Email: info@schoolnest.ac.rw
+                </Text>
+                <Text style={styles.centerStyle}>
+                  Phone: +(250) 788 927 033
+                </Text>
+              </View>
+              <View style={styles.studentInfoContainer}>
+                <View style={styles.studentInfo}>
+                  <Text style={{ marginBottom: 3 }}>Student</Text>
+                  <Text style={styles.infoValue}>
+                    {StudentProfile?.payload?.fullName}
+                  </Text>
+                  <Text style={styles.infoValue}>
+                    {StudentProfile?.payload?.countryName}
+                  </Text>
+                  <Text style={styles.infoValue}>
+                    {StudentProfile?.payload?.address}
+                  </Text>
+                </View>
+                <View style={styles.studentInfo}>
+                  <View style={styles.infoRow}>
+                    <Text style={styles.infoLabel}>Class : </Text>
+                    <Text style={styles.infoValue}>
+                      {StudentProfile?.payload?.stream?.classroom?.name}
+                    </Text>
+                  </View>
+                  <View style={styles.infoRow}>
+                    <Text style={styles.infoLabel}>Stream : </Text>
+                    <Text style={styles.infoValue}>
+                      {StudentProfile?.payload?.stream?.name}
+                    </Text>
+                  </View>
+                </View>
+              </View>
+              {/* Header */}
+              <View style={styles.header}>
+                <Text style={styles.headerText}>Date</Text>
+                <Text style={styles.headerText}>Description</Text>
+                <Text style={styles.headerText}>Term</Text>
+                <Text style={styles.headerText}>Year</Text>
+                <Text style={styles.headerText}>Amount</Text>
+              </View>
+
+              {/* Table Content */}
+              {studentPayments?.payload?.items?.map((row) => (
+                <View key={row.id} style={styles.row}>
+                  <Text style={styles.cell}>
+                    {moment(row?.date).format('YYYY-MM-DD')}
+                  </Text>
+                  <Text style={styles.cell}>{row?.fee?.type}</Text>
+                  <Text style={styles.cell}>{row?.academicTerm}</Text>
+                  <Text style={styles.cell}>{row?.academicYear?.name}</Text>
+                  <Text style={styles.cell}>{row?.amount}</Text>
+                </View>
+              ))}
+            </Page>
+          </Document>
+        )
+
+        const pdfAsBlob = pdf(pdfDocument).toBlob()
+        resolve(pdfAsBlob)
+      })
+      saveAs(pdfBlob, 'TableData.pdf')
+    } catch (error) {
+      console.error('Error generating PDF:', error)
+    } finally {
+      setDownloadPending(false)
+    }
+  }
+
+  const styles = StyleSheet.create({
+    page: {
+      backgroundColor: '#ffffff',
+      padding: 20,
+      fontFamily: 'Poppins',
+      width: '100%',
+    },
+    centeredView: {
+      width: '100%',
+      textAlign: 'center',
+      marginBottom: 20,
+      flexDirection: 'column',
+      paddingBottom: 8,
+    },
+    centerStyle: {
+      fontSize: 12,
+      fontWeight: 'bold',
+      fontStyle: 'italic',
+    },
+    header: {
+      flexDirection: 'row',
+      borderBottomWidth: 1,
+      borderBottomColor: '#000000',
+      paddingBottom: 5,
+      marginBottom: 10,
+      marginTop: 10,
+    },
+    headerText: {
+      width: '20%',
+      fontSize: 14,
+      fontWeight: 'bold', // Make headers bold
+    },
+    row: {
+      flexDirection: 'row',
+      borderBottomWidth: 1,
+      borderBottomColor: '#dddddd',
+      padding: 10,
+    },
+    cell: {
+      width: '20%',
+      fontSize: 10,
+      fontWeight: 'bold',
+      fontStyle: 'italic', // Make cell content italic
+    },
+    studentInfoContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginTop: 5,
+      marginBottom: 5,
+    },
+    studentInfo: {
+      // marginLeft: 20,
+    },
+    infoRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      fontWeight: 'light',
+    },
+    infoLabel: {
+      fontSize: 12,
+      fontWeight: 'bold',
+      marginRight: 5,
+      fontWeight: 'light',
+    },
+    infoValue: {
+      fontSize: 12,
+    },
+  })
+
   return (
     <>
       {isLoading ? (
@@ -197,14 +386,30 @@ const ParentPaymentHistory = () => {
         <Empty message='The item you are looking for is not available!' />
       ) : (
         <>
-          <ChidrenProfile
-            handleIsSelected={handleIsSelected}
-            isScreenSmall={isScreenSmall}
-            data={children?.payload}
-            setAcademicYearId={setAcademicYearId}
-            setCountry={setCountry}
-            lang={lang}
-          />
+          <div className='flex  justify-between items-center'>
+            <ChidrenProfile
+              handleIsSelected={handleIsSelected}
+              isScreenSmall={isScreenSmall}
+              data={children?.payload}
+              setAcademicYearId={setAcademicYearId}
+              setCountry={setCountry}
+              lang={lang}
+            />
+            <div>
+              <Col>
+                <CustomButton
+                  onClick={() => {
+                    setSize(50)
+                    setDownloadPending(true)
+                  }}
+                  type='primary'
+                  loading={downloadPending}
+                >
+                  Payment report
+                </CustomButton>
+              </Col>
+            </div>
+          </div>
 
           <ContentTableContainer>
             <ContentNavbar

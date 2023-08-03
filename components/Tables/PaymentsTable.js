@@ -219,7 +219,7 @@ const PaymentHistoryTable = ({
             )}
           />
 
-          {(userType(role).isStudent || userType(role).isParent) && (
+          {(userType(role).isStudent || userType(role).isParent || userType(role).isrelative ) && (
             <Column
               title={'Receipt'}
               key='actions'

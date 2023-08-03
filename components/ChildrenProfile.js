@@ -26,6 +26,7 @@ const ChidrenProfile = ({
       setAcademicYearId(data[0]?.academicYearId)
       setCountry(data[0]?.countryName)
     }
+    //eslint-disable-next-line
   }, [data])
 
   const handleCheckboxChange = (studentId, academicYearId, country) => {

@@ -87,7 +87,9 @@
         "pay": "Pay",
         "yes": "Yes",
         "promote": "Promote",
-        "mistake": "No, that was a mistake!"
+        "mistake": "No, that was a mistake!",
+				"download_exl":"exl",
+        "download_pdf":"pdf"
       },
       "modals": {
         "delete_modal": {
@@ -465,7 +467,9 @@
         "pay": "Ishyura",
         "yes": "Yego",
         "promote": "Imura",
-        "mistake": "Oya, byari ukwibeshya!"
+        "mistake": "Oya, byari ukwibeshya!",
+				"download_exl":"downloadinga",
+        "download_pdf":"pdf"
       },
       "modals": {
         "delete_modal": {
