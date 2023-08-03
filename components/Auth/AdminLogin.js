@@ -168,16 +168,16 @@ const AdminLogin = ({ setActiveLogin, lang }) => {
       </div>
 			<div className="w-[100%] grid justify-end px-4">
 				<Dropdown overlay={dropdownOptions} trigger={["click"]} placement="top">
-					<div className="flex gap-4 bg-gray-200 p-2 rounded text-sm items-center w-[100%] ml-2 cursor-pointer hover:bg-gray-300">
+					<div className="lg:flex lg:gap-4 bg-gray-200 p-2 rounded text-sm items-center w-[100%] ml-2 cursor-pointer hover:bg-gray-300">
 						<span className="text-[18px]">{globalLanguage?.flag}</span>
-						<span className="text-[12px] text-left flex-1 font-medium">
+						<span className="text-[12px] lg:pl-0 pl-5 text-left flex-1 font-medium">
 							{globalLanguage?.name}
 						</span>
 						<CustomImage
 							src="/icons/expand.svg"
 							width={14}
 							height={14}
-							className="object-cover rounded-full"
+							className="object-cover rounded-full lg:pl-0 pl-1"
 						/>
 					</div>
 				</Dropdown>

@@ -35,7 +35,12 @@ const LoginForm = () => {
           <p>{lang?.auth?.goback}</p>
         </div>
       )}
-      <CustomImage src='/icons/logo.png' width={240} />
+      <div className='grid place-items-center w-full'>
+        <CustomImage
+          src='/icons/logo.png'
+          className={'w-[150px] lg:w-[240px]'}
+        />
+      </div>
       <AdminLogin lang={lang} setActiveLogin={setActiveLogin} />
     </div>
   )
