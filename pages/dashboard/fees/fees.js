@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import Form from 'antd/lib/form'
 import Row from 'antd/lib/row'
 import Col from 'antd/lib/col'
@@ -20,6 +20,7 @@ import {
   useDownloadFeesMutation,
   useEditFeeMutation,
   useGetFeesQuery,
+  useDownloadPdfFeesMutation,
 } from '../../../lib/api/Fees/FeesEndpoints'
 import Paginator from '../../../components/Shared/Paginator'
 import { Empty } from '../../../components/Shared/Empty'
@@ -30,6 +31,8 @@ import handleDownloadFile from '../../../helpers/handleDownloadFile'
 import { useSelector } from 'react-redux'
 import { useWindowSize } from '../../../helpers/useWindowSize'
 import Notify from '../../../components/Shared/Notification'
+import { toPng } from 'html-to-image'
+import { jsPDF } from 'jspdf'
 
 const Students = () => {
   const [isVisible, setIsVisible] = useState(false)
@@ -42,6 +45,10 @@ const Students = () => {
   const [isPaymentOPtional, setIsPaymentOPtional] = useState(false)
   const [isPaymentAdditional, setIsPaymentAdditional] = useState(false)
   const [academicYearId, setAcademicYearId] = useState('')
+  const [classroomPdf, setClassrooPdf] = useState(false)
+  const [total, setTotal] = useState({})
+
+  const [classPdf, setClassPdf] = useState([])
 
   const lang = useSelector((state) => state?.translation?.payload)
 
@@ -52,6 +59,8 @@ const Students = () => {
     setItemToEdit(null)
     form.resetFields()
   }
+
+  const ref = useRef()
 
   useEffect(() => {
     setIsPaymentOPtional(itemToEdit?.optional)
@@ -70,7 +79,7 @@ const Students = () => {
     term: termId,
     type: feeType,
     academicYearId,
-    installment:false
+    installment: false,
   })
 
   const { data: classes, isFetching: isClassLoading } = useGetClassesQuery({})
@@ -81,6 +90,8 @@ const Students = () => {
   const [editFee, { isLoading: isEditingFee }] = useEditFeeMutation()
   const [downloadReport, { isLoading: isDownloadLoading }] =
     useDownloadFeesMutation()
+  const [downloadPdfFees, { isLoading: isDownload }] =
+    useDownloadPdfFeesMutation()
 
   const onSuccess = () => {
     setIsVisible(false)
@@ -160,12 +171,49 @@ const Students = () => {
     })
   }
 
+  const ClassrommPdfSucess = (res) => {
+    setTotal(res?.payload?.total)
+    setClassPdf(res?.payload?.streamsData)
+  }
+
+  const handlePdf = (url) => {
+    handleAPIRequests({
+      request: downloadPdfFees,
+      search,
+      classroomId,
+      term: termId,
+      type: feeType,
+      academicYearId,
+      onSuccess: ClassrommPdfSucess,
+      notify: true,
+    })
+  }
+
+  useEffect(() => {
+    if (classroomPdf) {
+      handlePdf('classrooms')
+    }
+    //eslint-disable-next-line
+  }, [classroomPdf])
+
   const showEmpty = fees?.payload?.totalItems <= 0
 
   const isPageLoading = isLoading
 
   const handleAcademicYearChange = (value) => {
     setAcademicYearId(value)
+  }
+
+  const handleCancel =()=>{
+    setClassrooPdf(false)
+  }
+
+
+  const handleDownloadPDF = async () => {
+    const image = await toPng(ref.current)
+    const pdf = new jsPDF()
+    pdf.addImage(image, 'PNG', 10, 10, 190, 0)
+    pdf.save(`class clearence list`)
   }
 
   const classesList = classes?.payload?.items?.length
@@ -206,13 +254,27 @@ const Students = () => {
       >
         {lang?.fees_pg?.download_btn?.for_classrooms}
       </p>
+      {/* <p
+        className='transition ease-in-out delay-120 mb-2 hover:bg-gray-300 hover:p-2 hover:px-4 hover:rounded pointer'
+        onClick={() => handleDownloadFeeReport('students')}
+      >
+        {lang?.fees_pg?.download_btn?.pdf_for_students}
+      </p> */}
+      {classroomId && termId && (
+        <p
+          className='transition  mt-3 ease-in-out delay-120 hover:bg-gray-300 hover:p-2 hover:px-4 hover:rounded pointer'
+          onClick={() => setClassrooPdf(true)}
+        >
+          {lang?.fees_pg?.download_btn?.pdf_for_classroom}
+        </p>
+      )}
     </div>
   )
 
   const RightSide = () => (
     <Row gutter={24} align='middle'>
       <Col>
-      <Dropdown
+        <Dropdown
           overlay={
             isDownloadLoading || !academicYearId ? <></> : DownloadOverlay
           }
@@ -392,6 +454,97 @@ const Students = () => {
           itemToEdit={itemToEdit}
           isScreenSmall={isScreenSmall}
         />
+      </CustomModal>
+
+      <CustomModal
+        isVisible={classroomPdf}
+        setIsVisible={setClassrooPdf}
+        loading={isDownload}
+        handleCancel={handleCancel}
+        width={900}
+        title={'Fees clearence'}
+        footerContent={
+          <CustomButton type='primary' htmlType='button'  onClick={()=>handleDownloadPDF()} >
+            {'Download'}
+          </CustomButton>
+        }
+      >
+        <div ref={ref}>
+          <div className='w-full'>
+            <div className='flex flex-row items-center border-b-2'>
+              <div className=''>
+                <CustomImage
+                  src='/icons/logo.png'
+                  className='mb-12'
+                  width={200}
+                />
+              </div>
+              <div>
+                <p className='font-bold text-xl'>NEST INTERNATIONAL ACADEMY</p>
+                <p className=' font-semibold pl-5 italic'>
+                  Kigali City, Gasabo District, Kimironko Sector
+                </p>
+                <p className=' font-semibold pl-[60px] italic'>
+                  Email: info@schoolnest.ac.rw
+                </p>
+                <p className=' font-semibold pl-[70px] italic'>
+                  Phone: +(250) 788 927 033
+                </p>
+              </div>
+            </div>
+
+            <p className=' font-bold  mt-4 mb-5 text-dark text-base text-center'>
+              {termId} SCHOOL FEES CLEARANCE REPORT FOR ALL CLASSES
+            </p>
+            {isDownload && <GeneralContentLoader />}
+            {classPdf?.length > 1 && (
+              <div>
+                <div className='mb-5 flex justify-between items-center font-semibold border-b-2 p-2'>
+                  <div className='w-1/4 '>ID</div>
+                  <div className='w-1/4 '>CLASS</div>
+                  <div className='w-1/4'>FEES/STUDENT</div>
+                  <div className='w-1/4 '>PAID AMOUNT</div>
+                  <div className='w-1/4 '>BALANCE</div>
+                </div>
+                {classPdf?.map((obj, idx) => {
+                  return (
+                    <div
+                      key={idx}
+                      className='mb-5 flex justify-between items-center'
+                    >
+                      <div className='w-1/4 '>
+                        <p>{idx + 1}</p>
+                      </div>
+                      <div className='w-1/4 '>
+                        <p>{obj?.streamName}</p>
+                      </div>
+                      <div className='w-1/4'>
+                        <p>{obj?.feesPerStudent}</p>
+                      </div>
+                      <div className='w-1/4 '>
+                        <p>{obj?.paidAmount}</p>
+                      </div>
+                      <div className='w-1/4'>
+                        <p>{Math.abs(obj?.remainingBalance)}</p>
+                      </div>
+                    </div>
+                  )
+                })}
+                <div className='mb-5 flex justify-between items-center'>
+                  <div className='w-1/4 font-bold'>Total</div>
+                  <div className='w-1/4'></div>
+                  <div className='w-1/4'></div>
+                  <div className='w-1/4 font-bold'>
+                    {total?.totalPaidAmount}
+                  </div>
+                  <div className='w-1/4 font-bold'>
+                    {Math.abs(total?.totalRemainingBalance)}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
       </CustomModal>
 
       <ContentNavbar left={<LeftSide />} right={<RightSide />} />

@@ -41,8 +41,6 @@ const SingleStream = ({ data, index, visibleClass, lang, academicYear }) => {
 
   const ref = useRef()
 
-  console.log({ classList })
-
   const [downloadStream, { isLoading: isDownloadLoading }] =
     useDownloadStreamMutation()
 

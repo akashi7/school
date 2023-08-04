@@ -257,7 +257,9 @@
       "download_btn": {
         "title": "Download report",
         "for_students": "For students",
-        "for_classrooms": "For classrooms"
+        "for_classrooms": "For classrooms",
+        "pdf_for_students":"pdf student",
+        "pdf_for_classroom":"pdf classrooms "
       }
     },
 
@@ -629,7 +631,9 @@
       "download_btn": {
         "title": "Bona raporo",
         "for_students": "Kubanyeshuri",
-        "for_classrooms": "Kumashuri"
+        "for_classrooms": "Kumashuri",
+        "pdf_for_students":"pdf Kubanyeshuri",
+        "pdf_for_classroom":"pdf Kumashuri "
       }
     },
 
