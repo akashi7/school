@@ -8,6 +8,7 @@ import activeGoogleForm from '../../helpers/activeGoogleForm'
 import handleAPIRequests from '../../helpers/handleAPIRequests'
 import { useLoginMutation } from '../../lib/api/Auth/authEndpoints'
 import CustomImage from '../Shared/CustomImage'
+import routes from '../../config/routes'
 
 
 const SignupForm = () => {
@@ -27,7 +28,7 @@ const SignupForm = () => {
   const onSuccess = (res) => {
     if (res.payload) {
       localStorage.setItem(_ns_token_, res?.payload?.accessToken || '')
-      router.push('dashboard/children')
+      router.push(routes.dashboard.url)
     }
   }
   const [login, { isLoading }] = useLoginMutation()
