@@ -148,7 +148,7 @@ const Installments = () => {
 
   return (
     <>
-      {userType(role).isParent && (
+      {(userType(role).isParent || userType(role).isrelative ) && (
         <ChidrenProfile
           handleIsSelected={handleIsSelected}
           isScreenSmall={isScreenSmall}

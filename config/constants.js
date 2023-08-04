@@ -134,14 +134,40 @@ export const menus = ({ trans, role }) => {
       icon: '/icons/installment',
       ext: '.svg',
     },
+  ]
 
-    isrelative&&{
+  const relativeMenu = [
+    {
+      name: trans?.navbar?.children || 'Children',
+      url: '/dashboard',
+      icon: '/icons/children',
+      ext: '.svg',
+    },
+    {
+      name: trans?.navbar?.paynow || 'Pay now',
+      url: '/dashboard/parent-pay-now',
+      icon: '/icons/payment',
+      ext: '.svg',
+    },
+    {
+      name: trans?.navbar?.payments || 'Payments history',
+      url: '/dashboard/parent-pay-history',
+      icon: '/icons/payment',
+      ext: '.svg',
+    },
+
+    {
+      name: trans?.navbar?.installments || 'installments',
+      url: '/dashboard/installments',
+      icon: '/icons/installment',
+      ext: '.svg',
+    },
+    {
       name: trans?.navbar?.students || 'Students',
-        url: '/dashboard/students',
-        icon: '/icons/students',
-        ext: '.svg',
-    }
-
+      url: '/dashboard/students',
+      icon: '/icons/students',
+      ext: '.svg',
+    },
   ]
 
   const studentMenu = [
@@ -196,8 +222,10 @@ export const menus = ({ trans, role }) => {
 
   return isAdmin
     ? adminMenu
-    : isParent || isrelative
+    : isParent
     ? parentMenu
+    : isrelative
+    ? relativeMenu
     : isStudent
     ? studentMenu
     : isEmployee
