@@ -5,33 +5,35 @@ import Footer from '../components/Shared/Footer'
 import IndexNavBar from '../components/Shared/NavBar'
 import TabCmp from '../components/Shared/Tabs'
 import WHITE_DECORATION from '../resources/decorations/white-decoration.svg'
-import img_1 from '../resources/images/card.jpeg'
+import img_1 from '../resources/images/nestpay.png'
 
 const IndexPage = () => {
   return (
     <div className='landingPage h-[100vh] overflow-auto'>
       <IndexNavBar />
-      <div className='hero-container'>
-        <div className='hero-section container-small'>
-          <h1 className='title-xl'>SchoolFees payments made easier!</h1>
+      <div className='hero-container '>
+        <div className='hero-section container-small '>
+          <h1 className='title-xl font-bold italic'>SchoolFees payments made easier!</h1>
           <div className='flex'>
             <div className='left'>
-              <div className='landingPage__imageContiner'>
-                <Image src={img_1} alt='nestpay' />
+              <div className='landingPage__imageContiner lg:mb-10 mb-0  '>
+                <Image src={img_1} alt='nestpay' className=''/>
               </div>
             </div>
-            <div className='right'>
+            <div className='right lg:relative  w-full  '>
+              <div className=' lg:absolute lg:bottom-0  lg:left-0'>
               <p className='desc'>
                 Pay school fees wherever you’re using one of the many available
                 payment channels on SchoolNest Pay
               </p>
-              <div className='btn-dashed'>
+              <div className='btn-dashed  mb-10 lg:w-fit '>
                 <div className='getStarted'>Get started</div>
+              </div>
               </div>
             </div>
           </div>
         </div>
-        <div className='decoration'>
+        <div className='decoration  w-[90%] '>
           <Image src={WHITE_DECORATION} alt='school nestpay' />
         </div>
         <div className='stats'>
@@ -50,7 +52,7 @@ const IndexPage = () => {
         </div>
       </div>
       <div className='why'>
-        <p className='title-xl'>Why SchoolNest Pay?</p>
+        <p className='title-xl mb-[100px] mt-10'>Why SchoolNest Pay?</p>
         <div className='container-small p-4'>
           <TabCmp />
         </div>

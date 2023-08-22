@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import img_1 from '../../resources/images/card.jpeg'
+import img_1 from '../../resources/images/nestpay.png'
 import {
   FaMobileAlt,
   FaLock,

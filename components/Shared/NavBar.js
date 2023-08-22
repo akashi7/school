@@ -14,9 +14,14 @@ const IndexNavBar = () => {
         <a href={'/'}>
           <Image src={Logo} alt='school nest pay' />
         </a>
+        <div className='lg:flex items-center opz flex-row' >
+          <div>Home</div>
+          <div className='pl-5'>How it works</div>
+          <div className='pl-5'>Features</div>
+        </div>
         <div
           onClick={() => setNavActive(!navActive)}
-          className={`nav__menu-bar`}
+          className={` lg:flex lg:justify-between lg:items-center hidden nav__menu-bar`}
         >
           <div></div>
           <div></div>
@@ -26,10 +31,13 @@ const IndexNavBar = () => {
           <div onClick={() => setNavActive(false)} className='nav__closeIcon'>
             <FiXCircle color='#ef3c24' />
           </div>
-          <Link href='/LoginPage' className='nav__link'>
+          <Link href='/LoginPage' className='lg:text-left text-center'>
             Login
           </Link>
-          <Link href='/signup' className='nav__link'>
+          <Link
+            href='/signup'
+            className=' bg-rose-500 text-white p-3 rounded-3xl lg:text-left text-center'
+          >
             Sign up
           </Link>
         </div>

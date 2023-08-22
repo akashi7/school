@@ -13,7 +13,7 @@ const Footer = () => {
           </div>
           <div className="footerCmp__copyRight">
             Copyright &copy;
-            <b>
+            <b className="pr-2">
               <Link href="https://github.com/mansurissa">SchoolNest Pay</Link>
             </b>
             2022

@@ -229,7 +229,11 @@ body {
 .menu-container::-webkit-scrollbar-thumb:hover {
   background-color: #555; /* Set the color of the scrollbar thumb on hover */
 }
-
+@media screen and (max-width:480px) {
+  .opz{
+    visibility: hidden;
+  }
+}
 //new scss for index page
 
 // ::-webkit-scrollbar-thumb {
@@ -360,7 +364,7 @@ img {
   z-index: 9;
   width: 100%;
   // background: $brand-1;
-  background: white;
+  background: rgb(240, 223, 223);
   // padding: 12px 0;
 
   @include mobile-l {
@@ -499,11 +503,11 @@ img {
 }
 
 .footerCmp {
-  background: black;
+  background: rgb(240, 223, 223);
   // padding: 30px 0;
   padding: 20px;
   margin-top: 50px;
-  color: white;
+  color: black;
 
   @include mobile-l {
     margin-top: 50px;
@@ -741,7 +745,7 @@ img {
 .landingPage {
   .hero-container {
     // background: $brand-1;
-    background: #f7f7f7;
+    background: rgb(240, 223, 223);
     position: relative;
     padding-bottom: 210px;
 
@@ -781,7 +785,7 @@ img {
         max-width: 400px;
         display: flex;
         flex-direction: column;
-        align-items: flex-start;
+        align-items:flex-end;
 
 
         @include tablet-mobile {
@@ -902,7 +906,7 @@ img {
   }
 
   &__imageContiner {
-    height: 200px;
+    height: 400px;
     // width: 500px;
 
     @include tablet-mobile {

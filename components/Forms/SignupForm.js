@@ -1,14 +1,16 @@
-import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google'
+import { useGoogleLogin } from '@react-oauth/google'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
+import { FcGoogle } from 'react-icons/fc'
 import { useSelector } from 'react-redux'
 import { _ns_token_ } from '../../config/constants'
+import routes from '../../config/routes'
 import activeForm from '../../helpers/activeForm'
 import activeGoogleForm from '../../helpers/activeGoogleForm'
 import handleAPIRequests from '../../helpers/handleAPIRequests'
 import { useLoginMutation } from '../../lib/api/Auth/authEndpoints'
 import CustomImage from '../Shared/CustomImage'
-import routes from '../../config/routes'
+
 
 
 const SignupForm = () => {
@@ -32,14 +34,18 @@ const SignupForm = () => {
     }
   }
   const [login, { isLoading }] = useLoginMutation()
-  const Login = (token) => {
-    handleAPIRequests({
-      request: login,
-      url: 'relative',
-      token,
-      onSuccess: onSuccess,
-    })
-  }
+  
+
+  const Login = useGoogleLogin({
+    onSuccess: (tokenResponse) => {
+      handleAPIRequests({
+        request: login,
+        url: 'relative',
+        token: tokenResponse.access_token,
+        onSuccess: onSuccess,
+      })
+    },
+  })
 
   return (
     <div className='m-auto bg-white rounded-[12px] p-12  w-full md:w-[500px] flex flex-col items-center'>
@@ -61,17 +67,16 @@ const SignupForm = () => {
       
       <CustomImage src='/icons/logo.png' width={240} />
       <div>Gmail up as relative</div>
-      <div className='h-[200px] flex justify-center items-center'>
-        <GoogleOAuthProvider clientId={clientId}>
-          <GoogleLogin
-            onSuccess={async (credentialResponse) => {
-              Login(credentialResponse?.credential)
-            }}
-            onError={() => {
-              console.log('Login Failed')
-            }}
-          />
-        </GoogleOAuthProvider>
+      <div className='h-[200px] w-full flex justify-center items-center'>
+      <div
+        className=' p-2 w-full border hover:cursor-pointer'
+        onClick={() => Login()}
+      >
+         <div className=' w-[79%]  lg:w-[50%] grid grid-cols-2  lg:flex lg:flex-row mx-auto  items-center'>
+         <FcGoogle size={20}  />
+          <p className='lg:text-base  text-sm text-dark lg:pl-5 w-full'>google login</p>
+         </div>
+      </div>
       </div>
     </div>
   )
