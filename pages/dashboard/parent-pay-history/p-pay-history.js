@@ -64,6 +64,8 @@ const ParentPaymentHistory = () => {
   const [academicTerm, setAcademicTerm] = useState('TERM1')
   const [Country, setCountry] = useState('')
   const [currentPage, setCurrentPage] = useState(0)
+  const [from, setFrom] = useState('')
+  const [to, setTo] = useState('')
 
   const { id: Id, role, country } = isTokenValid('')
 
@@ -86,6 +88,8 @@ const ParentPaymentHistory = () => {
       academicYearId,
       page: currentPage,
       size: size,
+      from,
+      to,
     })
 
   const academicYearsList = academicYears?.payload?.totalItems
@@ -122,6 +126,15 @@ const ParentPaymentHistory = () => {
     setAcademicTerm(term)
   }
 
+  const handleFrom = (from) => {
+    setFrom(from)
+    setCurrentPage(0)
+  }
+  const handleTo = (to) => {
+    setTo(to)
+    setCurrentPage(0)
+  }
+
   const [downloadPending, setDownloadPending] = useState(false)
 
   const TableNavLeftSide = () => (
@@ -135,7 +148,6 @@ const ParentPaymentHistory = () => {
   )
 
   useEffect(() => {
-    // Trigger handleDownloadPDF when studentPayments or size changes
     if (downloadPending && studentPayments && !isStudentsPaymentFetching) {
       handleDownloadPDF()
     }
@@ -152,6 +164,22 @@ const ParentPaymentHistory = () => {
     ) : (
       <>
         <Row align='middle' gutter={24}>
+          <Col>
+            <CustomInput
+              label={'from'}
+              type='small-date'
+              onChange={handleFrom}
+              value={from}
+            />
+          </Col>
+          <Col>
+            <CustomInput
+              label={'to'}
+              type='small-date'
+              onChange={handleTo}
+              value={to}
+            />
+          </Col>
           <Col>
             <CustomInput
               onChange={handleAcademicYearChange}
@@ -233,15 +261,15 @@ const ParentPaymentHistory = () => {
           <Document>
             <Page size='A4' style={styles.page}>
               <View style={styles.centeredView}>
-                <Text>NEST INTERNATIONAL ACADEMY</Text>
+                <Text>{studentPayments?.payload?.school?.school?.schoolTitle}</Text>
                 <Text style={styles.centerStyle}>
-                  Kigali City, Gasabo District, Kimironko Sector
+                {studentPayments?.payload?.school?.school?.address}
                 </Text>
                 <Text style={styles.centerStyle}>
-                  Email: info@schoolnest.ac.rw
+                  Email: {studentPayments?.payload?.school?.email}
                 </Text>
                 <Text style={styles.centerStyle}>
-                  Phone: +(250) 788 927 033
+                {studentPayments?.payload?.school?.phone || ""}
                 </Text>
               </View>
               <View style={styles.studentInfoContainer}>
@@ -282,7 +310,7 @@ const ParentPaymentHistory = () => {
               </View>
 
               {/* Table Content */}
-              {studentPayments?.payload?.items?.map((row) => (
+              {studentPayments?.payload?.result?.items?.map((row) => (
                 <View key={row.id} style={styles.row}>
                   <Text style={styles.cell}>
                     {moment(row?.date).format('YYYY-MM-DD')}
@@ -300,7 +328,7 @@ const ParentPaymentHistory = () => {
         const pdfAsBlob = pdf(pdfDocument).toBlob()
         resolve(pdfAsBlob)
       })
-      saveAs(pdfBlob, 'TableData.pdf')
+      saveAs(pdfBlob, 'payment-history.pdf')
     } catch (error) {
       console.error('Error generating PDF:', error)
     } finally {
@@ -431,9 +459,9 @@ const ParentPaymentHistory = () => {
                 role={role}
               />
               <Paginator
-                total={studentPayments?.payload?.totalItems}
+                total={studentPayments?.payload?.result?.totalItems}
                 setCurrentPage={setCurrentPage}
-                totalPages={studentPayments?.payload?.totalPages}
+                totalPages={studentPayments?.payload?.result?.totalPages}
               />
             </div>
           </ContentTableContainer>

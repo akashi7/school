@@ -142,12 +142,12 @@ const PaymentHistoryTable = ({
         <PaymentsTableMobile
           lang={lang}
           loading={isFetching}
-          dataSource={data?.payload?.items}
+          dataSource={data?.payload?.result?.items}
         />
       ) : (
         <Table
           className='data_table'
-          dataSource={data?.payload?.items}
+          dataSource={data?.payload?.result?.items}
           rowKey={(record) => {
             return record?.id
           }}

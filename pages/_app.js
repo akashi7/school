@@ -1,15 +1,12 @@
-import { useEffect } from 'react'
 import 'antd/dist/antd.css'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
-import { Provider } from 'react-redux'
 import NProgress from 'nprogress'
+import { useEffect } from 'react'
+import { Provider } from 'react-redux'
+import { AppLoader } from '../components/Shared/Loaders'
 import { store } from '../lib/redux/store'
 import '../styles/globals.scss'
-import { AppLoader } from '../components/Shared/Loaders'
-import { _ns_token_ } from '../config/constants'
-import { GoogleOAuthProvider } from '@react-oauth/google'
-const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID
 
 const App = ({ Component, pageProps }) => {
   const router = useRouter()
@@ -34,11 +31,9 @@ const App = ({ Component, pageProps }) => {
   }, [router])
 
   return (
-    <GoogleOAuthProvider clientId={clientId}>
-      <Provider store={store}>
-        <Component {...pageProps} />
-      </Provider>
-    </GoogleOAuthProvider>
+    <Provider store={store}>
+      <Component {...pageProps} />
+    </Provider>
   )
 }
 

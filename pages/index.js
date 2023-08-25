@@ -14,7 +14,7 @@ const IndexPage = () => {
       <div className='hero-container '>
         <div className='hero-section container-small '>
           <h1 className='title-xl font-bold italic'>SchoolFees payments made easier!</h1>
-          <div className='flex'>
+          <div className='flexs'>
             <div className='left'>
               <div className='landingPage__imageContiner lg:mb-10 mb-0  '>
                 <Image src={img_1} alt='nestpay' className=''/>

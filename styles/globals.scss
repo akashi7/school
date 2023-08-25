@@ -200,35 +200,41 @@ body {
 	display: block !important;
 }
 
-/* Styles for the parent container */
 .scroll-container {
-  /* Set the parent container to fill the available height */
   height: 100%;
-  /* Hide the vertical scrollbar */
   overflow: hidden;
 }
 
-/* Styles for the child container (menu) */
 .menu-container {
-  /* Enable vertical scrolling */
   overflow-y: auto;
-  /* Set the height to fill the remaining space */
-  height: calc(100% - 200px); /* Assuming the logo has a height of 200px (adjust if needed) */
+  height: calc(100% - 200px); 
 }
 
-/* Styles for customizing the scrollbar */
 .menu-container::-webkit-scrollbar {
-  width: 8px; /* Set the width of the scrollbar */
+  width: 8px; 
 }
 
 .menu-container::-webkit-scrollbar-thumb {
-  background-color: #888; /* Set the color of the scrollbar thumb */
-  border-radius: 4px; /* Round the corners of the scrollbar thumb */
+  background-color: #888; 
+  border-radius: 4px; 
 }
 
 .menu-container::-webkit-scrollbar-thumb:hover {
-  background-color: #555; /* Set the color of the scrollbar thumb on hover */
+  background-color: #555; 
 }
+
+.analytics::-webkit-scrollbar {
+  width: 8px; 
+}
+.analytics::-webkit-scrollbar-thumb {
+  background-color: #888; 
+  border-radius: 4px; 
+}
+
+.analytics::-webkit-scrollbar-thumb:hover {
+  background-color: #555; 
+}
+
 @media screen and (max-width:480px) {
   .opz{
     visibility: hidden;
@@ -317,7 +323,7 @@ img {
   }
 }
 
-.flex {
+.flexs {
   display: flex;
   justify-content: space-between;
   gap: 2rem;
@@ -817,7 +823,7 @@ img {
         }
       }
 
-      .flex {
+      .flexs {
         margin-top: 20px;
       }
     }

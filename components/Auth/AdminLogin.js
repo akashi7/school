@@ -1,24 +1,28 @@
-import {
-  useGoogleLogin
-} from '@react-oauth/google'
-import Dropdown from 'antd/lib/dropdown'
-import Form from 'antd/lib/form'
-import { useRouter } from 'next/router'
-import PropTypes from 'prop-types'
 import React, { useEffect, useState } from 'react'
-import { _ns_token_, _selected_lang_, available_langs } from '../../config/constants'
-import routes from '../../config/routes'
-import handleAPIRequests from '../../helpers/handleAPIRequests'
+import PropTypes from 'prop-types'
+import Form from 'antd/lib/form'
+import Row from 'antd/lib/row'
+import Col from 'antd/lib/col'
+import CustomInput from '../Shared/CustomInput'
+import CustomImage from '../Shared/CustomImage'
+import CustomButton from '../Shared/CustomButton'
 import requiredField from '../../helpers/requiredField'
 import { useLoginMutation } from '../../lib/api/Auth/authEndpoints'
-import CustomButton from '../Shared/CustomButton'
-import CustomImage from '../Shared/CustomImage'
-import CustomInput from '../Shared/CustomInput'
+import handleAPIRequests from '../../helpers/handleAPIRequests'
+import { useRouter } from 'next/router'
+import routes from '../../config/routes'
+import { _ns_token_ } from '../../config/constants'
+import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google'
+import Dropdown from 'antd/lib/dropdown'
+import {
+  available_langs,
+  login_options,
+  _selected_lang_,
+} from '../../config/constants'
 
-import { FcGoogle } from 'react-icons/fc'
 import { useDispatch, useSelector } from 'react-redux'
-import translate from '../../config/translate'
 import { getTranslation } from '../../lib/redux/translationSlice'
+import translate from '../../config/translate'
 
 const AdminLogin = ({ setActiveLogin, lang }) => {
   const [form] = Form.useForm()
@@ -50,6 +54,8 @@ const AdminLogin = ({ setActiveLogin, lang }) => {
     }
   }
 
+  const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID
+
   const onFinish = (values) => {
     handleAPIRequests({
       request: login,
@@ -60,16 +66,14 @@ const AdminLogin = ({ setActiveLogin, lang }) => {
     })
   }
 
-  const Login = useGoogleLogin({
-    onSuccess: (tokenResponse) => {
-      handleAPIRequests({
-        request: login,
-        url: 'google/student',
-        token: tokenResponse.access_token,
-        onSuccess: onSuccess,
-      })
-    },
-  })
+  const Login = (token) => {
+    handleAPIRequests({
+      request: login,
+      url: 'google/student',
+      token,
+      onSuccess: onSuccess,
+    })
+  }
 
   const dropdownOptions = (
     <div className='bg-gray-100 p-2'>
@@ -98,25 +102,6 @@ const AdminLogin = ({ setActiveLogin, lang }) => {
         form={form}
         className='w-[100%]'
       >
-        {/* <Row
-				justify="center"
-				align="middle"
-				gutter={24}
-				className="mt-8 w-[100%] mb-6"
-				wrap={false}
-			>
-				<Col onClick={() => setActiveLogin(null)}>
-					<CustomImage
-						src="/icons/back.svg"
-						className="cursor-pointer bg-gray-500 hover:bg-gray-600 p-[6px] mt-1 rounded"
-					/>
-				</Col>
-
-				<Col className="font-[500] text-dark text-[24px] truncate" flex={1}>
-					{lang?.auth?.as_admin?.title}
-				</Col>
-			</Row> */}
-
         <div className='w-[100%]'>
           <CustomInput
             label={lang?.auth?.as_admin?.email}
@@ -145,9 +130,15 @@ const AdminLogin = ({ setActiveLogin, lang }) => {
           {lang?.auth?.as_admin?.button}
         </CustomButton>
       </Form>
-      <p className=' mt-[-40px] mb-[-20px]'>{lang?.auth?.or}</p>
-      {/* <div className=' mx-auto w-[60%]'>
-        <GoogleOAuthProvider clientId={clientId}  >
+      <p
+        className=' text-blue-600 cursor-pointer'
+        onClick={() => router.push('/Forgotpassword')}
+      >
+        Forgot password
+      </p>
+      <p className=' mt-[10px] mb-[10px]'>{lang?.auth?.or}</p>
+      <div className=' lg:mx-auto lg:w-[60%] w-[20%] ml-[-180px] mb-10 '>
+        <GoogleOAuthProvider clientId={clientId}>
           <GoogleLogin
             onSuccess={async (credentialResponse) => {
               Login(credentialResponse?.credential)
@@ -155,18 +146,8 @@ const AdminLogin = ({ setActiveLogin, lang }) => {
             onError={() => {
               console.log('Login Failed')
             }}
-						
           />
         </GoogleOAuthProvider>
-      </div> */}
-      <div
-        className=' p-2 w-full border hover:cursor-pointer'
-        onClick={() => Login()}
-      >
-         <div className=' w-[79%]  lg:w-[50%] grid grid-cols-2  lg:flex lg:flex-row mx-auto  items-center'>
-         <FcGoogle size={20}  />
-          <p className='lg:text-base  text-sm text-dark lg:pl-5 w-full'>google login</p>
-         </div>
       </div>
       <div className='w-[100%] grid justify-end px-4'>
         <Dropdown overlay={dropdownOptions} trigger={['click']} placement='top'>

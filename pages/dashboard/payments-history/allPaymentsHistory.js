@@ -22,6 +22,8 @@ const AllPaymentsHistory = () => {
   const [termId, setTermId] = useState('')
   const [academicYearId, setAcademicYearId] = useState('')
   const [studentIdentifier, setStudentIdentifier] = useState('')
+  const [from, setFrom] = useState('')
+  const [to, setTo] = useState('')
 
   const {
     data: payments,
@@ -33,9 +35,9 @@ const AllPaymentsHistory = () => {
     academicYearId,
     academicTerm: termId,
     studentIdentifier,
+    from,
+    to,
   })
-
-  console.log({ payments })
 
   const { data: academicYears, isFetching: isAcademicYearsLoading } =
     useGetAcademicYearsQuery({})
@@ -63,6 +65,8 @@ const AllPaymentsHistory = () => {
     </p>
   )
 
+  console.log({payments})
+
   const handleAcademicYearChange = (value) => {
     setAcademicYearId(value)
   }
@@ -76,6 +80,15 @@ const AllPaymentsHistory = () => {
     setCurrentPage(0)
   }
 
+  const handleFrom = (from) => {
+    setFrom(from)
+    setCurrentPage(0)
+  }
+  const handleTo = (to) => {
+    setTo(to)
+    setCurrentPage(0)
+  }
+
   return (
     <>
       <ContentNavbar left={<LeftSide />} />
@@ -85,85 +98,95 @@ const AllPaymentsHistory = () => {
         <GeneralContentLoader />
       ) : (
         <ContentTableContainer>
+          <Row
+            align='end'
+            justify='space-between'
+            wrap={!isScreenSmall}
+            gutter={12}
+          >
+            <Col>
+              <div className='w-[100%]'>
+                <CustomInput
+                  onChange={onSearchChange}
+                  placeholder={lang?.dashboard_shared?.messages?.type_to_search}
+                />
+              </div>
+            </Col>
 
-            <Row
-              align='end'
-              justify='space-between'
-              wrap={!isScreenSmall}
-              gutter={12}
-            >
-              <Col>
-                <div className='w-[100%]'>
+            <Col>
+              <Row align='middle' gutter={24}>
+                <Col>
                   <CustomInput
-                    onChange={onSearchChange}
-                    placeholder={
-                      lang?.dashboard_shared?.messages?.type_to_search
-                    }
+                    label={'from'}
+                    type='small-date'
+                    onChange={handleFrom}
+                    value={from}
                   />
-                </div>
-              </Col>
+                </Col>
+                <Col>
+                  <CustomInput
+                    label={'to'}
+                    type='small-date'
+                    onChange={handleTo}
+                    value={to}
+                  />
+                </Col>
+                <Col>
+                  <CustomInput
+                    onChange={handleAcademicYearChange}
+                    value={academicYearId}
+                    type='small-select'
+                    label={lang?.dashboard_shared?.filters?.year?.name}
+                    options={[
+                      {
+                        key: 0,
+                        value: '',
+                        label: lang?.dashboard_shared?.filters?.year?.sub_title,
+                      },
+                      ...academicYearsList,
+                    ]}
+                    isLoading={isAcademicYearsLoading}
+                  />
+                </Col>
 
-              <Col>
-                <Row align='middle' gutter={24}>
-                  <Col>
-                    <CustomInput
-                      onChange={handleAcademicYearChange}
-                      value={academicYearId}
-                      type='small-select'
-                      label={lang?.dashboard_shared?.filters?.year?.name}
-                      options={[
-                        {
-                          key: 0,
-                          value: '',
-                          label:
-                            lang?.dashboard_shared?.filters?.year?.sub_title,
-                        },
-                        ...academicYearsList,
-                      ]}
-                      isLoading={isAcademicYearsLoading}
-                    />
-                  </Col>
-
-                  <Col>
-                    <CustomInput
-                      onChange={handleTermChange}
-                      value={termId}
-                      type='small-select'
-                      label={lang?.dashboard_shared?.filters?.term?.name}
-                      options={[
-                        {
-                          key: 0,
-                          value: '',
-                          label:
-                            lang?.dashboard_shared?.filters?.term?.sub_title,
-                        },
-                        ...termOptions,
-                      ]}
-                    />
-                  </Col>
-                </Row>
-              </Col>
-            </Row>
-            <div
-              style={{
-                maxHeight: isScreenSmall ? '' : 'calc(100vh - 440px)',
-              }}
-              className={`mt-5 ${
-                !isScreenSmall && 'h-[fit-content] overflow-x-auto'
-              }`}
-            >
-              <AllPaymentsTable
-                payments={payments}
-                lang={lang}
-                isFetching={isFetching}
-              />
-              
-            </div>
-            <Paginator
-                total={payments?.payload?.totalItems}
-                setCurrentPage={setCurrentPage}
-                totalPages={payments?.payload?.totalPages}
-              />
+                <Col>
+                  <CustomInput
+                    onChange={handleTermChange}
+                    value={termId}
+                    type='small-select'
+                    label={lang?.dashboard_shared?.filters?.term?.name}
+                    options={[
+                      {
+                        key: 0,
+                        value: '',
+                        label: lang?.dashboard_shared?.filters?.term?.sub_title,
+                      },
+                      ...termOptions,
+                    ]}
+                  />
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+          <div
+            style={{
+              maxHeight: isScreenSmall ? '' : 'calc(100vh - 440px)',
+            }}
+            className={`mt-5 ${
+              !isScreenSmall && 'h-[fit-content] overflow-x-auto'
+            }`}
+          >
+            <AllPaymentsTable
+              payments={payments}
+              lang={lang}
+              isFetching={isFetching}
+            />
+          </div>
+          <Paginator
+            total={payments?.payload?.totalItems}
+            setCurrentPage={setCurrentPage}
+            totalPages={payments?.payload?.totalPages}
+          />
         </ContentTableContainer>
       )}
     </>

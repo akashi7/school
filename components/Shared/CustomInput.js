@@ -159,6 +159,25 @@ const CustomInput = ({
     </div>
   )
 
+  const SmallDateSelect =(
+    <div className='h-[46px]  p-3 border-none rounded flex items-center gap-2'>
+      <label className='text-[12px] text-black'>{label}:</label>
+      <Form.Item name={name} rules={rules}>
+        <DatePicker
+          value={value}
+          type={inputType}
+          disabled={disabled}
+          placeholder={placeholder || 'Type'}
+          style={{ minWidth: '60px' }}
+          onChange={(e) =>
+            onChange(e)
+          }
+          className='rounded h-[40px] mt-5 w-[100%]'
+        />
+      </Form.Item>
+    </div>
+  )
+
   const CustomDatePicker = (
     <div className='mb-[-10px] w-[100%]'>
       {label && (
@@ -198,6 +217,9 @@ const CustomInput = ({
     case 'text-area':
       return TextArea
       break
+    case 'small-date':
+      return SmallDateSelect
+      break  
     default:
       return NormalInput
       break

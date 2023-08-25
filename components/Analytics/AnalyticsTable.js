@@ -1,86 +1,232 @@
-import Table from "antd/lib/table";
-import { useState } from "react";
-import { toLocalString } from "../../helpers/numbers";
+import Table from 'antd/lib/table'
+import { useState } from 'react'
+import { toLocalString } from '../../helpers/numbers'
+import { useGetAllAdminsPaymentsQuery } from '../../lib/api/payments/paymentsEndpoints'
+import { useGetAcademicYearsQuery } from '../../lib/api/AcademicYear/academicYearEndpoints'
+import Col from 'antd/lib/col'
+import Row from 'antd/lib/row'
+import CustomInput from '../Shared/CustomInput'
+import ContentTableContainer from '../Shared/ContentTableContainer'
 
-const { Column } = Table;
+import { termOptions } from '../../config/constants'
+import { useSelector } from 'react-redux'
+import moment from 'moment'
+import { useWindowSize } from '../../helpers/useWindowSize'
+import Paginator from '../Shared/Paginator'
 
-const inActiveTabClasses = "bg-gray-200 text-gray-500 hover:text-black";
-const activeTabClasses = "hover:bg-dark hover:text-white bg-dark text-white";
+const { Column } = Table
+
+const inActiveTabClasses = 'bg-gray-200 text-gray-500 hover:text-black'
+const activeTabClasses = 'hover:bg-dark hover:text-white bg-dark text-white'
 
 const AnalyticsTable = () => {
-	const [activeTab, setActiveTab] = useState(0);
+  const [activeTab, setActiveTab] = useState(0)
+  const [currentPage, setCurrentPage] = useState(0)
+  const [termId, setTermId] = useState('')
+  const [academicYearId, setAcademicYearId] = useState('')
+  const [studentIdentifier, setStudentIdentifier] = useState('')
 
-	return (
-		<div className="mt-6">
-			<div className="flex flex-col items-start md:flex-row md:items-center justify-between">
-				<p className="text-gray-600 mb-4 md:mb-0">See what happened</p>
+  const {
+    data: payments,
+    isLoading,
+    isFetching,
+  } = useGetAllAdminsPaymentsQuery({
+    page: currentPage,
+    size: 10,
+    academicYearId,
+    academicTerm: termId,
+    studentIdentifier,
+  })
 
-				<div className="rounded shadow p-2 flex  gap-4">
-					<div
-						onClick={() => setActiveTab(0)}
-						className={`${
-							!activeTab ? activeTabClasses : inActiveTabClasses
-						} border-none px-4 py-2 rounded flex items-center justify-center text-[14px] cursor-pointer`}
-					>
-						Last month
-					</div>
+  const { data: academicYears, isFetching: isAcademicYearsLoading } =
+    useGetAcademicYearsQuery({})
 
-					<div
-						onClick={() => setActiveTab(1)}
-						className={`${
-							activeTab ? activeTabClasses : inActiveTabClasses
-						} border-none px-4 py-2 rounded flex items-center justify-center text-[14px] cursor-pointer`}
-					>
-						Last year
-					</div>
-				</div>
-			</div>
+  const handleAcademicYearChange = (value) => {
+    setAcademicYearId(value)
+  }
 
-			<Table
-				className="data_table"
-				dataSource={[{ id: 1, name: "Fees", counts: 123, value: 23345 }]}
-				rowKey={(record) => {
-					return record?.id;
-				}}
-				rowClassName="shadow"
-				pagination={false}
-				loading={false}
-				bordered={false}
-				scroll={{ x: 0 }}
-			>
-				<Column
-					title="#"
-					key="#"
-					width={24}
-					render={(text, record, index) => (
-						<span className="text-gray-500">{index + 1}.</span>
-					)}
-				/>
+  const handleTermChange = (value) => {
+    setTermId(value)
+  }
 
-				<Column
-					title="Name"
-					key="name"
-					render={(record) => <span className="font-bold">{record?.name}</span>}
-				/>
+  const onSearchChange = (value) => {
+    setStudentIdentifier(value)
+    setCurrentPage(0)
+  }
 
-				<Column
-					title="Counts"
-					key="counts"
-					render={(record) => <span>{toLocalString(record?.counts)}</span>}
-				/>
+  const { width } = useWindowSize()
+  const isScreenSmall = width <= 1024
 
-				<Column
-					title="Value"
-					key="value"
-					render={(record) => (
-						<span>
-							{record?.value ? `${toLocalString(record?.value)} Rwf` : "-"}
-						</span>
-					)}
-				/>
-			</Table>
-		</div>
-	);
-};
+  const lang = useSelector((state) => state?.translation?.payload)
 
-export default AnalyticsTable;
+  const academicYearsList = academicYears?.payload?.totalItems
+    ? [
+        ...academicYears?.payload?.items?.map((item) => ({
+          key: item?.name,
+          value: item?.id,
+          label: item.name,
+        })),
+      ]
+    : []
+
+  return (
+    <div className='mt-6 '>
+			<ContentTableContainer>
+			<Row align='end' justify='space-between' gutter={12}>
+        <Col>
+          <div className='w-[100%]'>
+            <CustomInput
+              onChange={onSearchChange}
+              placeholder={lang?.dashboard_shared?.messages?.type_to_search}
+            />
+          </div>
+        </Col>
+
+        <Col>
+          <Row align='middle' gutter={24}>
+            <Col>
+              <CustomInput
+                onChange={handleAcademicYearChange}
+                value={academicYearId}
+                type='small-select'
+                label={lang?.dashboard_shared?.filters?.year?.name}
+                options={[
+                  {
+                    key: 0,
+                    value: '',
+                    label: lang?.dashboard_shared?.filters?.year?.sub_title,
+                  },
+                  ...academicYearsList,
+                ]}
+                isLoading={isAcademicYearsLoading}
+              />
+            </Col>
+
+            <Col>
+              <CustomInput
+                onChange={handleTermChange}
+                value={termId}
+                type='small-select'
+                label={lang?.dashboard_shared?.filters?.term?.name}
+                options={[
+                  {
+                    key: 0,
+                    value: '',
+                    label: lang?.dashboard_shared?.filters?.term?.sub_title,
+                  },
+                  ...termOptions,
+                ]}
+              />
+            </Col>
+          </Row>
+        </Col>
+      </Row>
+
+      <div
+        style={{
+          maxHeight: isScreenSmall ? '' : 'calc(100vh - 440px)',
+        }}
+        className={`mt-5 ${
+          !isScreenSmall && 'h-[fit-content] overflow-x-auto '
+        }`}
+      >
+        <Table
+          className='data_table'
+          dataSource={payments?.payload?.items}
+          rowKey={(record) => {
+            return record?.id
+          }}
+          rowClassName='shadow'
+          pagination={false}
+          loading={isFetching}
+          bordered={false}
+          scroll={{ x: 0 }}
+        >
+          <Column
+            title='#'
+            key='#'
+            width={24}
+            render={(text, record, index) => (
+              <span className='text-gray-500'>{index + 1}.</span>
+            )}
+          />
+
+          <Column
+            title={lang?.students_pg?.profile?.paymentTable?.date}
+            key='date'
+            render={(record) => (
+              <span className='font-bold'>
+                {moment(record?.date).format('YYYY-MM-DD')}
+              </span>
+            )}
+          />
+          <Column
+            title={lang?.fees_pg?.table?.name}
+            key='student'
+            render={(record) => (
+              <span className='font-bold'>{record?.student?.fullName}</span>
+            )}
+          />
+
+          <Column
+            title={lang?.fees_pg?.table?.year}
+            key='year'
+            render={(record) => <span>{record?.academicYear?.name}</span>}
+          />
+
+          <Column
+            title={lang?.students_pg?.profile?.paymentTable?.term}
+            key='academicTerm'
+            render={(record) => (
+              <span className='font-bold'>{record?.academicTerm}</span>
+            )}
+          />
+
+          <Column
+            title={lang?.students_pg?.profile?.paymentTable?.amount}
+            key='amount'
+            render={(record) => (
+              <span>{toLocalString(record?.amount || 0)} Rwf</span>
+            )}
+          />
+
+          <Column
+            title={lang?.students_pg?.profile?.paymentTable?.method}
+            key='paymentMethod'
+            render={(record) => (
+              <span className='text-black font-semibold'>
+                {record?.paymentMethod}
+              </span>
+            )}
+          />
+          <Column
+            title={lang?.students_pg?.profile?.paymentTable?.status}
+            key='status'
+            render={(record) => (
+              <span
+                className={` p-3 rounded font-medium  ${
+                  record?.status === 'PENDING'
+                    ? 'text-black bg-edit_bg '
+                    : record?.status === 'SUCCESS'
+                    ? 'text-white bg-[#198754] '
+                    : 'text-white bg-[#ff0000]'
+                }`}
+              >
+                {record?.status}
+              </span>
+            )}
+          />
+        </Table>
+        <Paginator
+          total={payments?.payload?.totalItems}
+          setCurrentPage={setCurrentPage}
+          totalPages={payments?.payload?.totalPages}
+        />
+      </div>
+			</ContentTableContainer>
+      
+    </div>
+  )
+}
+
+export default AnalyticsTable

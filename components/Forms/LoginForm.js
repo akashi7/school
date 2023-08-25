@@ -26,16 +26,16 @@ const LoginForm = () => {
             setActiveLogin(null)
             router.back()
           }}
-          className='flex flex-row items-center'
+          className='flex flex-row items-center mb-5'
         >
           <CustomImage
             src='/icons/back.svg'
             className='cursor-pointer bg-gray-500 hover:bg-gray-600 p-[6px] mt-1 rounded'
           />
-          <p>{lang?.auth?.goback}</p>
+          <p className='pl-5'>{lang?.auth?.goback}</p>
         </div>
       )}
-      <div className='grid place-items-center w-full'>
+      <div className='grid place-items-center w-full mb-5'>
         <CustomImage
           src='/icons/logo.png'
           className={'w-[150px] lg:w-[240px]'}

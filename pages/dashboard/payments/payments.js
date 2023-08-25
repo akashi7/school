@@ -5,7 +5,7 @@ import {
   StyleSheet,
   Text,
   View,
-  pdf
+  pdf,
 } from '@react-pdf/renderer'
 import Col from 'antd/lib/col'
 import Dropdown from 'antd/lib/dropdown'
@@ -35,7 +35,6 @@ import {
   usePaymentHistoryQuery,
 } from '../../../lib/api/Students/studentsEndpoints'
 
-
 Font.register({
   family: 'Poppins',
   fonts: [
@@ -58,6 +57,8 @@ const Payments = () => {
   const [currentPage, setCurrentPage] = useState(0)
   const [studentPayemnt, setStudentPayment] = useState(false)
   const [size, setSize] = useState(null)
+  const [from, setFrom] = useState('')
+  const [to, setTo] = useState('')
 
   const { id, role, country } = isTokenValid('')
 
@@ -68,21 +69,15 @@ const Payments = () => {
   const [getSingleStudent, { data, isLoading, isFetching }] =
     useLazyGetSingleStudentQuery()
 
-  useEffect(() => {
-    if (!size) {
-      setSize(_pagination_number_)
-    } else {
-      setSize(size)
-    }
-  }, [size])
-
   const { data: studentPayments, isFetching: isStudentsPaymentFetching } =
     usePaymentHistoryQuery({
       id,
       academicTerm,
       academicYearId,
       page: currentPage,
-      size: size ? size : null,
+      size: size,
+      from,
+      to,
     })
 
   useEffect(() => {
@@ -90,7 +85,6 @@ const Payments = () => {
       setAcademicYearId(academicYears?.payload?.items[0]?.id)
     }
   }, [academicYears])
-
 
   useEffect(() => {
     handleAPIRequests({
@@ -132,23 +126,43 @@ const Payments = () => {
     </Row>
   )
 
+  const [downloadPending, setDownloadPending] = useState(false)
+
+  useEffect(() => {
+    if (downloadPending && studentPayments && !isStudentsPaymentFetching) {
+      handleDownloadPDF()
+    }
+    //eslint-disable-next-line
+  }, [downloadPending, studentPayments, isStudentsPaymentFetching])
+
+  const handleFrom = (from) => {
+    setFrom(from)
+    setCurrentPage(0)
+  }
+  const handleTo = (to) => {
+    setTo(to)
+    setCurrentPage(0)
+  }
 
   const handleDownloadPDF = async () => {
     try {
+      setDownloadPending(true)
       const pdfBlob = await new Promise((resolve) => {
         const pdfDocument = (
           <Document>
             <Page size='A4' style={styles.page}>
               <View style={styles.centeredView}>
-                <Text>NEST INTERNATIONAL ACADEMY</Text>
-                <Text style={styles.centerStyle}>
-                  Kigali City, Gasabo District, Kimironko Sector
+                <Text>
+                  {studentPayments?.payload?.school?.school?.schoolTitle}
                 </Text>
                 <Text style={styles.centerStyle}>
-                  Email: info@schoolnest.ac.rw
+                  {studentPayments?.payload?.school?.school?.address}
                 </Text>
                 <Text style={styles.centerStyle}>
-                  Phone: +(250) 788 927 033
+                  Email: {studentPayments?.payload?.school?.email}
+                </Text>
+                <Text style={styles.centerStyle}>
+                  {studentPayments?.payload?.school?.phone || ''}
                 </Text>
               </View>
               <View style={styles.studentInfoContainer}>
@@ -160,9 +174,7 @@ const Payments = () => {
                   <Text style={styles.infoValue}>
                     {data?.payload?.countryName}
                   </Text>
-                  <Text style={styles.infoValue}>
-                    {data?.payload?.address}
-                  </Text>
+                  <Text style={styles.infoValue}>{data?.payload?.address}</Text>
                 </View>
                 <View style={styles.studentInfo}>
                   <View style={styles.infoRow}>
@@ -207,9 +219,11 @@ const Payments = () => {
         const pdfAsBlob = pdf(pdfDocument).toBlob()
         resolve(pdfAsBlob)
       })
-      saveAs(pdfBlob, 'TableData.pdf')
+      saveAs(pdfBlob, 'payment-report.pdf')
     } catch (error) {
       console.error('Error generating PDF:', error)
+    } finally {
+      setDownloadPending(false)
     }
   }
 
@@ -258,6 +272,22 @@ const Payments = () => {
     ) : (
       <>
         <Row align='middle' gutter={24}>
+          <Col>
+            <CustomInput
+              label={'from'}
+              type='small-date'
+              onChange={handleFrom}
+              value={from}
+            />
+          </Col>
+          <Col>
+            <CustomInput
+              label={'to'}
+              type='small-date'
+              onChange={handleTo}
+              value={to}
+            />
+          </Col>
           <Col>
             <CustomInput
               onChange={handleAcademicYearChange}
@@ -388,11 +418,10 @@ const Payments = () => {
                 <CustomButton
                   onClick={() => {
                     setSize(50)
-                    setTimeout(() => {
-                      handleDownloadPDF()
-                    }, 5000)
+                    setDownloadPending(true)
                   }}
                   type='primary'
+                  loading={downloadPending}
                 >
                   Payment report
                 </CustomButton>
@@ -421,9 +450,9 @@ const Payments = () => {
                 role={role}
               />
               <Paginator
-                total={studentPayments?.payload?.totalItems}
+                total={studentPayments?.payload?.result?.totalItems}
                 setCurrentPage={setCurrentPage}
-                totalPages={studentPayments?.payload?.totalPages}
+                totalPages={studentPayments?.payload?.result?.totalPages}
               />
             </div>
           </ContentTableContainer>
