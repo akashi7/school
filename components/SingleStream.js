@@ -11,11 +11,11 @@ import {
   useEditStreamMutation,
   useDownloadStreamMutation,
   useClassListQuery,
+  useClassListMutation,
 } from '../lib/api/Classrooms/classroomsEndpoints'
 import requiredField from '../helpers/requiredField'
 import handleAPIRequests from '../helpers/handleAPIRequests'
 import handleDownloadFile from '../helpers/handleDownloadFile'
-
 
 import { toPng } from 'html-to-image'
 import { jsPDF } from 'jspdf'
@@ -34,10 +34,8 @@ const SingleStream = ({ data, index, visibleClass, lang, academicYear }) => {
     setIsVisible(false)
   }
 
-  const { data: classList, isFetching: isClassLoading } = useClassListQuery({
-    academicYearId: academicYear,
-    id: data?.id,
-  })
+  const [classList, { data: Class, isLoading, isFetching }] =
+    useClassListMutation()
 
   const ref = useRef()
 
@@ -77,6 +75,18 @@ const SingleStream = ({ data, index, visibleClass, lang, academicYear }) => {
   }
 
   useEffect(() => {
+    if (ispdf) {
+      handleAPIRequests({
+        request: classList,
+        academicYearId: academicYear,
+        id: data?.id,
+        notify: true,
+      })
+    }
+    //eslint-disable-next-line
+  }, [ispdf, academicYear, data])
+
+  useEffect(() => {
     form.setFieldsValue({
       name: data?.name,
     })
@@ -85,6 +95,8 @@ const SingleStream = ({ data, index, visibleClass, lang, academicYear }) => {
   const handleDelete = () => {
     setIsWarningVisible(true)
   }
+
+  console.log({ Class })
 
   return (
     <>
@@ -132,40 +144,44 @@ const SingleStream = ({ data, index, visibleClass, lang, academicYear }) => {
       >
         <div ref={ref}>
           <div className='w-full'>
-            <div className='flex flex-row items-center border-b-2'>
+            <div className='flex  justify-between border-b-2'>
               <div className=''>
                 <CustomImage
-                  src='/icons/logo.png'
+                  src={
+                    Class?.payload?.school?.school?.schoolLogo ||
+                    '/icons/logo.png'
+                  }
                   className='mb-12'
                   width={200}
                 />
               </div>
               <div>
-                <p className='font-bold text-xl'>NEST INTERNATIONAL ACADEMY</p>
-                <p className=' font-semibold pl-5 italic'>
-                  Kigali City, Gasabo District, Kimironko Sector
+                <p className='font-bold text-xl'>
+                  {Class?.payload?.school?.school?.schoolTitle}
                 </p>
-                <p className=' font-semibold pl-[60px] italic'>
-                  Email: info@schoolnest.ac.rw
+                <p className=' font-semibold  italic text-center'>
+                  {Class?.payload?.school?.school?.address}
                 </p>
-                <p className=' font-semibold pl-[70px] italic'>
-                  Phone: +(250) 788 927 033
+                <p className=' font-semibold  italic text-center'>
+                  {Class?.payload?.school?.email}
+                </p>
+                <p className=' font-semibold italic text-center'>
+                  {Class?.payload?.school?.phone || ''}
                 </p>
               </div>
             </div>
-
             <p className=' font-bold  mt-4 mb-5 text-dark text-base text-center'>
               <span className='text-black'>CLASS LIST FOR : </span>{' '}
-              {classList?.payload?.name}
+              {Class?.payload?.streams?.name}
             </p>
-            {classList?.payload?.studentPromotions?.length > 1 && (
+            {Class?.payload?.streams?.studentPromotions?.length > 1 && (
               <div>
                 <div className='mb-5 flex justify-between items-center font-semibold border-b-2'>
                   <div className='w-1/4 '>ID</div>
                   <div className='w-1/4 '>Student</div>
                   <div className='w-1/4'>Identifier</div>
                 </div>
-                {classList?.payload?.studentPromotions?.map((obj, idx) => {
+                {Class?.payload?.studentPromotions?.map((obj, idx) => {
                   return (
                     <div
                       key={idx}
