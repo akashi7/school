@@ -64,20 +64,6 @@ const EmployeeProfile = ({
                     <Col>
                       <div className='flex gap-4'>
                         <CustomButton
-                          type='view'
-                          onClick={() => setIsPromoteModalVisible(true)}
-                        >
-                          {lang?.dashboard_shared?.buttons?.promote}
-                        </CustomButton>
-
-                        <CustomButton
-                          type='edit'
-                          onClick={() => setIsVisible(true)}
-                        >
-                          {lang?.dashboard_shared?.buttons?.edit}
-                        </CustomButton>
-
-                        <CustomButton
                           type='delete'
                           onClick={() => setIsWarningVisible(true)}
                         >

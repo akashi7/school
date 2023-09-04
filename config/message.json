@@ -321,7 +321,8 @@
     },
     "message_pg": {
       "title": "Messages",
-      "new_btn": "New Message",
+      "new_btn": "Group Message",
+      "new_btn_new_btn":"Single Message ",
       "modals": {
         "to": "To",
         "messageType": "Message Type",
@@ -696,6 +697,7 @@
     "message_pg": {
       "title": "Ubutumwa",
       "new_btn": "Ubutumwa bushya",
+      "new_btn_new_btn":"ubutumwa bw'umuntu",
       "modals": {
         "to": "Kuri",
         "messageType": "Ubwoko",

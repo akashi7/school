@@ -228,7 +228,7 @@ const PayNow = () => {
       ) : !data ? (
         <Empty message='The item you are looking for is not available!' />
       ) : (
-        <>
+        <div className={`h-[100%]${isScreenSmall && ' overflow-y-auto '}`}>
           <StudentProfile
             data={data}
             isFetching={isFetching}
@@ -266,7 +266,7 @@ const PayNow = () => {
               />
             </div>
           </ContentTableContainer>
-        </>
+        </div>
       )}
     </>
   )

@@ -13,22 +13,24 @@ const IndexPage = () => {
       <IndexNavBar />
       <div className='hero-container '>
         <div className='hero-section container-small '>
-          <h1 className='title-xl font-bold italic'>SchoolFees payments made easier!</h1>
-          <div className='flexs'>
+          <h1 className='title-xl font-bold italic'>
+            SchoolFees payments made easier!
+          </h1>
+          <div className='flexs w-full items-center'>
             <div className='left'>
               <div className='landingPage__imageContiner lg:mb-10 mb-0  '>
-                <Image src={img_1} alt='nestpay' className=''/>
+                <Image src={img_1} alt='nestpay' className='' />
               </div>
             </div>
-            <div className='right lg:relative  w-full  '>
-              <div className=' lg:absolute lg:bottom-0  lg:left-0'>
-              <p className='desc'>
-                Pay school fees wherever you’re using one of the many available
-                payment channels on SchoolNest Pay
-              </p>
-              <div className='btn-dashed  mb-10 lg:w-fit '>
-                <div className='getStarted'>Get started</div>
-              </div>
+            <div className='lg:pl-[600px] w-full pl-0 '>
+              <div className='w-full border-l-indigo-600'>
+                <p className='w-full'>
+                  Pay school fees wherever you’re using one of the many
+                  available payment channels on SchoolNest Pay
+                </p>
+                <div className='btn-dashed  mb-10 mt-10 lg:w-fit '>
+                  <div className='getStarted'>Get started</div>
+                </div>
               </div>
             </div>
           </div>

@@ -221,6 +221,7 @@ const Payments = () => {
       })
       saveAs(pdfBlob, 'payment-report.pdf')
     } catch (error) {
+      setDownloadPending(false)
       console.error('Error generating PDF:', error)
     } finally {
       setDownloadPending(false)
@@ -229,6 +230,18 @@ const Payments = () => {
 
   const FiltersDropdown = () => (
     <div className='w-[fit-content] rounded shadow-md z-100 bg-white p-4 mt-6 flex flex-col gap-4'>
+      <CustomInput
+        label={'from'}
+        type='small-date'
+        onChange={handleFrom}
+        value={from}
+      />
+      <CustomInput
+        label={'to'}
+        type='small-date'
+        onChange={handleTo}
+        value={to}
+      />
       <CustomInput
         onChange={handleAcademicYearChange}
         value={academicYearId}
@@ -402,8 +415,12 @@ const Payments = () => {
       ) : !data ? (
         <Empty message='The item you are looking for is not available!' />
       ) : (
-        <>
-          <div className='flex justify-between items-center'>
+        <div className={`h-[100%]${isScreenSmall && ' overflow-y-auto '}`}>
+          <div
+            className={` ${
+              isScreenSmall ? 'flex flex-col' : 'flex justify-between'
+            } items-center`}
+          >
             <StudentProfile
               data={data}
               isFetching={isFetching}
@@ -417,8 +434,10 @@ const Payments = () => {
               <Col>
                 <CustomButton
                   onClick={() => {
-                    setSize(50)
-                    setDownloadPending(true)
+                    academicYearId &&
+                      academicTerm &&
+                      setSize(50) &&
+                      setDownloadPending(true)
                   }}
                   type='primary'
                   loading={downloadPending}
@@ -456,7 +475,7 @@ const Payments = () => {
               />
             </div>
           </ContentTableContainer>
-        </>
+        </div>
       )}
     </>
   )

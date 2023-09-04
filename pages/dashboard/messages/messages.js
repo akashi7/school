@@ -1,5 +1,7 @@
 import Form from 'antd/lib/form'
 import React, { useState } from 'react'
+import Col from 'antd/lib/col'
+import Row from 'antd/lib/row'
 import { useSelector } from 'react-redux'
 import Private from '../../../components/Routes/Private'
 import ContentNavbar from '../../../components/Shared/ContentNavbar'
@@ -21,10 +23,12 @@ import {
   useAddMessageMutation,
   useGetMessagesQuery,
 } from '../../../lib/api/messages/messagesEndpoints'
+import NewSingleMessage from '../../../components/Forms/NewSingleMessage'
 
 const Messages = () => {
   const [isVisible, setIsVisible] = useState(false)
   const [currentPage, setCurrentPage] = useState(0)
+  const[singleMessage,setSingleMessage]=useState(false)
 
   const {
     data: messages,
@@ -46,6 +50,7 @@ const Messages = () => {
   const onSuccess = () => {
     setIsVisible(false)
     setCurrentPage(0)
+    setSingleMessage(false)
     form.resetFields()
   }
 
@@ -55,7 +60,6 @@ const Messages = () => {
   }
 
   const onAddPositionFinish = (values) => {
-    console.log({values})
     const data = {
       ...values,
     }
@@ -76,9 +80,18 @@ const Messages = () => {
   const isScreenSmall = width <= 1024
 
   const RightSide = () => (
-    <CustomButton onClick={() => setIsVisible(true)} type='primary'>
-      {lang?.message_pg?.new_btn}
-    </CustomButton>
+    <Row gutter={24} align='middle'>
+      <Col>
+        <CustomButton onClick={() => setIsVisible(true)} type='primary'>
+          {lang?.message_pg?.new_btn}
+        </CustomButton>
+      </Col>
+      <Col>
+        <CustomButton onClick={() => setSingleMessage(true)} type='primary'>
+          {lang?.message_pg?.new_btn_new_btn}
+        </CustomButton>
+      </Col>
+    </Row>
   )
 
   const LeftSide = () => (
@@ -107,7 +120,35 @@ const Messages = () => {
           </CustomButton>
         }
       >
-        <NewMessageForm form={form} onFinish={onAddPositionFinish} lang={lang} />
+        <NewMessageForm
+          form={form}
+          onFinish={onAddPositionFinish}
+          lang={lang}
+        />
+      </CustomModal>
+      <CustomModal
+        isVisible={singleMessage}
+        setIsVisible={setSingleMessage}
+        loading={isAddingPosition}
+        width={700}
+        handleCancel={handleCancel}
+        title={'New Single Message'}
+        footerContent={
+          <CustomButton
+            loading={isAddingPosition}
+            type='primary'
+            htmlType='submit'
+            form='add-single-message'
+          >
+            {lang?.dashboard_shared?.buttons?.save}
+          </CustomButton>
+        }
+      >
+        <NewSingleMessage
+          form={form}
+          onFinish={onAddPositionFinish}
+          lang={lang}
+        />
       </CustomModal>
 
       <ContentNavbar left={<LeftSide />} right={<RightSide />} />

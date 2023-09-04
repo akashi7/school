@@ -230,7 +230,7 @@ const SingleStudent = () => {
       ) : !data ? (
         <Empty message='The item you are looking for is not available!' />
       ) : (
-        <>
+        <div className={`h-[100%]${isScreenSmall && ' overflow-y-auto '}`}>
           <StudentProfile
             data={data}
             isFetching={isFetching}
@@ -255,7 +255,7 @@ const SingleStudent = () => {
                 !isScreenSmall && 'h-[fit-content] overflow-x-auto'
               }`}
             >
-              <div className='w-[50%] '>
+              <div className='lg:w-[50%] w-full '>
                 <div className='flex justify-between mt-5'>
                   <p className='text-dark'>Address</p>
                   <p className='text-gray-400 '>{data?.payload?.address}</p>
@@ -301,7 +301,7 @@ const SingleStudent = () => {
               /> */}
             </div>
           </ContentTableContainer>
-        </>
+        </div>
       )}
     </>
   )
