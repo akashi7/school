@@ -173,7 +173,7 @@ const ClassProfile = ({
                   ? 'calc(100vh - 420px)'
                   : 'calc(100vh - 400px)',
               }}
-              className='overflow-y-auto'
+              className='overflow-y-auto '
             >
               {isFetching ? (
                 <AppLoader height='45vh' className='mt-12' />

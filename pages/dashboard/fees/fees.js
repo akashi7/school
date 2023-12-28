@@ -666,7 +666,7 @@ const Students = () => {
 
           <div
             style={{ maxHeight: 'calc(100vh - 310px)' }}
-            className='mt-5 h-[fit-content] overflow-x-auto'
+            className='mt-5 h-[fit-content] overflow-x-auto overflow-y-auto'
           >
             {showEmpty ? (
               <Empty className='mt-6 h-[62vh]' />
@@ -680,7 +680,7 @@ const Students = () => {
                 isScreenSmall={isScreenSmall}
               />
             )}
-
+            
             <Paginator
               total={fees?.payload?.totalItems}
               setCurrentPage={setCurrentPage}
